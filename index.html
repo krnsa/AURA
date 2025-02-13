@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>AURA</title>
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/styles.css">
@@ -26,15 +26,15 @@
     
         <div class="menu">
             <ul class="menu-content">
-                <li><a href="#"><span class="material-symbols-outlined">home</span><span>Home</span></a></li>
-                <li><a href="#"><span class="material-symbols-outlined">dashboard</span><span>Search</span></a></li>
-                <li><a href="#"><span class="material-symbols-outlined">explore</span><span>Messages</span></a></li>
-                <li><a href="#"><span class="material-symbols-outlined">analytics</span><span>Notifications</span></a></li>
-                <li><a href="#"><span class="material-symbols-outlined">settings</span><span>Create</span></a></li>
-                <li><a href="#"><span class="material-symbols-outlined">person</span><span>Profile</span></a></li>
-                <li><a href="#"><span class="material-symbols-outlined">report</span><span>Shop</span></a></li>
-                <li><a href="#"><span class="material-symbols-outlined">email</span><span>More</span></a></li>
-                <li><a href="#"><span class="material-symbols-outlined">logout</span><span>Logout</span></a></li>
+                <li><a href="/"><span class="material-symbols-outlined">home</span><span>Home</span></a></li>
+                <li><a href="/"><span class="material-symbols-outlined">dashboard</span><span>Search</span></a></li>
+                <li><a href="/"><span class="material-symbols-outlined">explore</span><span>Messages</span></a></li>
+                <li><a href="/"><span class="material-symbols-outlined">analytics</span><span>Notifications</span></a></li>
+                <li><a href="/"><span class="material-symbols-outlined">settings</span><span>Create</span></a></li>
+                <li><a href="/"><span class="material-symbols-outlined">person</span><span>Profile</span></a></li>
+                <li><a href="/"><span class="material-symbols-outlined">report</span><span>Shop</span></a></li>
+                <li><a href="/"><span class="material-symbols-outlined">email</span><span>More</span></a></li>
+                <li><a href="/login/"><span class="material-symbols-outlined">login</span><span>Logout</span></a></li>
             </ul>
         </div>
 
@@ -45,12 +45,6 @@
         </div>
     </div>
 
-    <script src="js/app.js"></script>
-    <script>
-        setTimeout(() => {
-            document.getElementById('loading-screen').style.display = 'none';
-            document.getElementById('container').classList.remove('hidden');
-        }, 4000);  // Changed to 4000ms (4 seconds)
-    </script>
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>
