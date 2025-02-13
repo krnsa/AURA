@@ -16,7 +16,7 @@
     justify-content: space-evenly;
     align-items: center;
     width: 100%;
-    background-color: rgb(91, 85, 85);
+    background-color: rgb(104, 99, 99);
     height: var(--navbarHeight);
 }
 
@@ -27,7 +27,7 @@
     justify-content: center;
     width: 100%;
     height: calc(100vh - var(--navbarHeight));
-    background-color: #e2300d;
+    background-color: #fdfcfc;
 }
 
 .main h1 {
@@ -36,25 +36,69 @@
 }
 
 @keyframes fadeIn {
-    from {
+    0% {
         opacity: 0;
     }
-    to {
+    50% {  /* Added midpoint for smoother transition */
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes zoomIn {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(0.9);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1);
         opacity: 1;
     }
 }
 
 /* Apply animation to the image */
 .fade-in {
-    opacity: 0; /* Start invisible */
-    animation: fadeIn 2s ease-in-out forwards;
+    animation: fadeIn 8s ease-in-out forwards;
+    animation-delay: 20s; /* Match menu timing */
 }
 
-@keyframes zoomIn {
-    from {
-        transform: scale(0.8);
-    }
-    to {
-        transform: scale(1);
-    }
+.zoom-in {
+    animation: zoomIn 8s ease-in-out forwards;
+    animation-delay: 20s; /* Match menu timing */
+}
+
+.from-text {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1.5em;
+    animation: colorChange 8s infinite;
+    animation-delay: 20s;
+}
+
+.magic-bus {
+    text-align: center;
+    margin-top: 5px;
+    font-size: 2em;
+    animation: colorChange 8s infinite;
+    animation-delay: 20s;
+}
+
+@keyframes colorChange {
+    0% { color: #ff0000; }
+    25% { color: #00ff00; }
+    50% { color: #0000ff; }
+    75% { color: #ff00ff; }
+    100% { color: #ff0000; }
+}
+
+/* Make sure text is visible initially */
+#loading-screen .from-text,
+#loading-screen .magic-bus {
+    color: #ffffff;
 }

@@ -1,18 +1,71 @@
-*,
-*::before,
-*::after {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+  }
+
+body {
+    margin: 0;
+    background-color: black;
+    color: grey;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
+.hidden {
+    display: none;
 }
 
-ul,
-ol {
-    list-style: none;
+#loading-screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    animation: fadeInScreen 12s ease-in-out forwards; /* Increased to 12s */
+    animation-delay: 8s; /* Increased to 8s */
+}
+
+@keyframes fadeInScreen {
+    100% {
+        opacity: 1;    /* Start fully visible */
+    }
+    100% {
+        opacity: 1;    /* Stay visible for most of animation */
+    }
+    100% {
+        opacity: 0.5;    /* Fade out at the end */
+    }
+}
+
+.aura-title {
+    font-size: 3rem;
+    color: rgb(250, 250, 8);
+    font-weight: bold;
+}
+
+.magic-bus {
+    font-size: 1.2rem;
+    color: lightgrey;
+}
+
+.bus {
+    position: absolute;
+    bottom: 20%;
+    left: -100px;
+    width: 100px;
+    animation: moveBus 5s ease-in-out 1s forwards;
+}
+
+@keyframes moveBus {
+    from { left: -100px; }
+    to { left: 200%; }
 }
