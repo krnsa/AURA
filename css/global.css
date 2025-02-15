@@ -1,0 +1,13 @@
+:root {
+    --navbarHeight: 50px;
+    --background-light: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --background-dark: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    --text-light: #333;
+    --text-dark: #fff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
