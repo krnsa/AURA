@@ -1,0 +1,23 @@
+{
+  "name": "aura",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krnsa/AURA.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/krnsa/AURA/issues"
+  },
+  "homepage": "https://github.com/krnsa/AURA#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.48.1"
+  }
+}
