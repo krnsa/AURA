@@ -7,6 +7,9 @@
   "type": "module",
   "main": "server.js",
   "keywords": [],
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.48.1",
     "dotenv": "^16.4.7"

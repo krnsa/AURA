@@ -1,19 +1,18 @@
 // Suppress deprecation warnings (Temporary solution)
+// The `punycode` module is deprecated
 process.noDeprecation = true;
-
-// environment variables
-import "dotenv/config";
 
 // import http module
 import http from "node:http";
 
-// import supabase client
-import supabase from "./src/models/supabaseClient.js";
+// import test api route
+import testDatabase from "./src/routes/test.js";
 
 const hostname = "localhost";
 const PORT = 5000;
 
 const server = http.createServer((req, res) => {
+  // Set response headers
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -22,47 +21,48 @@ const server = http.createServer((req, res) => {
   );
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
+  // Preflight request
   if (req.method === "OPTIONS") {
-    res.writeHead(204);
+    res.writeHead(204); // No content code
     res.end();
     return;
   }
 
+  // Home route
+  if (req.url === "/" && req.method === "GET") {
+    res.statusCode = 200;
+    res.end(JSON.stringify({ success: true, message: "Welcome to the API" }));
+    return;
+  }
+
+  // Test API route
   if (req.url === "/api/test" && req.method === "GET") {
     testDatabase()
       .then((data) => {
         res.statusCode = 200;
-        res.end(JSON.stringify(data));
+        res.end(JSON.stringify({ success: true, data }));
       })
       .catch((err) => {
+        console.error("Database error:", err);
         res.statusCode = 500;
-        res.end(JSON.stringify({ error: err.message }));
+        res.end(
+          JSON.stringify({
+            success: false,
+            error: err.message || "Internal Server Error",
+            data: null,
+          })
+        );
       });
-  } else {
-    res.statusCode = 404;
-    res.end(JSON.stringify({ message: "Not Found" }));
+    return;
   }
+
+  // 404 Not Found (if no route matches)
+  res.statusCode = 404;
+  res.end(JSON.stringify({ success: false, message: "Not Found", data: null }));
 });
 
-async function testDatabase() {
-  try {
-    const { data, error } = await supabase.from("users").select("*");
-
-    if (error) {
-      throw error;
-    } else if (data.length === 0) {
-      console.log("Supabase query succeeded but no data found.");
-      return { message: "No data found" };
-    } else {
-      console.log(data, "Supabase query succeeded:");
-      return data;
-    }
-  } catch (err) {
-    console.error("Supabase query failed:", err.message);
-    throw err;
-  }
-}
-
+// Start server
 server.listen(PORT, hostname, () => {
   console.log(`Server running at http://${hostname}:${PORT}/`);
+  console.log(`Testing database at http://${hostname}:${PORT}/api/test`);
 });
