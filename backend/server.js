@@ -7,6 +7,13 @@ import http from "node:http";
 
 // import test api route
 import testDatabase from "./src/routes/test.js";
+import findUserID from "./src/routes/findUser.js";
+
+import newPost from "./src/implementations/newPost.js"
+
+import fs from "fs";
+import path from "path";
+import { Blob } from "buffer";
 
 const hostname = "localhost";
 const PORT = 5000;
@@ -66,3 +73,15 @@ server.listen(PORT, hostname, () => {
   console.log(`Server running at http://${hostname}:${PORT}/`);
   console.log(`Testing database at http://${hostname}:${PORT}/api/test`);
 });
+
+//createPost(1, "test");
+
+const filePath = path.resolve("./test.jpg");
+const fileBuffer = fs.readFileSync(filePath);
+
+// Create a Blob (Supabase accepts Blobs like Files)
+const file = new File([fileBuffer], "test-image.jpg", { type: "image/jpeg" });
+
+const test = await newPost(1, "test 2", file);
+
+console.log(findUserID("sam.mulvey747"));
