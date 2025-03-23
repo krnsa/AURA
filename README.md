@@ -14,5 +14,6 @@ A Social Media Platform with Integrated E-Commerce
 
 ```bash
 npm install
-npm run start
+npm run start:backend
+npm run start:frontend
 ```

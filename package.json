@@ -5,10 +5,12 @@
   "type": "module",
   "private": true,
   "workspaces": [
-    "backend"
+    "backend",
+    "frontend"
   ],
   "scripts": {
-    "start": "npm run start --workspace=backend"
+    "start:backend": "npm run start --workspace=backend",
+    "start:frontend": "npm run start --workspace=frontend"
   },
   "overrides": {
     "whatwg-url": "14.2.0"
