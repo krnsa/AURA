@@ -1,4 +1,3 @@
-import { testDatabase } from "./dev/testSupabase.js"; // Test database function
 import { registerUser, loginUser } from "./auth/auth.js";
 // import findUser from "./api/findUser.js";
 // import newPost from "./implementations/newPost.js";

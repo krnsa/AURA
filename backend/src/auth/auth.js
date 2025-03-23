@@ -1,7 +1,6 @@
 import "dotenv/config";
 import supabase from "../supabase/supabaseClient.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 
 const SECRET = process.env.JWT_SECRET;
 if (!SECRET) {
@@ -24,14 +23,11 @@ export async function registerUser(username, password) {
     return { error: "User already exists." };
   }
 
-  // Hash the password
-  const hashedPassword = await bcrypt.hash(password, 10);
-
   // Add user to Supabase
   const { error: insertError } = await supabase.from("users").insert([
     {
       username,
-      password: hashedPassword,
+      password, // Store the password directly without hashing
     },
   ]);
 
@@ -53,9 +49,8 @@ export async function loginUser(username, password) {
     return { error: "Invalid credentials." };
   }
 
-  // Compare the provided password with the hashed password
-  const isPasswordValid = await bcrypt.compare(password, user[0].password);
-  if (!isPasswordValid) {
+  // Directly compare the provided password with the stored password
+  if (user[0].password !== password) {
     return { error: "Invalid credentials." };
   }
 

@@ -2,21 +2,35 @@ window.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.querySelector("#login-form");
   const errorContainer = document.querySelector("#error-container");
 
+  // Validate form inputs
   const validateForm = (username, password) => {
     const errors = {};
 
+    // Username validation
     if (username.length < 3 || username.length > 30) {
       errors.username =
-        "Username must be at least 3 characters and at most 30 characters";
+        "Username must be at least 3 characters and at most 30 characters.";
+    }
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      errors.username =
+        "Username can only contain letters, numbers, and underscores.";
     }
 
+    // Password validation
     if (password.length < 6) {
-      errors.password = "Password must be at least 6 characters";
+      errors.password = "Password must be at least 6 characters.";
+    }
+    if (!/[A-Z]/.test(password)) {
+      errors.password = "Password must contain at least one uppercase letter.";
+    }
+    if (!/[0-9]/.test(password)) {
+      errors.password = "Password must contain at least one number.";
     }
 
     return errors;
   };
 
+  // Display errors on the page
   const displayErrors = (errors) => {
     errorContainer.innerHTML = ""; // Clear previous errors
 
@@ -28,12 +42,14 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  // Handle login form submission
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    const username = loginForm.querySelector("#username").value;
-    const password = loginForm.querySelector("#password").value;
+    const username = loginForm.querySelector("#username").value.trim();
+    const password = loginForm.querySelector("#password").value.trim();
 
+    // Validate form inputs
     const errors = validateForm(username, password);
     if (Object.keys(errors).length > 0) {
       displayErrors(errors);
@@ -41,6 +57,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
+      // Send login request to the backend
       const response = await fetch("http://localhost:5000/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -49,10 +66,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
       const result = await response.json();
       if (result.success) {
+        // Store the token in localStorage
         localStorage.setItem("token", result.token);
-        console.log("Login success");
-        window.location.href = "./index.html";
+
+        // Show success message and redirect to profile page
+        alert("Login successful!");
+        window.location.href = "./profile.html";
       } else {
+        // Display error message from the server
         displayErrors({ general: result.error });
       }
     } catch (err) {
@@ -60,7 +81,8 @@ window.addEventListener("DOMContentLoaded", () => {
       errorContainer.innerHTML =
         "<p style='color: red;'>An error occurred. Please try again later.</p>";
     } finally {
-      loginForm.querySelector("#password").value = ""; // Clear password field
+      // Clear the password field
+      loginForm.querySelector("#password").value = "";
     }
   };
 
