@@ -1,9 +1,7 @@
 {
   "name": "aura",
   "version": "1.0.0",
-  "description": "",
-  "license": "ISC",
-  "author": "",
+  "license": "MIT",
   "type": "module",
   "private": true,
   "workspaces": [
