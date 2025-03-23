@@ -16,4 +16,6 @@ export default async function newPost(user_id, body, file = null) {
   console.log();
 
   const resp = await createPost(user_id, body, image_path);
+
+  return resp;
 }

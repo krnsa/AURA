@@ -1,4 +1,10 @@
 import { testDatabase } from "../dev/test.js"; // Test database function
+import findUserID from "./src/api/findUser.js";
+import newPost from "./src/implementations/newPost.js";
+import getPosts from "./src/api/getPosts.js";
+import deletePost from "./src/api/deletePost.js";
+import getPostByID from "./src/api/getPostByID.js";
+import removePost from "./src/implementations/removePost.js";
 
 export async function handleRequest(req, res) {
   // Set common response headers
