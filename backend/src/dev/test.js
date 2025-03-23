@@ -1,7 +1,6 @@
-// import supabase client
 import supabase from "../supabase/supabaseClient.js";
 
-export default async function testDatabase() {
+export async function testDatabase() {
   try {
     const { data, error } = await supabase.from("users").select("*");
 
@@ -19,3 +18,25 @@ export default async function testDatabase() {
     throw err;
   }
 }
+
+import findUserID from "./src/api/findUser.js";
+import newPost from "./src/implementations/newPost.js";
+import getPosts from "./src/api/getPosts.js";
+import fs from "fs";
+import path from "path";
+
+createPost(1, "test");
+
+const filePath = path.resolve("./img/test.jpg");
+const fileBuffer = fs.readFileSync(filePath);
+
+// Create a Blob (Supabase accepts Blobs like Files)
+const file = new File([fileBuffer], "test-image.jpg", { type: "image/jpeg" });
+
+await newPost(3, "test 3");
+
+console.log(findUserID("sam.mulvey747"));
+
+let data = await getPosts(3);
+
+console.log(data.length);
