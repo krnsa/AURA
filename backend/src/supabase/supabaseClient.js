@@ -1,6 +1,4 @@
-// environment variables
 import "dotenv/config";
-
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -11,6 +9,5 @@ if (!supabaseUrl || !supabaseKey) {
 }
 
 const supabase = createClient(supabaseUrl, supabaseKey);
-
 
 export default supabase;

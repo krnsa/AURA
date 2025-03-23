@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 
 // import test api route
-import testDatabase from "./src/api/test.js";
+import testDatabase from "./src/dev/test.js";
 import findUserID from "./src/api/findUser.js";
 import newPost from "./src/implementations/newPost.js";
 
@@ -60,7 +60,6 @@ const server = http.createServer((req, res) => {
 // Start server
 server.listen(5000, "localhost", () => {
   console.log(`Server running at http://localhost:5000/`);
-  console.log(`Testing database at http://localhost:5000/api/test`);
 });
 
 //createPost(1, "test");
