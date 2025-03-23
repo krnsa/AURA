@@ -72,10 +72,10 @@ server.listen(5000, "localhost", () => {
 // Create a Blob (Supabase accepts Blobs like Files)
 // const file = new File([fileBuffer], "test-image.jpg", { type: "image/jpeg" });
 
-await newPost(3, "test 3");
+// await newPost(3, "test 3");
 
-console.log(findUserID("sam.mulvey747"));
+// console.log(findUserID("sam.mulvey747"));
 
-let data = await getPosts(3);
+// let data = await getPosts(3);
 
-console.log(data.length);
+// console.log(data.length);
