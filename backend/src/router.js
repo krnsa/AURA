@@ -1,4 +1,4 @@
-import { testDatabase } from "../dev/test.js"; // Test database function
+import { testDatabase } from "./dev/test.js"; // Test database function
 import findUserID from "./src/api/findUser.js";
 import newPost from "./src/implementations/newPost.js";
 import getPosts from "./src/api/getPosts.js";
