@@ -19,13 +19,13 @@ export async function testDatabase() {
   }
 }
 
-import findUserID from "./src/api/findUser.js";
-import newPost from "./src/implementations/newPost.js";
-import getPosts from "./src/api/getPosts.js";
+import findUser from "../api/findUser.js";
+import newPost from "../implementations/newPost.js";
+import getPosts from "../api/getPosts.js";
 import fs from "fs";
 import path from "path";
 
-createPost(1, "test");
+newPost(1, "test");
 
 const filePath = path.resolve("./img/test.jpg");
 const fileBuffer = fs.readFileSync(filePath);
@@ -35,7 +35,7 @@ const file = new File([fileBuffer], "test-image.jpg", { type: "image/jpeg" });
 
 await newPost(3, "test 3");
 
-console.log(findUserID("sam.mulvey747"));
+console.log(findUser("sam.mulvey747"));
 
 let data = await getPosts(3);
 
