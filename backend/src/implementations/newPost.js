@@ -7,7 +7,7 @@ export default async function newPost(user_id, body, file = null) {
     return;
   }
 
-  var image_path = null;
+  let image_path = null;
 
   if (file != null) {
     image_path = await uploadImage(file);

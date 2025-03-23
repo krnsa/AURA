@@ -1,39 +1,75 @@
+import "dotenv/config";
 import supabase from "../supabase/supabaseClient.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
-import { createToken, verifyToken } from "../auth/jwt.js";
+const SECRET = process.env.JWT_SECRET;
+if (!SECRET) {
+  throw new Error("Missing JWT_SECRET in .env file");
+}
 
-const SECRET = "abcdefghijklmnop12345678901234567890";
-const users = []; // simple array of { username, password }
-
-export function registerUser(username, password) {
+export async function registerUser(username, password) {
   // Check if user already exists
-  const existingUser = users.find((u) => u.username === username);
-  if (existingUser) {
+  const { data: existingUser, error: findError } = await supabase
+    .from("users")
+    .select("*")
+    .eq("username", username);
+
+  if (findError) {
+    console.error("Error checking user existence:", findError.message);
+    return { error: "Internal server error." };
+  }
+
+  if (existingUser.length > 0) {
     return { error: "User already exists." };
   }
-  // Add user
-  users.push({ username, password });
+
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Add user to Supabase
+  const { error: insertError } = await supabase.from("users").insert([
+    {
+      username,
+      password: hashedPassword,
+    },
+  ]);
+
+  if (insertError) {
+    console.error("Error inserting user:", insertError.message);
+    return { error: "Internal server error." };
+  }
+
   return { success: true, message: "Register success." };
 }
 
-export function loginUser(username, password) {
-  // Check credentials
-  const user = users.find(
-    (u) => u.username === username && u.password === password
-  );
-  if (!user) {
+export async function loginUser(username, password) {
+  const { data: user, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("username", username);
+
+  if (error || user.length === 0) {
     return { error: "Invalid credentials." };
   }
-  // Create JWT
-  const token = createToken({ username }, SECRET);
+
+  // Compare the provided password with the hashed password
+  const isPasswordValid = await bcrypt.compare(password, user[0].password);
+  if (!isPasswordValid) {
+    return { error: "Invalid credentials." };
+  }
+
+  const token = jwt.sign({ username }, SECRET, { expiresIn: "1h" });
   return { success: true, token };
 }
 
-// Optional: verify token if needed in other APIs
 export function requireAuth(token) {
-  const data = verifyToken(token, SECRET);
-  if (!data) {
-    return { error: "Token invalid." };
+  try {
+    // Verify the token using the secret
+    const data = jwt.verify(token, SECRET);
+    return { success: true, data }; // Return the decoded data
+  } catch (err) {
+    console.error("Token verification failed:", err.message);
+    return { error: "Token invalid or expired." };
   }
-  return { success: true, data };
 }

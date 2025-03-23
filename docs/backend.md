@@ -18,4 +18,6 @@
 ```bash
 npm install dotenv
 npm install @supabase/supabase-js
+npm install @supabase/jsonwebtoken
+npm install bcrypt
 ```
