@@ -1,9 +1,20 @@
 // import supabase client
 import supabase from "../supabase/supabaseClient.js";
 
-export default async function testDatabase() {
+export default async function getPosts(user_id = null) {
+
+
+
   try {
-    const { data, error } = await supabase.from("users").select("*");
+
+    let data = null;
+    let error = null;
+
+    if(user_id != null) {
+      ({ data, error } = await supabase.from("posts").select("*").eq("user", user_id));
+    } else {
+      ({ data, error } = await supabase.from("posts").select("*"));
+    }
 
     if (error) {
       throw error;
@@ -11,7 +22,7 @@ export default async function testDatabase() {
       console.log("Supabase query succeeded but no data found.");
       return { message: "No data found" };
     } else {
-      console.log(data, "Supabase query succeeded:");
+      //console.log(data, "Supabase query succeeded:");
       return data;
     }
   } catch (err) {
