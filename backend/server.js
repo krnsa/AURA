@@ -6,6 +6,7 @@ import path from "path";
 import testDatabase from "./src/dev/test.js";
 import findUserID from "./src/api/findUser.js";
 import newPost from "./src/implementations/newPost.js";
+import getPosts from "./src/api/getPosts.js";
 
 const server = http.createServer((req, res) => {
   // Set response headers
@@ -70,6 +71,10 @@ server.listen(5000, "localhost", () => {
 // Create a Blob (Supabase accepts Blobs like Files)
 // const file = new File([fileBuffer], "test-image.jpg", { type: "image/jpeg" });
 
-// await newPost(1, "test 2", file);
+// await newPost(3, "test 3");
 
 // console.log(findUserID("sam.mulvey747"));
+
+// let data = await getPosts(3);
+
+// console.log(data.length);
