@@ -1,4 +1,5 @@
 import { testDatabase } from "./dev/testSupabase.js"; // Test database function
+import { registerUser, loginUser } from "./auth/auth.js";
 // import findUser from "./api/findUser.js";
 // import newPost from "./implementations/newPost.js";
 // import getPosts from "./api/getPosts.js";
@@ -42,14 +43,40 @@ export async function handleRequest(req, res) {
       res.end(
         JSON.stringify({
           success: false,
-          error: err.message || "Internal Server Error",
+          message: err.message || "Internal Server Error",
         })
       );
     }
     return;
   }
 
+  // Register route
+  if (req.url === "/api/register" && req.method === "POST") {
+    let body = "";
+    req.on("data", (chunk) => (body += chunk));
+    req.on("end", () => {
+      const { username, password } = JSON.parse(body);
+      const result = registerUser(username, password);
+      res.writeHead(result.error ? 400 : 200);
+      res.end(JSON.stringify(result));
+    });
+    return;
+  }
+
+  // Login route
+  if (req.url === "/api/login" && req.method === "POST") {
+    let body = "";
+    req.on("data", (chunk) => (body += chunk));
+    req.on("end", () => {
+      const { username, password } = JSON.parse(body);
+      const result = loginUser(username, password);
+      res.writeHead(result.error ? 401 : 200);
+      res.end(JSON.stringify(result));
+    });
+    return;
+  }
+
   // Fallback: 404 Not Found
   res.writeHead(404);
-  res.end(JSON.stringify({ success: false, message: "Not Found", data: null }));
+  res.end(JSON.stringify({ success: false, message: "Not Found" }));
 }
