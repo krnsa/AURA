@@ -9,5 +9,8 @@
   ],
   "scripts": {
     "start": "npm run start --workspace=backend"
+  },
+  "overrides": {
+    "whatwg-url": "14.2.0"
   }
 }

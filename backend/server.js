@@ -1,22 +1,11 @@
-// Suppress deprecation warnings (Temporary solution)
-// The `punycode` module is deprecated
-process.noDeprecation = true;
-
-// import http module
 import http from "node:http";
+import fs from "fs";
+import path from "path";
 
 // import test api route
 import testDatabase from "./src/api/test.js";
 import findUserID from "./src/api/findUser.js";
-
 import newPost from "./src/implementations/newPost.js";
-
-import fs from "fs";
-import path from "path";
-import { Blob } from "buffer";
-
-const hostname = "localhost";
-const PORT = 5000;
 
 const server = http.createServer((req, res) => {
   // Set response headers
@@ -69,19 +58,19 @@ const server = http.createServer((req, res) => {
 });
 
 // Start server
-server.listen(PORT, hostname, () => {
-  console.log(`Server running at http://${hostname}:${PORT}/`);
-  console.log(`Testing database at http://${hostname}:${PORT}/api/test`);
+server.listen(5000, "localhost", () => {
+  console.log(`Server running at http://localhost:5000/`);
+  console.log(`Testing database at http://localhost:5000/api/test`);
 });
 
 //createPost(1, "test");
 
-const filePath = path.resolve("./test.jpg");
-const fileBuffer = fs.readFileSync(filePath);
+// const filePath = path.resolve("./img/test.jpg");
+// const fileBuffer = fs.readFileSync(filePath);
 
 // Create a Blob (Supabase accepts Blobs like Files)
-const file = new File([fileBuffer], "test-image.jpg", { type: "image/jpeg" });
+// const file = new File([fileBuffer], "test-image.jpg", { type: "image/jpeg" });
 
-const test = await newPost(1, "test 2", file);
+// await newPost(1, "test 2", file);
 
-console.log(findUserID("sam.mulvey747"));
+// console.log(findUserID("sam.mulvey747"));
