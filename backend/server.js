@@ -7,6 +7,9 @@ import testDatabase from "./src/api/test.js";
 import findUserID from "./src/api/findUser.js";
 import newPost from "./src/implementations/newPost.js";
 import getPosts from "./src/api/getPosts.js";
+import deletePost from "./src/api/deletePost.js";
+import getPostByID from "./src/api/getPostByID.js";
+import removePost from "./src/implementations/removePost.js";
 
 const server = http.createServer((req, res) => {
   // Set response headers
@@ -79,3 +82,5 @@ server.listen(5000, "localhost", () => {
 // let data = await getPosts(3);
 
 // console.log(data.length);
+
+//console.log(await removePost(3, 10));
