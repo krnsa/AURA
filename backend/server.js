@@ -6,10 +6,10 @@ process.noDeprecation = true;
 import http from "node:http";
 
 // import test api route
-import testDatabase from "./src/routes/test.js";
-import findUserID from "./src/routes/findUser.js";
+import testDatabase from "./src/api/test.js";
+import findUserID from "./src/api/findUser.js";
 
-import newPost from "./src/implementations/newPost.js"
+import newPost from "./src/implementations/newPost.js";
 
 import fs from "fs";
 import path from "path";
