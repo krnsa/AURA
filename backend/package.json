@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module",
   "main": "server.js",
   "scripts": {
