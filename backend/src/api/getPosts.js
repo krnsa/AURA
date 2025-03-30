@@ -3,8 +3,6 @@ import supabase from "../supabase/supabaseClient.js";
 
 export default async function getPosts(user_id = null) {
 
-
-
   try {
 
     let data = null;

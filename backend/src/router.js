@@ -1,10 +1,9 @@
 import { registerUser, loginUser } from "./auth/auth.js";
-// import findUser from "./api/findUser.js";
-// import newPost from "./implementations/newPost.js";
-// import getPosts from "./api/getPosts.js";
-// import deletePost from "./api/deletePost.js";
-// import getPostByID from "./api/getPostByID.js";
-// import removePost from "./implementations/removePost.js";
+import findUser from "./api/findUser.js";
+import newPost from "./implementations/newPost.js";
+import getPosts from "./api/getPosts.js";
+import getPostByID from "./api/getPostByID.js";
+import removePost from "./implementations/removePost.js";
 
 export async function handleRequest(req, res) {
   // Set common response headers
@@ -24,6 +23,73 @@ export async function handleRequest(req, res) {
   if (req.url === "/" && req.method === "GET") {
     res.writeHead(200);
     res.end(JSON.stringify({ success: true, message: "Welcome to the API" }));
+    return;
+  }
+
+  // getPosts route
+  // takes in a body with either a user_id or null, null returns all
+  if (req.url === "/api/getPosts" && req.method === "GET") {
+    let body = ""
+    req.on("data", (chunk) => (body += chunk));
+    req.on("end", async () => {
+      const { user_id } = JSON.parse(body);
+      const result = await getPosts(user_id);
+      res.writeHead(result.error ? 400 : 200);
+      res.end(JSON.stringify(result));
+    });
+    return;
+  }
+
+  // getPostsByID route
+  if (req.url === "/api/getPostByID" && req.method === "GET") {
+    let body = ""
+    req.on("data", (chunk) => (body += chunk));
+    req.on("end", async () => {
+      const { post_id } = JSON.parse(body);
+      const result = await getPostByID(post_id);
+      res.writeHead(result.error ? 400 : 200);
+      res.end(JSON.stringify(result));
+    });
+    return;
+  }
+
+  // findUser route
+  // takes in username returns user_id
+  if (req.url === "/api/findUser" && req.method === "GET") {
+    let body = ""
+    req.on("data", (chunk) => (body += chunk));
+    req.on("end", async () => {
+      const { username } = JSON.parse(body);
+      const result = await findUser(username);
+      res.writeHead(result.error ? 400 : 200);
+      res.end(JSON.stringify(result));
+    });
+    return;
+  }
+
+  // removePost route
+  if (req.url === "/api/removePost" && req.method === "POST") {
+    let body = ""
+    req.on("data", (chunk) => (body += chunk));
+    req.on("end", async () => {
+      const { user_id, post_id } = JSON.parse(body);
+      const result = await removePost(user_id, post_id);
+      res.writeHead(result.error ? 400 : 200);
+      res.end(JSON.stringify(result));
+    });
+    return;
+  }
+
+  // newPost route
+  if (req.url === "/api/newPost" && req.method === "POST") {
+    let body = ""
+    req.on("data", (chunk) => (body += chunk));
+    req.on("end", async () => {
+      const { user_id, post_body, post_file } = JSON.parse(body);
+      const result = await newPost(user_id, post_body, post_file);
+      res.writeHead(result.error ? 400 : 200);
+      res.end(JSON.stringify(result));
+    });
     return;
   }
 
