@@ -12,11 +12,40 @@
 <body>
     <div class="profile-container">
         <h1 id="username">Welcome, User</h1>
-        <button id="logout-button">Logout</button>
+        <div class="profile-stats">
+            <span><b id="posts-count">0</b> Posts</span>
+            <span><b id="followers-count">0</b> Followers</span>
+            <span><b id="following-count">0</b> Following</span>
+        </div>
+        
+        <div class="button-group">
+            <div class="styled-button" id="logout-button">
+                <div class="button-inner">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 17v-3H9v-4h7V7l5 5-5 5M14 2a2 2 0 012 2v2h-2V4H5v16h9v-2h2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V4a2 2 0 012-2h9z"/>
+                    </svg>
+                    <p>Logout</p>
+                </div>
+            </div>
+            
+            <div class="styled-button" id="new-post-btn">
+                <div class="button-inner">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                    </svg>
+                    <p>Upload</p>
+                </div>
+            </div>
+        </div>
 
         <h2>Your Posts</h2>
-        <div id="posts-container">
-            <p>Loading your posts...</p>
+        <div id="posts-container" class="posts-grid"></div>
+    </div>
+
+    <div id="post-modal" class="modal">
+        <div class="modal-content">
+            <input type="file" id="post-image" accept="image/*">
+            <button id="upload-post">Upload</button>
         </div>
     </div>
 

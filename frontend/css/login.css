@@ -8,13 +8,13 @@
   input:focus-visible,
   button:focus-visible,
   a:focus-visible {
-    outline: 2px solid #667eea;
+    outline: 2px solid #49558b;
     outline-offset: 2px;
   }
   
   /* Add loading state to button */
   button[type="submit"].loading {
-    background: #5a6fd6;
+    background: #3b3a69;
     cursor: wait;
     opacity: 0.8;
     position: relative;
@@ -98,7 +98,7 @@
   
   input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #434e80;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
     background: #fff;
   }

@@ -60,5 +60,57 @@ window.addEventListener("DOMContentLoaded", () => {
     fetchPosts();
   };
 
+  const updateStats = async () => {
+    const token = localStorage.getItem("token");
+    try {
+        const response = await fetch("http://localhost:5000/api/user/stats", {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        const stats = await response.json();
+        
+        document.getElementById("posts-count").textContent = stats.posts;
+        document.getElementById("followers-count").textContent = stats.followers;
+        document.getElementById("following-count").textContent = stats.following;
+    } catch (err) {
+        console.error("Error fetching stats:", err);
+    }
+};
+
+const handleNewPost = () => {
+    const modal = document.getElementById("post-modal");
+    const uploadBtn = document.getElementById("upload-post");
+    const fileInput = document.getElementById("post-image");
+
+    document.getElementById("new-post-btn").onclick = () => {
+        modal.style.display = "block";
+    };
+
+    uploadBtn.onclick = async () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("image", file);
+
+        try {
+            const response = await fetch("http://localhost:5000/api/posts/new", {
+                method: "POST",
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+                body: formData
+            });
+            
+            if (response.ok) {
+                modal.style.display = "none";
+                fetchPosts();
+                updateStats();
+            }
+        } catch (err) {
+            console.error("Error uploading post:", err);
+        }
+    };
+};
+
   initProfile();
+  updateStats();
+  handleNewPost();
 });

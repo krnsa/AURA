@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2c2e37 0%, #645177 100%);
     color: #333;
     margin: 0;
     padding: 0;
@@ -41,10 +41,13 @@ h2 {
     border-radius: 5px;
     margin-bottom: 1rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    aspect-ratio: 1;
+    overflow: hidden;
+    cursor: pointer;
 }
 
 button {
-    background: #667eea;
+    background: #3049b7;
     color: white;
     border: none;
     padding: 0.8rem 1.5rem;
@@ -56,4 +59,95 @@ button {
 
 button:hover {
     background: #5a6fd6;
+}
+
+.profile-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 1rem 0;
+}
+
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.post img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.add-post-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 24px;
+    background: #667eea;
+    border: none;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+.button-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.styled-button {
+    width: 131px;
+    height: 51px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    background: linear-gradient(to bottom right, #2e8eff 0%, rgba(46, 142, 255, 0) 30%);
+    background-color: rgba(46, 142, 255, 0.2);
+}
+
+.styled-button:hover {
+    background-color: rgba(46, 142, 255, 0.7);
+    box-shadow: 0 0 10px rgba(46, 142, 255, 0.5);
+}
+
+.button-inner {
+    width: 127px;
+    height: 47px;
+    border-radius: 13px;
+    background-color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.button-inner svg {
+    width: 24px;
+    height: 24px;
+    fill: #fff;
+}
+
+.button-inner p {
+    margin: 0;
+    font-size: 14px;
 }
