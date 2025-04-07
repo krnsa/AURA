@@ -1,7 +1,19 @@
-const token = localStorage.getItem("token");
-if (!token) {
-  alert("You are not logged in. Redirecting to login...");
-  window.location.href = "./login.html";
-} else {
-  console.log("User is logged in.");
-}
+(async function () {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    window.location.href = "/login.html";
+    return;
+  }
+
+  const res = await fetch("http://localhost:3000/", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    localStorage.removeItem("token");
+    window.location.href = "/login.html";
+  }
+})();
