@@ -19,6 +19,21 @@ export async function handleRequest(req, res) {
     return;
   }
 
+  // ------------------------------- Public Routes -------------------------------
+
+  // Register route
+  if (req.url === "/api/register" && req.method === "POST") {
+    let body = "";
+    req.on("data", (chunk) => (body += chunk));
+    req.on("end", async () => {
+      const { username, password } = JSON.parse(body);
+      const result = await registerUser(username, password);
+      res.writeHead(result.error ? 400 : 200);
+      res.end(JSON.stringify(result));
+    });
+    return;
+  }
+
   // Login route
   if (req.url === "/api/login" && req.method === "POST") {
     let body = "";
@@ -31,6 +46,8 @@ export async function handleRequest(req, res) {
     });
     return;
   }
+
+  // ------------------------------- Protected Routes -------------------------------
 
   // Check for authorization header
   const authHeader = req.headers["authorization"];
@@ -121,19 +138,6 @@ export async function handleRequest(req, res) {
     req.on("end", async () => {
       const { user_id, post_body, post_file } = JSON.parse(body);
       const result = await newPost(user_id, post_body, post_file);
-      res.writeHead(result.error ? 400 : 200);
-      res.end(JSON.stringify(result));
-    });
-    return;
-  }
-
-  // Register route
-  if (req.url === "/api/register" && req.method === "POST") {
-    let body = "";
-    req.on("data", (chunk) => (body += chunk));
-    req.on("end", async () => {
-      const { username, password } = JSON.parse(body);
-      const result = await registerUser(username, password);
       res.writeHead(result.error ? 400 : 200);
       res.end(JSON.stringify(result));
     });
