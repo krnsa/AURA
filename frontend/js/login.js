@@ -8,12 +8,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // Username validation
     if (username.length < 3 || username.length > 30) {
-      errors.username =
-        "Username must be at least 3 characters and at most 30 characters.";
+      errors.username = "Username must be at least 3 characters and at most 30 characters.";
     }
     if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-      errors.username =
-        "Username can only contain letters, numbers, and underscores.";
+      errors.username = "Username can only contain letters, numbers, and underscores.";
     }
 
     // Password validation
@@ -71,7 +69,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
         // Show success message and redirect to profile page
         alert("Login successful!");
-        window.location.href = "./profile.html";
+        window.location.href = "/";
       } else {
         // Display error message from the server
         displayErrors({ general: result.error });

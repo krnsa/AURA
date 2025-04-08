@@ -1,4 +1,4 @@
-import { registerUser, loginUser } from "./auth/auth.js";
+import { registerUser, loginUser, requireAuth } from "./auth/auth.js";
 import findUser from "./api/findUser.js";
 import newPost from "./implementations/newPost.js";
 import getPosts from "./api/getPosts.js";
@@ -9,15 +9,49 @@ export async function handleRequest(req, res) {
   // Set common response headers
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
   // Handle preflight request for CORS
   if (req.method === "OPTIONS") {
-    res.writeHead(204); // No content
+    res.writeHead(204); // No content code
     res.end();
     return;
   }
+
+  // Login route
+  if (req.url === "/api/login" && req.method === "POST") {
+    let body = "";
+    req.on("data", (chunk) => (body += chunk));
+    req.on("end", async () => {
+      const { username, password } = JSON.parse(body);
+      const result = await loginUser(username, password);
+      res.writeHead(result.error ? 401 : 200);
+      res.end(JSON.stringify(result));
+    });
+    return;
+  }
+
+  // Check for authorization header
+  const authHeader = req.headers["authorization"];
+
+  if (!authHeader) {
+    res.writeHead(401);
+    res.end(JSON.stringify({ error: "Missing token" }));
+    return;
+  }
+
+  const token = authHeader.split(" ")[1];
+  const authResult = requireAuth(token);
+
+  if (authResult.error) {
+    res.writeHead(401);
+    res.end(JSON.stringify({ error: "Invalid or expired token." }));
+    return;
+  }
+
+  const decodedData = authResult.data;
+  const username = decodedData.username;
 
   // Home route
   if (req.url === "/" && req.method === "GET") {
@@ -29,7 +63,7 @@ export async function handleRequest(req, res) {
   // getPosts route
   // takes in a body with either a user_id or null, null returns all
   if (req.url === "/api/getPosts" && req.method === "GET") {
-    let body = ""
+    let body = "";
     req.on("data", (chunk) => (body += chunk));
     req.on("end", async () => {
       const { user_id } = JSON.parse(body);
@@ -42,7 +76,7 @@ export async function handleRequest(req, res) {
 
   // getPostsByID route
   if (req.url === "/api/getPostByID" && req.method === "GET") {
-    let body = ""
+    let body = "";
     req.on("data", (chunk) => (body += chunk));
     req.on("end", async () => {
       const { post_id } = JSON.parse(body);
@@ -56,7 +90,7 @@ export async function handleRequest(req, res) {
   // findUser route
   // takes in username returns user_id
   if (req.url === "/api/findUser" && req.method === "GET") {
-    let body = ""
+    let body = "";
     req.on("data", (chunk) => (body += chunk));
     req.on("end", async () => {
       const { username } = JSON.parse(body);
@@ -69,7 +103,7 @@ export async function handleRequest(req, res) {
 
   // removePost route
   if (req.url === "/api/removePost" && req.method === "POST") {
-    let body = ""
+    let body = "";
     req.on("data", (chunk) => (body += chunk));
     req.on("end", async () => {
       const { user_id, post_id } = JSON.parse(body);
@@ -82,7 +116,7 @@ export async function handleRequest(req, res) {
 
   // newPost route
   if (req.url === "/api/newPost" && req.method === "POST") {
-    let body = ""
+    let body = "";
     req.on("data", (chunk) => (body += chunk));
     req.on("end", async () => {
       const { user_id, post_body, post_file } = JSON.parse(body);
@@ -101,19 +135,6 @@ export async function handleRequest(req, res) {
       const { username, password } = JSON.parse(body);
       const result = await registerUser(username, password);
       res.writeHead(result.error ? 400 : 200);
-      res.end(JSON.stringify(result));
-    });
-    return;
-  }
-
-  // Login route
-  if (req.url === "/api/login" && req.method === "POST") {
-    let body = "";
-    req.on("data", (chunk) => (body += chunk));
-    req.on("end", async () => {
-      const { username, password } = JSON.parse(body);
-      const result = await loginUser(username, password);
-      res.writeHead(result.error ? 401 : 200);
       res.end(JSON.stringify(result));
     });
     return;

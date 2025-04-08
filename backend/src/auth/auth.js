@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 const SECRET = process.env.JWT_SECRET;
 if (!SECRET) {
-  throw new Error("Missing JWT_SECRET in .env file");
+  throw new Error("Missing JWT_SECRET in .env file under backend directory.");
 }
 
 export async function registerUser(username, password) {
@@ -40,31 +40,31 @@ export async function registerUser(username, password) {
 }
 
 export async function loginUser(username, password) {
-  const { data: user, error } = await supabase
-    .from("users")
-    .select("*")
-    .eq("username", username);
+  const { data: user, error } = await supabase.from("users").select("*").eq("username", username);
 
   if (error || user.length === 0) {
-    return { error: "Invalid credentials." };
+    return {
+      error:
+        "Invalid credentials: User not found or an error occurred while accessing the database.",
+    };
   }
 
-  // Directly compare the provided password with the stored password
+  // username is unique, so we can safely access the first element
+  // Check if the password matches
   if (user[0].password !== password) {
-    return { error: "Invalid credentials." };
+    return { error: "Invalid credentials: Password does not match." };
   }
 
+  // Generate a JWT token
   const token = jwt.sign({ username }, SECRET, { expiresIn: "1h" });
   return { success: true, token };
 }
 
 export function requireAuth(token) {
   try {
-    // Verify the token using the secret
-    const data = jwt.verify(token, SECRET);
-    return { success: true, data }; // Return the decoded data
+    const decodedData = jwt.verify(token, SECRET);
+    return { success: true, data: decodedData };
   } catch (err) {
-    console.error("Token verification failed:", err.message);
     return { error: "Token invalid or expired." };
   }
 }
