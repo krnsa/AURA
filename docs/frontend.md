@@ -15,6 +15,8 @@
 
 ## **Installed Packages**
 
+Please run these commands in the `frontend/` directory to install the required packages.
+
 ```bash
 npm install chokidar
 npm install ws
