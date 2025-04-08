@@ -340,3 +340,56 @@ body {
 .send-btn {
     color: var(--accent-color) !important;
 }
+
+
+
+.message-date {
+    text-align: center;
+    margin: 15px 0;
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.message {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.message.received {
+    justify-content: flex-start;
+}
+
+.message.sent {
+    justify-content: flex-end;
+}
+
+.message-content {
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    position: relative;
+}
+
+.message.received .message-content {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-bottom-left-radius: 5px;
+}
+
+.message.sent .message-content {
+    background-color: rgba(102, 126, 234, 0.3);
+    border-bottom-right-radius: 5px;
+}
+
+.message-content p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.message-time {
+    font-size: 10px;
+    color: var(--text-secondary);
+    display: block;
+    text-align: right;
+    margin-top: 5px;
+}
