@@ -15,8 +15,11 @@
 
 ## **Installed Packages**
 
+Please run these commands in the `backend/` directory to install the required packages.
+
 ```bash
 npm install dotenv
 npm install @supabase/supabase-js
 npm install @supabase/jsonwebtoken
+npm install --save-dev nodemon
 ```

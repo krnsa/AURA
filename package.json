@@ -9,10 +9,15 @@
     "frontend"
   ],
   "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run start:frontend\"",
     "start:backend": "npm run start --workspace=backend",
+    "dev:backend": "npm run dev --workspace=backend",
     "start:frontend": "npm run start --workspace=frontend"
   },
   "overrides": {
     "whatwg-url": "14.2.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
   }
 }
