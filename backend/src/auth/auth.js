@@ -8,35 +8,38 @@ if (!SECRET) {
 }
 
 export async function registerUser(username, password) {
-  // Check if user already exists
-  const { data: existingUser, error: findError } = await supabase
-    .from("users")
-    .select("*")
-    .eq("username", username);
+  try {
+    // Check if user already exists
+    const { data: existingUser, error: findError } = await supabase
+      .from("users")
+      .select("*")
+      .eq("username", username);
 
-  if (findError) {
-    console.error("Error checking user existence:", findError.message);
-    return { error: "Internal server error." };
+    if (findError) {
+      console.error(
+        "Error checking user existence while accessing the database:",
+        findError.message
+      );
+      return { error: "Failed to check if user exists. Please try again later." };
+    }
+
+    if (existingUser.length > 0) {
+      return { error: "The username is already taken. Please choose another one." };
+    }
+
+    // Insert user to Supabase
+    const { error: insertError } = await supabase.from("users").insert([{ username, password }]);
+
+    if (insertError) {
+      console.error("Error inserting user into the database:", insertError.message);
+      return { error: "Failed to register user. Please try again later." };
+    }
+
+    return { success: true, message: "Register success." };
+  } catch (err) {
+    console.error("Unexpected error during registration:", err.message);
+    return { error: "An unexpected error occurred. Please try again later." };
   }
-
-  if (existingUser.length > 0) {
-    return { error: "User already exists." };
-  }
-
-  // Add user to Supabase
-  const { error: insertError } = await supabase.from("users").insert([
-    {
-      username,
-      password, // Store the password directly without hashing
-    },
-  ]);
-
-  if (insertError) {
-    console.error("Error inserting user:", insertError.message);
-    return { error: "Internal server error." };
-  }
-
-  return { success: true, message: "Register success." };
 }
 
 export async function loginUser(username, password) {
