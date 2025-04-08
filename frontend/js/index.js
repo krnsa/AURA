@@ -1,16 +1,17 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const loadingScreen = document.getElementById('loading-screen');
-    const menu = document.querySelector('.menu');
+document.addEventListener("DOMContentLoaded", () => {
+  const loadingScreen = document.getElementById("loading-screen");
+  const menu = document.querySelector(".menu");
 
-    const hideLoadingScreen = async () => {
-        await new Promise(resolve => setTimeout(resolve, 3500));
-        loadingScreen.style.opacity = '0';
+  const hideLoadingScreen = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        await new Promise(resolve => setTimeout(resolve, 500));
-        loadingScreen.style.display = 'none';
-        menu.classList.add('show');
-    };
+    loadingScreen.style.opacity = "0";
 
-    hideLoadingScreen();
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
+    loadingScreen.style.display = "none";
+    menu.classList.add("show");
+  };
+
+  hideLoadingScreen();
 });
