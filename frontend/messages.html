@@ -2,98 +2,100 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AURA</title>
-    <script src="./js/global.js"></script>
-    <link rel="stylesheet" href="./css/styles.css">
-    <link rel="stylesheet" href="./css/messages.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AURA</title>
+  <script src="./js/global.js"></script>
+  <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="./css/messages.css">
 </head>
 
 <body>
 
-    <div class="messages-container">
-      <div class="messages-header">
-          <h2>Messages</h2>
+  <div class="messages-container">
+    <div class="messages-header">
+      <h2>Messages</h2>
+    </div>
+    <div class="messages-content">
+
+      <div class="conversation-list">
+        <div class="conversation active">
+          <div class="avatar">
+            <img src="/images/avatar1.jpg" alt="Avatar">
+          </div>
+          <div class="conversation-info">
+            <h3>Emma Smith</h3>
+            <p>Hey, how are you doing today?</p>
+          </div>
+          <div class="conversation-time">
+            <span>2:30 PM</span>
+          </div>
+        </div>
       </div>
-      <div class="messages-content">
-        <!-- Inside the messages-content div -->
-<div class="conversation-list">
-  <div class="conversation active">
-      <div class="avatar">
-          <img src="/images/avatar1.jpg" alt="Avatar">
-      </div>
-      <div class="conversation-info">
-          <h3>Emma Smith</h3>
-          <p>Hey, how are you doing today?</p>
-      </div>
-      <div class="conversation-time">
-          <span>2:30 PM</span>
-      </div>
-  </div>
-  </div>
-</div>
-      </div>
+    </div>
   </div>
 
-    <div class="menu">
-        <ul class="menu-content">
-            <li><a href="/">
-                    <span class="material-symbols-outlined">home</span>
-                    <span>Home</span>
-                </a>
-            </li>
-            <li><a href="/">
-                    <span class="material-symbols-outlined">dashboard</span>
-                    <span>Search</span>
-                </a>
-            </li>
-            <li><a href="/messages.html">
-                    <span class="material-symbols-outlined">explore</span>
-                    <span>Messages</span>
-                </a>
-            </li>
-            <li><a href="/">
-                    <span class="material-symbols-outlined">analytics</span>
-                    <span>Notifications</span>
-                </a>
-            </li>
-            <li><a href="/">
-                    <span class="material-symbols-outlined">settings</span>
-                    <span>Create</span>
-                </a>
-            </li>
-            <li><a href="/profile.html">
-                    <span class="material-symbols-outlined">person</span>
-                    <span>Profile</span>
-                </a>
-            </li>
-            <li><a href="/shop.html">
-                    <span class="material-symbols-outlined">report</span>
-                    <span>Shop</span>
-                </a>
-            </li>
-            <li><a href="/">
-                    <span class="material-symbols-outlined">email</span>
-                    <span>More</span>
-                </a>
-            </li>
-            <li><a href="/login.html">
-                    <span class="material-symbols-outlined">login</span>
-                    <span>Login</span>
-                </a>
-            </li>
-        </ul>
-    </div>
 
-    <div class="ui-switch">
-        <label for="dark-mode-toggle" class="slider">
-            <div class="circle"></div>
-        </label>
-    </div>
-    </div>
+  </div>
 
-    <script type="module" src="./js/messages.js"></script>
+  <div class="menu">
+    <ul class="menu-content">
+      <li><a href="/">
+          <span class="material-symbols-outlined">home</span>
+          <span>Home</span>
+        </a>
+      </li>
+      <li><a href="/">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Search</span>
+        </a>
+      </li>
+      <li><a href="/messages.html">
+          <span class="material-symbols-outlined">explore</span>
+          <span>Messages</span>
+        </a>
+      </li>
+      <li><a href="/">
+          <span class="material-symbols-outlined">analytics</span>
+          <span>Notifications</span>
+        </a>
+      </li>
+      <li><a href="/">
+          <span class="material-symbols-outlined">settings</span>
+          <span>Create</span>
+        </a>
+      </li>
+      <li><a href="/profile.html">
+          <span class="material-symbols-outlined">person</span>
+          <span>Profile</span>
+        </a>
+      </li>
+      <li><a href="/shop.html">
+          <span class="material-symbols-outlined">report</span>
+          <span>Shop</span>
+        </a>
+      </li>
+      <li><a href="/">
+          <span class="material-symbols-outlined">email</span>
+          <span>More</span>
+        </a>
+      </li>
+      <li><a href="/login.html">
+          <span class="material-symbols-outlined">login</span>
+          <span>Login</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ui-switch">
+    <label for="dark-mode-toggle" class="slider">
+      <div class="circle"></div>
+    </label>
+  </div>
+  </div>
+
+  <script type="module" src="./js/messages.js"></script>
 </body>
 
 </html>
