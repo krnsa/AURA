@@ -1,0 +1,154 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+
+.menu::-webkit-scrollbar {
+    display: none;
+}
+
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transition: width 0.3s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s;
+    scrollbar-width: none;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background: var(--secondary-color);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    width: 120px;
+    padding: 5px;
+    -ms-overflow-style: none;
+    box-shadow: 8px 0px 9px 0px #00000014;
+    opacity: 1;
+
+}
+
+.menu.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Update hover transition to match menu transition timing */
+.menu:hover {
+    width: 260px;
+    transition: width 0.3s ease-in-out;
+}
+
+.menu:hover li span:nth-child(2) {
+    display: block;
+}
+
+.menu-content li {
+    list-style: none;
+    border-radius: 8px;
+    transition: var(--transition);
+    margin-bottom: 0.5rem;
+    padding-left: 20px;
+}
+
+.menu-content li:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.menu-content li:hover a {
+    color: var(--text-primary);
+}
+
+/* Optional: Make text transition smoother */
+.menu-content li span:nth-child(2) {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.menu:hover .menu-content li span:nth-child(2) {
+    display: block;
+    opacity: 1;
+}
+
+.menu-content li a {
+    position: relative;
+    overflow: hidden;
+    padding: 0.75rem 1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.menu-content li a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -20px;
+    width: 0;
+    height: 2px;
+    background: #667eea;
+    transition: width 0.3s ease;
+}
+
+.menu-content li a:hover::after {
+    width: 100%;
+}
+
+.menu a {
+    text-decoration: none;
+    color: rgb(213, 213, 213);
+    display: flex;
+    align-items: center;
+    font-family: "calibri";
+}
+
+.material-symbols-outlined {
+    padding: 10px;
+    font-size: 1.25rem;
+    margin-right: 10px;
+    border-radius: 50%;
+    background: transparent;
+}
+
+
+/* Base Styles */
+body {
+    margin: 0;
+    background-color: black;
+    color: grey;
+    font-family: "Arial", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Text Elements */
+.from-text {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1.5em;
+    animation: colorChange 1s infinite;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: var(--background-dark);
+        color: var(--text-dark);
+    }
+
+    .login-container {
+        background: #1f1f1f;
+    }
+
+    input {
+        background: #2d2d2d;
+        border-color: #404040;
+        color: #fff;
+    }
+}
