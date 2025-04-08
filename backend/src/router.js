@@ -6,6 +6,8 @@ import getPostByID from "./api/getPostByID.js";
 import removePost from "./implementations/removePost.js";
 
 export async function handleRequest(req, res) {
+  // -------------------------- Initialization --------------------------
+
   // Set common response headers
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -19,7 +21,7 @@ export async function handleRequest(req, res) {
     return;
   }
 
-  // ------------------------------- Public Routes -------------------------------
+  // -------------------------- Public Routes --------------------------
 
   // Register route
   if (req.url === "/api/register" && req.method === "POST") {
@@ -47,7 +49,7 @@ export async function handleRequest(req, res) {
     return;
   }
 
-  // ------------------------------- Protected Routes -------------------------------
+  // -------------------------- Authentication Check --------------------------
 
   // Check for authorization header
   const authHeader = req.headers["authorization"];
@@ -66,14 +68,22 @@ export async function handleRequest(req, res) {
     res.end(JSON.stringify({ error: "Invalid or expired token." }));
     return;
   }
-
+  // user information is decoded and can be used in the routes below
   const decodedData = authResult.data;
   const username = decodedData.username;
 
-  // Home route
+  // -------------------------- Protected Routes --------------------------
+
+  // Home route (authenticated user welcome message)
   if (req.url === "/" && req.method === "GET") {
     res.writeHead(200);
-    res.end(JSON.stringify({ success: true, message: "Welcome to the API" }));
+    res.end(
+      JSON.stringify({
+        success: true,
+        message: `Welcome back, ${username}!`,
+        user: { username },
+      })
+    );
     return;
   }
 
