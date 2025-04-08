@@ -12,3 +12,10 @@
 - `index.html` – Lists all users.
 - `profile.html` – Loads user details dynamically.
 - `post.html` – Fetches and displays individual posts.
+
+## **Installed Packages**
+
+```bash
+npm install chokidar
+npm install ws
+```
