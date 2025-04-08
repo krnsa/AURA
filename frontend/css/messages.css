@@ -152,3 +152,29 @@ body {
         color: #fff;
     }
 }
+
+
+.messages-container {
+    margin-left: 120px;
+    padding: 20px;
+    width: calc(100% - 120px);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.messages-header {
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.messages-header h2 {
+    color: var(--text-primary, #ffffff);
+    margin: 0;
+}
+
+.messages-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 0;
+}
