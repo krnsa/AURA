@@ -420,3 +420,38 @@ body {
     background-color: var(--online-status);
   }
 }
+
+.notifications-panel {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: var(--bg-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: none;
+    z-index: 1000;
+}
+
+.notifications-panel.show {
+    display: block;
+}
+
+.notification-item {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.notification-item:hover {
+    background-color: var(--bg-hover-color);
+}
+
+.notification-item .timestamp {
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 4px;
+}
