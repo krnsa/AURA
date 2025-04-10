@@ -4,6 +4,8 @@ import newPost from "./implementations/newPost.js";
 import getPosts from "./api/getPosts.js";
 import getPostByID from "./api/getPostByID.js";
 import removePost from "./implementations/removePost.js";
+import getNotifications from "./api/getNotifications.js";
+
 
 export async function handleRequest(req, res) {
   // -------------------------- Initialization --------------------------
@@ -154,6 +156,20 @@ export async function handleRequest(req, res) {
     return;
   }
 
+  // getNotifications route
+    
+    if (req.url === "/api/notifications" && req.method === "GET") {
+      let body = "";
+      req.on("data", (chunk) => (body += chunk));
+      req.on("end", async () => {
+        const result = await getNotifications(username);
+        res.writeHead(result.error ? 400 : 200);
+        res.end(JSON.stringify(result));
+      });
+      return;
+    }
+
+  
   // Fallback: 404 Not Found
   res.writeHead(404);
   res.end(JSON.stringify({ success: false, message: "Not Found" }));

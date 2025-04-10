@@ -98,6 +98,8 @@ window.addEventListener("DOMContentLoaded", () => {
     };
   };
 
+  //Need to use get api for the profile page
+
   initProfile();
   updateStats();
   handleNewPost();
