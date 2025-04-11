@@ -8,12 +8,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // Username validation
     if (username.length < 3 || username.length > 30) {
-      errors.username =
-        "Username must be at least 3 characters and at most 30 characters.";
+      errors.username = "Username must be at least 3 characters and at most 30 characters.";
     }
     if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-      errors.username =
-        "Username can only contain letters, numbers, and underscores.";
+      errors.username = "Username can only contain letters, numbers, and underscores.";
     }
 
     // Password validation
@@ -57,8 +55,12 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
+      // Disable the submit button to prevent duplicate submissions
+      const submitButton = registerForm.querySelector("button[type='submit']");
+      submitButton.disabled = true;
+
       // Send register request to the backend
-      const response = await fetch("http://localhost:5000/api/register", {
+      const response = await fetch(`${window.CONFIG.API_URL}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -67,14 +69,19 @@ window.addEventListener("DOMContentLoaded", () => {
       const result = await response.json();
       if (result.success) {
         alert("Registration successful! Redirecting to login...");
-        window.location.href = "./login.html";
+        errorContainer.innerHTML = ""; // Clear errors
+        window.location.href = "/login.html";
       } else {
         displayErrors({ general: result.error });
       }
     } catch (err) {
-      console.error("Error:", err);
+      console.error("An unexpected error occurred:", err.message);
       errorContainer.innerHTML =
         "<p style='color: red;'>An error occurred. Please try again later.</p>";
+    } finally {
+      // Re-enable the submit button
+      const submitButton = registerForm.querySelector("button[type='submit']");
+      submitButton.disabled = false;
     }
   };
 

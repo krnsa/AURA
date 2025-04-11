@@ -7,29 +7,29 @@ window.addEventListener("DOMContentLoaded", () => {
   const fetchPosts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/posts", {
+
+      const response = await fetch(`${window.CONFIG.API_URL}/api/posts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       const result = await response.json();
-      if (result.success) {
-        postsContainer.innerHTML = ""; // Clear loading message
+      if (!result.error) {
+        postsContainer.innerHTML = "";
         result.posts.forEach((post) => {
           const postElement = document.createElement("div");
           postElement.classList.add("post");
           postElement.innerHTML = `
-            <h3>${post.title}</h3>
-            <p>${post.body}</p>
+            <div class="post-content">
+              <p>${post.post_body}</p>
+              ${post.post_file ? `<img src="${post.post_file}" alt="Post image">` : ""}
+            </div>
           `;
           postsContainer.appendChild(postElement);
         });
-      } else {
-        postsContainer.innerHTML = `<p style="color: red;">${result.error}</p>`;
       }
     } catch (err) {
       console.error("Error fetching posts:", err);
-      postsContainer.innerHTML =
-        "<p style='color: red;'>An error occurred. Please try again later.</p>";
+      postsContainer.innerHTML = "<p style='color: red;'>Error loading posts</p>";
     }
   };
 
@@ -51,7 +51,8 @@ window.addEventListener("DOMContentLoaded", () => {
   const updateStats = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/user/stats", {
+
+      const response = await fetch(`${window.CONFIG.API_URL}/api/user/stats`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const stats = await response.json();
@@ -68,6 +69,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("post-modal");
     const uploadBtn = document.getElementById("upload-post");
     const fileInput = document.getElementById("post-image");
+    const postText = document.getElementById("post-text");
 
     document.getElementById("new-post-btn").onclick = () => {
       modal.style.display = "block";
@@ -81,7 +83,7 @@ window.addEventListener("DOMContentLoaded", () => {
       formData.append("image", file);
 
       try {
-        const response = await fetch("http://localhost:5000/api/posts/new", {
+        const response = await fetch(`${window.CONFIG.API_URL}/api/posts/new`, {
           method: "POST",
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
           body: formData,
@@ -97,6 +99,8 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     };
   };
+
+  //Need to use get api for the profile page
 
   initProfile();
   updateStats();
