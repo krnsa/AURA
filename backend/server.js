@@ -18,7 +18,12 @@ server.listen(PORT, () => {
       `\x1b[36m%s\x1b[0m`,
       `Backend server running at http://${HOSTNAME}:${PORT}/ (${MODE} mode)\n`
     );
-  } else {
+  } else if (MODE === "production") {
     console.log(`\x1b[36m%s\x1b[0m`, `Backend server running on port ${PORT} (${MODE} mode)\n`);
+  } else {
+    console.log(
+      `\x1b[31m%s\x1b[0m`,
+      `Unknown mode: ${MODE}. Please set NODE_ENV to 'development' or 'production'.`
+    );
   }
 });
