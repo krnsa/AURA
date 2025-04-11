@@ -1,11 +1,12 @@
-import http from "http";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-import { WebSocketServer } from "ws";
+import http from "node:http";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { WebSocketServer, WebSocket } from "ws";
 import chokidar from "chokidar";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const HOST = "localhost";
 const PORT = 3000;
 
 const mimeTypes = {
@@ -19,10 +20,20 @@ const mimeTypes = {
   ".json": "application/json",
 };
 
-// Create HTTP server
+// ------------------------- HTTP server -------------------------
 const server = http.createServer((req, res) => {
-  const urlPath = req.url === "/" ? "/index.html" : req.url;
-  const filePath = path.join(__dirname, urlPath);
+  const rawPath = req.url === "/" ? "/index.html" : req.url;
+  const urlPath = decodeURIComponent(rawPath);
+  const filePath = path.normalize(path.join(__dirname, urlPath));
+
+  // Prevent directory traversal attacks
+  // Ensure the requested file is within the server directory
+  if (!filePath.startsWith(__dirname)) {
+    res.writeHead(403, { "Content-Type": "text/plain" });
+    res.end("403 Forbidden");
+    return;
+  }
+
   const ext = path.extname(filePath);
 
   fs.readFile(filePath, (err, content) => {
@@ -35,13 +46,13 @@ const server = http.createServer((req, res) => {
         const injectedContent = content.toString().replace(
           "</body>",
           `<script>
-              const ws = new WebSocket('ws://localhost:${PORT}');
-              ws.onmessage = (message) => {
-                if (message.data === 'reload') {
-                  location.reload();
-                }
-              };
-            </script></body>`
+            const ws = new WebSocket((location.protocol === "https:" ? "wss://" : "ws://") + location.host);
+            ws.onmessage = (message) => {
+              if (message.data === "reload") {
+                location.reload();
+              }
+            };
+          </script></body>`
         );
         res.writeHead(200, { "Content-Type": mimeTypes[ext] });
         res.end(injectedContent);
@@ -53,24 +64,26 @@ const server = http.createServer((req, res) => {
   });
 });
 
-// WebSocket server for hot reload
+// ------------------------- WebSocket server -------------------------
 const wss = new WebSocketServer({ server });
 
-wss.on("connection", (ws) => {
-  console.log("Client connected for hot reload");
+wss.on("connection", () => {
+  console.log("Hot‑reload client connected\n");
 });
 
-// Watch for file changes using chokidar
-chokidar.watch(__dirname).on("change", (filePath) => {
-  console.log(`File changed: ${filePath}`);
-  wss.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send("reload");
-    }
+// ------------------------- Watch file changes -------------------------
+chokidar
+  .watch(__dirname, { ignoreInitial: true, ignored: /node_modules/ })
+  .on("change", (filePath) => {
+    console.log(`\x1b[36m%s\x1b[0m`, `File changed: ${filePath}`);
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send("reload");
+      }
+    });
   });
-});
 
-// Start the server
-server.listen(PORT, () => {
-  console.log(`Frontend server running at http://localhost:${PORT}`);
+// ------------------------- Start the server -------------------------
+server.listen(PORT, HOST, () => {
+  console.log(`Frontend server running at http://${HOST}:${PORT}`);
 });

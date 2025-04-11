@@ -7,7 +7,8 @@ window.addEventListener("DOMContentLoaded", () => {
   const fetchPosts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/posts", {
+
+      const response = await fetch(`${window.CONFIG.API_URL}/api/posts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -20,7 +21,7 @@ window.addEventListener("DOMContentLoaded", () => {
           postElement.innerHTML = `
             <div class="post-content">
               <p>${post.post_body}</p>
-              ${post.post_file ? `<img src="${post.post_file}" alt="Post image">` : ''}
+              ${post.post_file ? `<img src="${post.post_file}" alt="Post image">` : ""}
             </div>
           `;
           postsContainer.appendChild(postElement);
@@ -50,7 +51,8 @@ window.addEventListener("DOMContentLoaded", () => {
   const updateStats = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/user/stats", {
+
+      const response = await fetch(`${window.CONFIG.API_URL}/api/user/stats`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const stats = await response.json();
@@ -81,7 +83,7 @@ window.addEventListener("DOMContentLoaded", () => {
       formData.append("image", file);
 
       try {
-        const response = await fetch("http://localhost:5000/api/posts/new", {
+        const response = await fetch(`${window.CONFIG.API_URL}/api/posts/new`, {
           method: "POST",
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
           body: formData,
