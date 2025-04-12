@@ -2,9 +2,8 @@
 import supabase from "../supabase/supabaseClient.js";
 
 export default async function deleteProduct(id) {
-  if (id == null) {
-    console.log("Null parameters entered for required field.");
-    return;
+  if (id === null || id === undefined) {
+    console.log("Null or undefined parameters entered for required field.");
   }
 
   try {
