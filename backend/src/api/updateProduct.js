@@ -4,7 +4,7 @@ import supabase from "../supabase/supabaseClient.js";
 export default async function updateProduct(id, updates) {
   if (!id || !updates) {
     console.log("Missing product ID or update data.");
-    return;
+    return { error: "Missing required parameters: id or updates" };
   }
 
   try {
