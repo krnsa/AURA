@@ -3,8 +3,7 @@ import supabase from "../supabase/supabaseClient.js";
 
 export default async function createProduct({ name, description, price, imageUrl }) {
   if (!name || !price) {
-    console.log("Missing required fields: name or price.");
-    return;
+    return { error: "Missing required fields: name and price are mandatory." };
   }
 
   try {
