@@ -5,7 +5,8 @@ import newPost from "./implementations/newPost.js";
 import getPosts from "./api/getPosts.js";
 import getPostByID from "./api/getPostByID.js";
 import removePost from "./implementations/removePost.js";
-//import getNotifications from "./api/getNotifications.js";
+import getMessages from "./api/getMessages.js";
+import sendMessage from "./implementations/sendMessage.js";
 
 // -------------------------- CORS Configuration --------------------------
 const devOrigins = ["http://localhost:3000"];
@@ -73,6 +74,7 @@ export async function handleRequest(req, res) {
   // user information is decoded and can be used in the routes below
   const decodedData = authResult.data;
   const username = decodedData.username;
+  const userId = decodedData.userId || decodedData.user_id;
 
   // -------------------------- Protected Routes --------------------------
 
@@ -119,11 +121,25 @@ export async function handleRequest(req, res) {
       console.log(error);
       send(res, error.length > 0 ? 400 : 200, data);
     },
-    // getNotifications route
-    // "GET /api/notifications": async () => {
-    //   const result = await getNotifications(username);
-    //   send(res, result.error ? 400 : 200, result);
-    // },
+
+    // NEW ROUTES FOR MESSAGES
+
+    // Get messages route
+    "GET /api/messages": async () => {
+      const result = await getMessages(userId);
+      // Include current user ID in the response
+      if (!result.error) {
+        result.currentUserId = userId;
+      }
+
+      send(res, result.error ? 400 : 200, result);
+    },
+    // Send message route
+    "POST /api/sendMessage": async () => {
+      const { receiver_id, content } = await parseBody(req);
+      const result = await sendMessage(userId, receiver_id, content);
+      send(res, result.error ? 400 : 200, result);
+    },
   };
 
   const routeKey = `${req.method} ${req.url}`;
