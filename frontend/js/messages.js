@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
           messages: [],
           lastMessage: null,
           lastMessageTime: null,
-          userName: `User ${otherUserId}`, // Default name, should be replaced with actual user data
+          userName: message.otherUserName, // Default name, should be replaced with actual user data
         });
       }
 

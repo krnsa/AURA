@@ -19,8 +19,6 @@ async function getMessages(userName) {
       .select("*")
       .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`);
 
-    console.log("HELLLOOOO", data);
-
     if (error) {
       console.error("Error fetching messages:", error);
       return { error: "Failed to fetch messages" };
