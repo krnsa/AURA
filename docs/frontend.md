@@ -2,16 +2,19 @@
 
 ## **Technologies Used**
 
-- **Multi-Page Architecture (MPA)** – Separate HTML pages (`index.html`, `profile.html`, `post.html`).
-- **ES Modules (`import/export`)** – Modular JavaScript (`index.js`, `profile.js`, etc.).
-- **Fetch API** – Directly communicates with backend endpoints.
-- **Global Styling** – CSS located at `css/styles.css`.
+- **Multi-Page Architecture (MPA)** – Separate HTML pages (`index.html`, `profile.html`, `shop.html`, `messages.html`, etc.).
+- **ES Modules (`import/export`)** – Modular JavaScript (`index.js`, `profile.js`, `shop.js`, etc.).
+- **Fetch API** – Communicates with backend endpoints for dynamic data loading.
+- **Global Styling** – Centralized CSS located at `css/styles.css`.
+- **Hot Reload** – Enabled during development using WebSocket (`frontend-server.js`).
 
 ## **Implemented Features**
 
-- `index.html` – Lists all users.
-- `profile.html` – Loads user details dynamically.
-- `post.html` – Fetches and displays individual posts.
+- `index.html` – Displays the main landing page with animations.
+- `profile.html` – Dynamically loads user details, posts, and statistics.
+- `shop.html` – Provides an interactive shopping experience.
+- `messages.html` – Displays user conversations and chat functionality.
+- `register.html` & `login.html` – Handles user authentication with form validation.
 
 ## **Installed Packages**
 

@@ -8,23 +8,21 @@ export default async function getPosts(user_id = null) {
     let data = null;
     let error = null;
 
-    if(user_id != null) {
+    if (user_id != null) {
       ({ data, error } = await supabase.from("posts").select("*").eq("user", user_id));
     } else {
       ({ data, error } = await supabase.from("posts").select("*"));
     }
 
-    if (error) {
-      throw error;
-    } else if (data.length === 0) {
-      console.log("Supabase query succeeded but no data found.");
-      return { message: "No data found" };
+    if(data.length == 0) {
+      return {'data': data, 'error': "No posts found."};
+    } else if(data === null) {
+      return {'data': data, 'error': "Supabase returns null."};
     } else {
-      //console.log(data, "Supabase query succeeded:");
-      return data;
+      return {'data': data, 'error': ""};
     }
-  } catch (err) {
-    console.error("Supabase query failed:", err.message);
-    throw err;
-  }
+
+  } catch (error) {
+      throw error;
+  } 
 }

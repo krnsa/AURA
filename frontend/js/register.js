@@ -60,7 +60,7 @@ window.addEventListener("DOMContentLoaded", () => {
       submitButton.disabled = true;
 
       // Send register request to the backend
-      const response = await fetch("http://localhost:5000/api/register", {
+      const response = await fetch(`${window.CONFIG.API_URL}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
