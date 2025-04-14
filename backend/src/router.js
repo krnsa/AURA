@@ -1,4 +1,4 @@
-import "dotenv/config";
+import { getAllowedOrigin, parseBody, send } from "./utils/utils.js";
 import { registerUser, loginUser, requireAuth } from "./auth/auth.js";
 import findUser from "./api/findUser.js";
 import newPost from "./implementations/newPost.js";
@@ -13,44 +13,13 @@ const prodOrigins = ["https://auraplatform.vercel.app"];
 const allowedMethods = "GET, POST, PUT, DELETE, OPTIONS";
 const allowedHeaders = "Content-Type, Authorization";
 
-// -------------------------- Utility functions --------------------------
-
-function getAllowedOrigin(origin) {
-  const MODE = process.env.NODE_ENV || "development";
-  const whitelist = MODE !== "production" ? devOrigins : prodOrigins;
-  return whitelist.includes(origin) ? origin : null;
-}
-
-function parseBody(req) {
-  return new Promise((resolve, reject) => {
-    let body = "";
-    req.on("data", (chunk) => (body += chunk));
-    req.on("end", () => {
-      try {
-        resolve(body ? JSON.parse(body) : {});
-      } catch (err) {
-        reject(err);
-      }
-    });
-    req.on("error", reject);
-  });
-}
-
-function send(res, statusCode, payload, ContentType) {
-  if (!ContentType) {
-    ContentType = typeof payload === "object" ? "application/json" : "text/plain";
-  }
-  res.writeHead(statusCode, { "Content-Type": ContentType });
-  res.end(JSON.stringify(payload));
-}
-
 // -------------------------- Request Handler --------------------------
 
 export async function handleRequest(req, res) {
   // -------------------------- Initialization --------------------------
 
   const origin = req.headers.origin;
-  const allowedOrigin = getAllowedOrigin(origin);
+  const allowedOrigin = getAllowedOrigin(origin, devOrigins, prodOrigins);
 
   // Set CORS headers for all responses
   if (allowedOrigin) {
@@ -84,7 +53,6 @@ export async function handleRequest(req, res) {
     send(res, result.error ? 401 : 200, result);
     return;
   }
-  
 
   // -------------------------- Authentication Check --------------------------
 
@@ -121,7 +89,7 @@ export async function handleRequest(req, res) {
     // takes in a body with either a user_id or null, null returns all
     "POST /api/getPosts": async () => {
       const { user_id } = await parseBody(req);
-      const {data, error} = await getPosts(user_id);
+      const { data, error } = await getPosts(user_id);
       send(res, error.length > 0 ? 400 : 200, data);
     },
     // getPostsByID route
@@ -146,7 +114,7 @@ export async function handleRequest(req, res) {
     // removePost route
     "POST /api/removePost": async () => {
       const { user_id, post_id } = await parseBody(req);
-      const {data, error} = await removePost(user_id, post_id);
+      const { data, error } = await removePost(user_id, post_id);
       console.log(data);
       console.log(error);
       send(res, error.length > 0 ? 400 : 200, data);
