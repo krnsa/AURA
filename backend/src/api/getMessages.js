@@ -1,16 +1,23 @@
 import supabase from "../supabase/supabaseClient.js";
+import findUser from "./findUser.js";
 
 /**
  * Get all messages for a specific user (both sent and received)
  * @param {number} userId - The user ID to get messages for
  * @returns {object} Object with messages array or error
  */
-async function getMessages(userId) {
+async function getMessages(userName) {
   try {
+    const userId = (await findUser(userName))[0].id;
+
+    // console.log("User ID:", userId);
+
     // Query Supabase for messages where user is either sender or receiver
-    const { data, error } = await supabase.from("messages").select("*");
-    //   .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
-    //   .order("created_at", { ascending: false });
+    console.log("User ID:", userId);
+    const { data, error } = await supabase
+      .from("messages")
+      .select("*")
+      .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`);
 
     console.log("HELLLOOOO", data);
 

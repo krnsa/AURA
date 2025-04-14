@@ -74,7 +74,6 @@ export async function handleRequest(req, res) {
   // user information is decoded and can be used in the routes below
   const decodedData = authResult.data;
   const username = decodedData.username;
-  const userId = decodedData.userId || decodedData.user_id;
 
   // -------------------------- Protected Routes --------------------------
 
@@ -126,10 +125,10 @@ export async function handleRequest(req, res) {
 
     // Get messages route
     "GET /api/messages": async () => {
-      const result = await getMessages(userId);
+      const result = await getMessages(username);
       // Include current user ID in the response
       if (!result.error) {
-        result.currentUserId = userId;
+        // result.currentUserId = userId;
       }
 
       send(res, result.error ? 400 : 200, result);
