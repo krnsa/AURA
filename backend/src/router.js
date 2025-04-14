@@ -84,6 +84,7 @@ export async function handleRequest(req, res) {
     send(res, result.error ? 401 : 200, result);
     return;
   }
+  
 
   // -------------------------- Authentication Check --------------------------
 
@@ -120,8 +121,8 @@ export async function handleRequest(req, res) {
     // takes in a body with either a user_id or null, null returns all
     "POST /api/getPosts": async () => {
       const { user_id } = await parseBody(req);
-      const result = await getPosts(user_id);
-      send(res, result.error ? 400 : 200, result);
+      const {data, error} = await getPosts(user_id);
+      send(res, error.length > 0 ? 400 : 200, data);
     },
     // getPostsByID route
     "POST /api/getPostByID": async () => {
@@ -145,8 +146,10 @@ export async function handleRequest(req, res) {
     // removePost route
     "POST /api/removePost": async () => {
       const { user_id, post_id } = await parseBody(req);
-      const result = await removePost(user_id, post_id);
-      send(res, result.error ? 400 : 200, result);
+      const {data, error} = await removePost(user_id, post_id);
+      console.log(data);
+      console.log(error);
+      send(res, error.length > 0 ? 400 : 200, data);
     },
     // getNotifications route
     // "GET /api/notifications": async () => {
