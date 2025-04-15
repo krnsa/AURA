@@ -8,6 +8,7 @@ import removePost from "./implementations/removePost.js";
 import getMessages from "./api/getMessages.js";
 import sendMessage from "./implementations/sendMessage.js";
 import searchUsers from "./api/searchUsers.js";
+//import getNotifications from "./api/getNotifications.js";
 
 // -------------------------- CORS Configuration --------------------------
 const devOrigins = ["http://localhost:3000"];
@@ -122,7 +123,11 @@ export async function handleRequest(req, res) {
       send(res, error.length > 0 ? 400 : 200, data);
     },
 
-    // NEW ROUTES FOR MESSAGES
+    // getNotifications route
+    // "GET /api/notifications": async () => {
+    //   const result = await getNotifications(username); 1Has a conversation. Original line has a conversation.
+    //   send(res, result.error ? 400 : 200, result);
+    // },
 
     // Get messages route
     "GET /api/messages": async () => {
