@@ -20,8 +20,9 @@ async function sendMessage(sender_id, receiver_id, messageText) {
       .select("*")
       .or(
         `and(sender_id.eq.${sender_id},receiver_id.eq.${receiver_id}),and(sender_id.eq.${receiver_id},receiver_id.eq.${sender_id})`
-      )
-      .limit(1);
+      );
+
+    console.log("Existing conversation:", existingConversation);
 
     if (fetchError) {
       console.error("Error checking for existing conversation:", fetchError);
@@ -30,7 +31,7 @@ async function sendMessage(sender_id, receiver_id, messageText) {
 
     const now = new Date().toISOString();
     const newMessage = {
-      user_id: sender_id,
+      sender_id: sender_id,
       message: messageText,
       timestamp: now,
     };

@@ -327,6 +327,7 @@ document.addEventListener("DOMContentLoaded", function () {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
+          user_id: currentUserId,
           receiver_id: activeConversation.otherUserId,
           content: messageText,
         }),

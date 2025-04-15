@@ -135,8 +135,9 @@ export async function handleRequest(req, res) {
     },
     // Send message route
     "POST /api/sendMessage": async () => {
-      const { receiver_id, content } = await parseBody(req);
-      const result = await sendMessage(userId, receiver_id, content);
+      const { user_id, receiver_id, content } = await parseBody(req);
+      console.log("Received content:", user_id, receiver_id, content);
+      const result = await sendMessage(user_id, receiver_id, content);
       send(res, result.error ? 400 : 200, result);
     },
   };
