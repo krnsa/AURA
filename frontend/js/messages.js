@@ -34,6 +34,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Show the search container
     userSearchContainer.style.display = "block";
 
+    // Clear previous search results
+    document.getElementById("search-results").innerHTML = "";
+
+    // Clear the search input
+    document.getElementById("user-search").value = "";
+
     // Add a small delay before starting the animation
     setTimeout(() => {
       userSearchContainer.style.opacity = "1";
