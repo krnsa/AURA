@@ -115,13 +115,64 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Add click event to start conversation with this user
       resultItem.addEventListener("click", function () {
-        // You'll implement startConversationWithUser() in the future
-        // This is just UI preparation
+        startConversationWithUser(user);
         hideUserSearch();
       });
 
       searchResults.appendChild(resultItem);
     });
+  }
+
+  // Function to start a conversation with a selected user
+  function startConversationWithUser(user) {
+    // Check if there's already a conversation with this user
+    const existingConversation = conversations.find(
+      (conv) => conv.otherUserId === user.id
+    );
+
+    if (existingConversation) {
+      // If conversation exists, just set it as active
+      activeConversation = existingConversation;
+
+      // Update UI to show this conversation as active
+      document.querySelectorAll(".conversation").forEach((convo) => {
+        convo.classList.remove("active");
+      });
+
+      // Find the conversation element and make it active
+      const conversationElements = document.querySelectorAll(".conversation");
+      for (let i = 0; i < conversationElements.length; i++) {
+        if (
+          conversationElements[i].dataset.conversationId ===
+          existingConversation.id.toString()
+        ) {
+          conversationElements[i].classList.add("active");
+          break;
+        }
+      }
+
+      // Display the conversation
+      displayConversation(existingConversation);
+    } else {
+      // Create a new conversation object
+      const newConversation = {
+        id: `temp_${Date.now()}`, // Temporary ID until saved to database
+        otherUserId: user.id,
+        otherUserName: user.username,
+        messages: [], // No messages yet
+        lastMessage: "No messages yet",
+        lastMessageTime: new Date().toISOString(),
+        isNewConversation: true, // Flag to indicate this is a new conversation
+      };
+
+      // Set as active conversation
+      activeConversation = newConversation;
+
+      // Display the new conversation
+      displayConversation(newConversation);
+
+      // We don't add it to the conversations list yet - we'll do that after the first message is sent
+    }
   }
 
   startConversationBtn.addEventListener("click", showUserSearch);
@@ -238,6 +289,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function createConversationElement(conversation, isActive) {
     const conversationElement = document.createElement("div");
     conversationElement.className = "conversation";
+    conversationElement.dataset.conversationId = conversation.id; // Store conversation ID for easy access
     if (isActive) conversationElement.classList.add("active");
 
     // Format the time
@@ -295,6 +347,11 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       chatMessages.innerHTML = `<div class="no-messages">No messages yet. Start the conversation!</div>`;
     }
+
+    // Enable the chat input
+    chatInput.disabled = false;
+    chatInput.placeholder = "Type a message...";
+    sendButton.classList.remove("disabled");
   }
 
   // Update chat header with user information
