@@ -3,17 +3,21 @@ import findUser from "./findUser.js";
 
 /**
  * Get all messages for a specific user (both sent and received)
- * @param {number} userId - The user ID to get messages for
+ * @param {string} userName - The username to get messages for
  * @returns {object} Object with messages array or error
  */
 async function getMessages(userName) {
   try {
-    const userId = (await findUser(userName))[0].id;
+    const user = await findUser(userName);
 
-    // console.log("User ID:", userId);
+    if (!user || user.length === 0) {
+      return { error: "User not found" };
+    }
+    const userId = user[0].id;
 
-    // Query Supabase for messages where user is either sender or receiver
     console.log("User ID:", userId);
+
+    // Query Supabase for conversations where user is either sender or receiver
     const { data, error } = await supabase
       .from("messages")
       .select("*")
@@ -25,18 +29,18 @@ async function getMessages(userName) {
     }
 
     // Mark received messages as read
-    const unreadMessages = data.filter(
-      (msg) => msg.receiver_id === userId && !msg.is_read
+    const unreadConversations = data.filter(
+      (conv) => conv.receiver_id === userId && !conv.is_read
     );
 
-    if (unreadMessages.length > 0) {
-      // Update messages to mark them as read
+    if (unreadConversations.length > 0) {
+      // Update conversations to mark them as read
       const { error: updateError } = await supabase
         .from("messages")
         .update({ is_read: true })
         .in(
           "id",
-          unreadMessages.map((msg) => msg.id)
+          unreadConversations.map((conv) => conv.id)
         );
 
       if (updateError) {
@@ -44,11 +48,11 @@ async function getMessages(userName) {
       }
     }
 
-    // Get unique user IDs from the messages for fetching user data
+    // Get unique user IDs from the conversations for fetching user data
     const userIds = [
       ...new Set([
-        ...data.map((msg) => msg.sender_id),
-        ...data.map((msg) => msg.receiver_id),
+        ...data.map((conv) => conv.sender_id),
+        ...data.map((conv) => conv.receiver_id),
       ]),
     ].filter((id) => id !== userId);
 
@@ -71,18 +75,37 @@ async function getMessages(userName) {
       });
     }
 
-    // Enhance messages with user data where available
-    const enhancedMessages = data.map((message) => {
+    // Enhance conversations with user data where available
+    const enhancedConversations = data.map((conversation) => {
       const otherUserId =
-        message.sender_id === userId ? message.receiver_id : message.sender_id;
+        conversation.sender_id === userId
+          ? conversation.receiver_id
+          : conversation.sender_id;
+
+      // Parse the content JSON if it exists
+      let parsedContent = [];
+      try {
+        if (conversation.content) {
+          parsedContent =
+            typeof conversation.content === "string"
+              ? JSON.parse(conversation.content)
+              : conversation.content;
+        }
+      } catch (e) {
+        console.error("Error parsing conversation content:", e);
+      }
+
       return {
-        ...message,
+        ...conversation,
         otherUserName: userMap[otherUserId] || `User ${otherUserId}`,
+        messages: parsedContent,
+        otherUserId: otherUserId,
       };
     });
 
     return {
-      messages: enhancedMessages,
+      conversations: enhancedConversations,
+      currentUserId: userId,
       error: null,
     };
   } catch (err) {

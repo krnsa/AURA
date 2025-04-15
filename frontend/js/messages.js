@@ -34,15 +34,13 @@ document.addEventListener("DOMContentLoaded", function () {
         throw new Error("Failed to fetch messages");
       }
 
-      console.log("response: " + response);
-
       const data = await response.json();
 
       // Store current user ID from the response
       currentUserId = data.currentUserId;
 
-      // Process messages to create conversation list
-      processMessages(data.messages);
+      // Process conversations
+      processConversations(data.conversations);
     } catch (error) {
       console.error("Error fetching conversations:", error);
       // Display error in the conversation list
@@ -57,49 +55,41 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Process messages from API to create conversation list
-  function processMessages(messageData) {
+  // Process conversations from API to create conversation list
+  function processConversations(conversationsData) {
     // Clear the conversation list
     conversationList.innerHTML = "";
 
-    // Group messages by conversation (other user)
-    const conversationsMap = new Map();
+    // Set conversations data
+    conversations = conversationsData.map((conversation) => {
+      // Find the last message in the conversation
+      let lastMessage = {
+        message: "No messages yet",
+        timestamp: conversation.created_at,
+      };
 
-    messageData.forEach((message) => {
-      const otherUserId =
-        message.sender_id === currentUserId
-          ? message.receiver_id
-          : message.sender_id;
+      if (conversation.messages && conversation.messages.length > 0) {
+        // Sort messages by timestamp
+        const sortedMessages = [...conversation.messages].sort(
+          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+        );
 
-      if (!conversationsMap.has(otherUserId)) {
-        conversationsMap.set(otherUserId, {
-          userId: otherUserId,
-          messages: [],
-          lastMessage: null,
-          lastMessageTime: null,
-          userName: message.otherUserName, // Default name, should be replaced with actual user data
-        });
+        lastMessage = sortedMessages[0];
       }
 
-      const conversation = conversationsMap.get(otherUserId);
-      conversation.messages.push(message);
-
-      // Update last message if this one is newer
-      if (
-        !conversation.lastMessageTime ||
-        new Date(message.created_at) > new Date(conversation.lastMessageTime)
-      ) {
-        conversation.lastMessage = message.content;
-        conversation.lastMessageTime = message.created_at;
-      }
+      return {
+        ...conversation,
+        lastMessage: lastMessage.message,
+        lastMessageTime: lastMessage.timestamp,
+      };
     });
 
-    // Convert map to array and sort by last message time
-    conversations = Array.from(conversationsMap.values()).sort(
+    // Sort conversations by last message time
+    conversations.sort(
       (a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime)
     );
 
-    // Create conversation items for each user
+    // Create conversation items for each conversation
     conversations.forEach((conversation, index) => {
       // Create DOM element for each conversation
       createConversationElement(conversation, index === 0);
@@ -131,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Create a placeholder avatar URL
     const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-      conversation.userName
+      conversation.otherUserName
     )}&background=random`;
 
     conversationElement.innerHTML = `
@@ -139,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <img src="${avatarUrl}" alt="Avatar">
       </div>
       <div class="conversation-info">
-        <h3>${conversation.userName}</h3>
+        <h3>${conversation.otherUserName}</h3>
         <p>${conversation.lastMessage}</p>
       </div>
       <div class="conversation-time">
@@ -172,13 +162,17 @@ document.addEventListener("DOMContentLoaded", function () {
     updateChatHeader(conversation);
 
     // Display messages
-    displayMessages(conversation.messages);
+    if (conversation.messages && conversation.messages.length > 0) {
+      displayMessages(conversation.messages);
+    } else {
+      chatMessages.innerHTML = `<div class="no-messages">No messages yet. Start the conversation!</div>`;
+    }
   }
 
   // Update chat header with user information
   function updateChatHeader(conversation) {
     const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-      conversation.userName
+      conversation.otherUserName
     )}&background=random`;
 
     chatHeader.innerHTML = `
@@ -187,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <img src="${avatarUrl}" alt="Avatar">
         </div>
         <div class="contact-info">
-          <h3>${conversation.userName}</h3>
+          <h3>${conversation.otherUserName}</h3>
           <p>Online</p>
         </div>
       </div>
@@ -195,19 +189,18 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Display messages in the chat area
-  // In messages.js, modify the displayMessages function
   function displayMessages(messages) {
     // Sort messages by date
     const sortedMessages = [...messages].sort(
-      (a, b) => new Date(a.created_at) - new Date(b.created_at)
+      (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
     );
 
     // Clear existing messages
     chatMessages.innerHTML = `
-    <div class="message-date">
-      <span>Today</span>
-    </div>
-  `;
+      <div class="message-date">
+        <span>Today</span>
+      </div>
+    `;
 
     // Group messages by date
     const messagesByDate = groupMessagesByDate(sortedMessages);
@@ -217,33 +210,30 @@ document.addEventListener("DOMContentLoaded", function () {
       // Add date separator if not "Today"
       if (date !== "Today") {
         chatMessages.innerHTML += `
-        <div class="message-date">
-          <span>${date}</span>
-        </div>
-      `;
+          <div class="message-date">
+            <span>${date}</span>
+          </div>
+        `;
       }
 
-      // Add messages, but filter to only show messages that belong to this conversation
+      // Add messages
       msgs.forEach((message) => {
-        const isReceived = message.sender_id !== currentUserId;
-        const messageTime = new Date(message.created_at).toLocaleTimeString(
-          [],
-          {
-            hour: "numeric",
-            minute: "2-digit",
-          }
-        );
+        const isReceived = message.user_id !== currentUserId;
+        const messageTime = new Date(message.timestamp).toLocaleTimeString([], {
+          hour: "numeric",
+          minute: "2-digit",
+        });
 
         const messageElement = document.createElement("div");
         messageElement.className = `message ${
           isReceived ? "received" : "sent"
         }`;
         messageElement.innerHTML = `
-        <div class="message-content">
-          <p>${message.content}</p>
-          <span class="message-time">${messageTime}</span>
-        </div>
-      `;
+          <div class="message-content">
+            <p>${message.message}</p>
+            <span class="message-time">${messageTime}</span>
+          </div>
+        `;
 
         chatMessages.appendChild(messageElement);
       });
@@ -261,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
     yesterday.setDate(yesterday.getDate() - 1);
 
     messages.forEach((message) => {
-      const messageDate = new Date(message.created_at);
+      const messageDate = new Date(message.timestamp);
       let dateKey;
 
       if (isSameDay(messageDate, today)) {
@@ -303,6 +293,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const messageText = chatInput.value.trim();
     if (messageText === "" || !activeConversation) return;
 
+    // Clear input
+    chatInput.value = "";
+
     // Get current time
     const now = new Date();
     const formattedTime = now.toLocaleTimeString([], {
@@ -322,9 +315,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     chatMessages.appendChild(messageElement);
 
-    // Clear input
-    chatInput.value = "";
-
     // Scroll to bottom
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
@@ -337,7 +327,7 @@ document.addEventListener("DOMContentLoaded", function () {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          receiver_id: activeConversation.userId,
+          receiver_id: activeConversation.otherUserId,
           content: messageText,
         }),
       });
@@ -346,15 +336,44 @@ document.addEventListener("DOMContentLoaded", function () {
         throw new Error("Failed to send message");
       }
 
-      // Add message to conversation data
-      const messageData = await response.json();
-      if (messageData) {
-        // Add to active conversation
-        activeConversation.messages.push(messageData);
-        activeConversation.lastMessage = messageText;
-        activeConversation.lastMessageTime = now.toISOString();
+      const responseData = await response.json();
 
-        // Update conversation list
+      if (responseData.conversation && responseData.newMessage) {
+        // Update active conversation with new data
+        const updatedConversation = responseData.conversation;
+
+        // Find and update the conversation in our list
+        const index = conversations.findIndex(
+          (c) => c.id === updatedConversation.id
+        );
+
+        if (index >= 0) {
+          // Update the conversation in our array
+          conversations[index] = {
+            ...updatedConversation,
+            otherUserName: activeConversation.otherUserName,
+            otherUserId: activeConversation.otherUserId,
+            lastMessage: messageText,
+            lastMessageTime: responseData.newMessage.timestamp,
+          };
+
+          // Set the active conversation to the updated one
+          activeConversation = conversations[index];
+        } else {
+          // New conversation created
+          const newConversation = {
+            ...updatedConversation,
+            otherUserName: activeConversation.otherUserName,
+            otherUserId: activeConversation.otherUserId,
+            lastMessage: messageText,
+            lastMessageTime: responseData.newMessage.timestamp,
+          };
+
+          conversations.push(newConversation);
+          activeConversation = newConversation;
+        }
+
+        // Update conversation list UI
         updateConversationList();
       }
     } catch (error) {
@@ -380,7 +399,7 @@ document.addEventListener("DOMContentLoaded", function () {
     conversations.forEach((conversation, index) => {
       createConversationElement(
         conversation,
-        conversation === activeConversation
+        conversation.id === activeConversation.id
       );
     });
   }
