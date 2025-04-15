@@ -14,16 +14,16 @@ export default async function deletePost(id) {
     if (error) {
       throw error;
     } else if (data == null) {
-      console.log("empty/no response from Supabase");
+      // null data actually indicates a successfull deletion in practice.
+      return { data: data, error: "" };
     } else if (data.length === 0) {
-      console.log("Supabase query succeeded with empty response string.");
-      return { message: "No data found" };
+      return { data: data, error: "Empty string from Supabase" };
     } else {
-      console.log(data, "Supabase query succeeded:");
-      return data;
+      return {data: data, error: ""};
     }
   } catch (err) {
     console.error("Supabase query failed:", err.message);
     throw err;
   }
+
 }
