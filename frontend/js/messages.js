@@ -488,6 +488,17 @@ document.addEventListener("DOMContentLoaded", function () {
       minute: "2-digit",
     });
 
+    // Check if this is the first message (if there's a "no-messages" div)
+    const noMessagesDiv = chatMessages.querySelector(".no-messages");
+    if (noMessagesDiv) {
+      // Clear the chat area completely if this is the first message
+      chatMessages.innerHTML = `
+        <div class="message-date">
+          <span>Today</span>
+        </div>
+      `;
+    }
+
     // Create message element and add to chat
     const messageElement = document.createElement("div");
     messageElement.className = "message sent";
