@@ -6,6 +6,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const chatInput = document.querySelector(".chat-input input");
   const sendButton = document.querySelector(".send-btn");
 
+  const startConversationBtn = document.getElementById(
+    "start-conversation-btn"
+  );
+  const userSearchContainer = document.getElementById("user-search-container");
+  const closeSearchBtn = document.querySelector(".close-search-btn");
+
   // Get token from localStorage (global.js already checks this)
   const token = localStorage.getItem("token");
 
@@ -18,6 +24,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Fetch conversations from API
   fetchConversations();
+
+  // Function to show the search bar
+  function showUserSearch() {
+    // Hide the start conversation button
+    startConversationBtn.style.opacity = "0";
+    startConversationBtn.style.visibility = "hidden";
+
+    // Show the search container
+    userSearchContainer.style.display = "block";
+
+    // Add a small delay before starting the animation
+    setTimeout(() => {
+      userSearchContainer.style.opacity = "1";
+      userSearchContainer.style.transform = "translateY(0)";
+
+      // Focus on the search input
+      document.getElementById("user-search").focus();
+    }, 50);
+  }
+
+  // Function to hide the search bar
+  function hideUserSearch() {
+    // Hide the search container
+    userSearchContainer.style.opacity = "0";
+    userSearchContainer.style.transform = "translateY(-10px)";
+
+    // After animation completes, hide the element and show the button
+    setTimeout(() => {
+      userSearchContainer.style.display = "none";
+      startConversationBtn.style.opacity = "1";
+      startConversationBtn.style.visibility = "visible";
+    }, 300);
+  }
+
+  startConversationBtn.addEventListener("click", showUserSearch);
+  closeSearchBtn.addEventListener("click", hideUserSearch);
 
   // Function to fetch user conversations from backend
   async function fetchConversations() {

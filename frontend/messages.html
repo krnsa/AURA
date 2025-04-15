@@ -15,6 +15,18 @@
   <div class="messages-container">
     <div class="messages-header">
       <h2>Messages</h2>
+      <button id="start-conversation-btn" class="start-conversation-btn">
+        <span class="material-symbols-outlined">add_comment</span>
+        <span>Start conversation</span>
+      </button>
+      <div id="user-search-container" class="user-search-container">
+        <div class="search-input-container">
+          <input type="text" id="user-search" placeholder="Search for users...">
+          <span class="material-symbols-outlined search-btn">search</span>
+          <span class="material-symbols-outlined close-search-btn">close</span>
+        </div>
+        <div id="search-results" class="search-results"></div>
+      </div>
     </div>
     <div class="messages-content">
 
