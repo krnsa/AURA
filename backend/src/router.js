@@ -7,6 +7,7 @@ import getPostByID from "./api/getPostByID.js";
 import removePost from "./implementations/removePost.js";
 import getMessages from "./api/getMessages.js";
 import sendMessage from "./implementations/sendMessage.js";
+import searchUsers from "./api/searchUsers.js";
 
 // -------------------------- CORS Configuration --------------------------
 const devOrigins = ["http://localhost:3000"];
@@ -138,6 +139,12 @@ export async function handleRequest(req, res) {
       const { user_id, receiver_id, content } = await parseBody(req);
       console.log("Received content:", user_id, receiver_id, content);
       const result = await sendMessage(user_id, receiver_id, content);
+      send(res, result.error ? 400 : 200, result);
+    },
+
+    "POST /api/searchUsers": async () => {
+      const { searchQuery } = await parseBody(req);
+      const result = await searchUsers(searchQuery);
       send(res, result.error ? 400 : 200, result);
     },
   };

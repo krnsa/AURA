@@ -58,8 +58,94 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 300);
   }
 
+  // Function to search for users
+  async function searchUsers(query) {
+    try {
+      const response = await fetch(`${window.CONFIG.API_URL}/api/searchUsers`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          searchQuery: query,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to search users");
+      }
+
+      const data = await response.json();
+      return data.users || [];
+    } catch (error) {
+      console.error("Error searching users:", error);
+      return [];
+    }
+  }
+
+  // Function to display search results
+  function displaySearchResults(users) {
+    const searchResults = document.getElementById("search-results");
+
+    if (users.length === 0) {
+      searchResults.innerHTML = `<div class="no-results">No users found</div>`;
+      return;
+    }
+
+    // Clear previous results
+    searchResults.innerHTML = "";
+
+    // Add each user to the results
+    users.forEach((user) => {
+      const resultItem = document.createElement("div");
+      resultItem.className = "search-result-item";
+
+      // Create avatar URL
+      const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+        user.username
+      )}&background=random`;
+
+      resultItem.innerHTML = `
+      <div class="avatar">
+        <img src="${avatarUrl}" alt="Avatar">
+      </div>
+      <h4>${user.username}</h4>
+    `;
+
+      // Add click event to start conversation with this user
+      resultItem.addEventListener("click", function () {
+        // You'll implement startConversationWithUser() in the future
+        // This is just UI preparation
+        hideUserSearch();
+      });
+
+      searchResults.appendChild(resultItem);
+    });
+  }
+
   startConversationBtn.addEventListener("click", showUserSearch);
   closeSearchBtn.addEventListener("click", hideUserSearch);
+  const userSearchInput = document.getElementById("user-search");
+  userSearchInput.addEventListener("input", function () {
+    const query = this.value.trim();
+
+    // Only search if there's at least 2 characters
+    if (query.length >= 2) {
+      // Debounce the search to avoid too many requests
+      if (this.searchTimeout) {
+        clearTimeout(this.searchTimeout);
+      }
+
+      this.searchTimeout = setTimeout(async () => {
+        const users = await searchUsers(query);
+        displaySearchResults(users);
+      }, 300);
+    } else {
+      // Clear results if query is too short
+      document.getElementById("search-results").innerHTML = "";
+    }
+  });
 
   // Function to fetch user conversations from backend
   async function fetchConversations() {
