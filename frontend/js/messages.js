@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Add messages
       msgs.forEach((message) => {
-        const isReceived = message.user_id !== currentUserId;
+        const isReceived = message.sender_id !== currentUserId;
         const messageTime = new Date(message.timestamp).toLocaleTimeString([], {
           hour: "numeric",
           minute: "2-digit",
