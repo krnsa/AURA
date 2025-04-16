@@ -1,7 +1,6 @@
 // Wait for the DOM to be fully loaded
 document.addEventListener("DOMContentLoaded", function () {
-  // Initialize cart count from localStorage or set to 0 if not found
-  let cartCount = parseInt(localStorage.getItem("cartCount")) || 0;
+  let cartCount = 0;
 
   // Update the cart count display
   updateCartCountDisplay();
@@ -23,9 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Increment cart count
       cartCount++;
-
-      // Save cart count to localStorage
-      localStorage.setItem("cartCount", cartCount);
 
       // Update the cart count display
       updateCartCountDisplay();
