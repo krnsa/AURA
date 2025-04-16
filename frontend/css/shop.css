@@ -413,3 +413,179 @@ body {
     padding: 0;
     margin: 0;
 }
+
+
+/* Add these styles to shop.css */
+
+/* Overlay Backdrop */
+.overlay-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.overlay-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Product Upload Form */
+.product-upload-form {
+    background-color: var(--secondary-color, #1a1a2e);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    animation: slide-up 0.4s ease forwards;
+}
+
+.overlay-backdrop.active .product-upload-form {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+@keyframes slide-up {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Form Header */
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-header h3 {
+    color: var(--text-primary, #ffffff);
+    margin: 0;
+    font-size: 20px;
+}
+
+.close-overlay {
+    cursor: pointer;
+    color: var(--text-secondary, #9e9e9e);
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.close-overlay:hover {
+    color: var(--text-primary, #ffffff);
+    transform: rotate(90deg);
+}
+
+/* Form Content */
+.form-content {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary, #9e9e9e);
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-primary, #ffffff);
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color, #667eea);
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
+}
+
+/* Image Preview */
+.image-preview-container {
+    margin-bottom: 25px;
+}
+
+.image-preview-container p {
+    color: var(--text-secondary, #9e9e9e);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.image-preview {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Publish Button */
+.publish-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.publish-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.publish-btn:active {
+    transform: translateY(0);
+}
+
+.publish-btn .material-symbols-outlined {
+    margin-right: 8px;
+    padding: 0;
+}
