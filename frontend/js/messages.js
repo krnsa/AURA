@@ -184,22 +184,21 @@ document.addEventListener("DOMContentLoaded", function () {
   startConversationBtn.addEventListener("click", showUserSearch);
   closeSearchBtn.addEventListener("click", hideUserSearch);
   const userSearchInput = document.getElementById("user-search");
-  userSearchInput.addEventListener("input", function () {
-    const query = this.value.trim();
+  let lastQuery = "";
+  userSearchInput.addEventListener("input", (event) => {
+    const query = event.target.value.trim();
+    if (query === lastQuery) return;
+    lastQuery = query;
 
-    // Only search if there's at least 2 characters
     if (query.length >= 2) {
-      // Debounce the search to avoid too many requests
-      if (this.searchTimeout) {
-        clearTimeout(this.searchTimeout);
-      }
-
-      this.searchTimeout = setTimeout(async () => {
+      if (event.target.searchTimeout) clearTimeout(event.target.searchTimeout);
+      event.target.searchTimeout = setTimeout(async () => {
         const users = await searchUsers(query);
-        displaySearchResults(users);
+        if (query === lastQuery) {
+          displaySearchResults(users);
+        }
       }, 300);
     } else {
-      // Clear results if query is too short
       document.getElementById("search-results").innerHTML = "";
     }
   });
