@@ -375,3 +375,41 @@ body {
     align-items: center;
     border: 2px solid var(--secondary-color, #1a1a2e);
 }
+
+
+/* Floating Action Button (FAB) */
+.floating-action-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #667eea;
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+.floating-action-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    background-color: #7989ee;
+}
+
+.floating-action-btn:active {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.floating-action-btn .material-symbols-outlined {
+    font-size: 24px;
+    padding: 0;
+    margin: 0;
+}
