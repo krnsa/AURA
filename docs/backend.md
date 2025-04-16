@@ -25,4 +25,5 @@ npm install dotenv
 npm install @supabase/supabase-js
 npm install jsonwebtoken
 npm install --save-dev nodemon
+npm install busboy
 ```

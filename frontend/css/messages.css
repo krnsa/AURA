@@ -166,6 +166,9 @@ body {
 .messages-header {
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .messages-header h2 {
@@ -392,4 +395,133 @@ body {
     display: block;
     text-align: right;
     margin-top: 5px;
+}
+
+/* Start conversation button styles */
+.start-conversation-btn {
+    display: flex;
+    align-items: center;
+    background-color: rgba(102, 126, 234, 0.3);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.start-conversation-btn:hover {
+    background-color: rgba(102, 126, 234, 0.5);
+}
+
+.start-conversation-btn .material-symbols-outlined {
+    margin-right: 8px;
+    padding: 0;
+}
+
+/* User search container */
+.user-search-container {
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    z-index: 100;
+}
+
+.search-input-container {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.user-search-container input {
+    flex: 1;
+    padding: 12px 15px;
+    border: none;
+    background-color: transparent;
+    color: var(--text-primary);
+}
+
+.user-search-container input:focus {
+    outline: none;
+}
+
+.search-btn,
+.close-search-btn {
+    cursor: pointer;
+    padding: 8px;
+    color: var(--text-secondary);
+}
+
+.search-btn:hover,
+.close-search-btn:hover {
+    color: var(--text-primary);
+}
+
+.search-results {
+    margin-top: 10px;
+    background-color: rgba(30, 30, 50, 0.95);
+    border-radius: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.search-result-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.search-result-item .avatar {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.search-result-item h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.no-results {
+    padding: 15px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+/* User search container animation styles */
+.user-search-container {
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    z-index: 100;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Start conversation button transition */
+.start-conversation-btn {
+    display: flex;
+    align-items: center;
+    background-color: rgba(102, 126, 234, 0.3);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.3s ease, visibility 0.3s ease;
 }

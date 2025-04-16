@@ -236,7 +236,7 @@ body {
   }
 }
 
-/* From Uiverse.io by Li-Deheng */ 
+/* From Uiverse.io by Li-Deheng */
 #btn-message {
   position: fixed;
   top: 20px;
@@ -256,7 +256,8 @@ body {
   justify-content: center;
   align-items: center;
   font: 400 var(--font-size) Helvetica Neue, sans-serif;
-  box-shadow: 0 0 2.17382px rgba(0,0,0,.049),0 1.75px 6.01034px rgba(0,0,0,.07),0 3.63px 14.4706px rgba(0,0,0,.091),0 22px 48px rgba(0,0,0,.14);
+  box-shadow: 0 0 2.17382px rgba(0, 0, 0, 0.049), 0 1.75px 6.01034px rgba(0, 0, 0, 0.07),
+    0 3.63px 14.4706px rgba(0, 0, 0, 0.091), 0 22px 48px rgba(0, 0, 0, 0.14);
   background-color: var(--bg-color);
   border-radius: 68px;
   cursor: pointer;
@@ -355,7 +356,7 @@ body {
   transition: var(--btn-transition);
 }
 
-.lable-message {
+.label-message {
   display: flex;
   align-items: center;
   opacity: 1;
@@ -379,13 +380,14 @@ body {
   transition: var(--btn-transition);
 }
 
-.button-message:hover .lable-message {
+.button-message:hover .label-message {
   height: 0;
   transform: scaleY(0);
   transition: var(--btn-transition);
 }
 
-.lable-message, .username {
+.label-message,
+.username {
   font-weight: 600;
 }
 
@@ -422,36 +424,36 @@ body {
 }
 
 .notifications-panel {
-    position: fixed;
-    top: 80px;
-    right: 20px;
-    width: 300px;
-    max-height: 400px;
-    overflow-y: auto;
-    background: var(--bg-color);
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    display: none;
-    z-index: 1000;
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: var(--bg-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: none;
+  z-index: 1000;
 }
 
 .notifications-panel.show {
-    display: block;
+  display: block;
 }
 
 .notification-item {
-    padding: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    cursor: pointer;
-    transition: background-color 0.2s;
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .notification-item:hover {
-    background-color: var(--bg-hover-color);
+  background-color: var(--bg-hover-color);
 }
 
 .notification-item .timestamp {
-    font-size: 0.8em;
-    color: #888;
-    margin-top: 4px;
+  font-size: 0.8em;
+  color: #888;
+  margin-top: 4px;
 }

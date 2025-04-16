@@ -2,22 +2,17 @@
 import supabase from "../supabase/supabaseClient.js";
 
 export default async function getPostByID(post_id) {
-
   try {
-
     const { data, error } = await supabase.from("posts").select("*").eq("id", post_id);
- 
-    if (error) {
-      throw error;
-    } else if (data.length === 0) {
-      console.log("Supabase query succeeded but no data found.");
-      return [];
+
+    if (data.length == 0) {
+      return { data: data, error: "Post not found." };
+    } else if (data === null) {
+      return { data: data, error: "Supabase returns null." };
     } else {
-      //console.log(data, "Supabase query succeeded:");
-      return data;
+      return { data: data[0], error: "" };
     }
-  } catch (err) {
-    console.error("Supabase query failed:", err.message);
-    throw err;
+  } catch (error) {
+    throw error;
   }
 }

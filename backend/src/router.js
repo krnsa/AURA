@@ -1,10 +1,13 @@
-import "dotenv/config";
+import { getAllowedOrigin, parseBody, send } from "./utils/utils.js";
 import { registerUser, loginUser, requireAuth } from "./auth/auth.js";
 import findUser from "./api/findUser.js";
 import newPost from "./implementations/newPost.js";
 import getPosts from "./api/getPosts.js";
 import getPostByID from "./api/getPostByID.js";
 import removePost from "./implementations/removePost.js";
+import getMessages from "./api/getMessages.js";
+import sendMessage from "./implementations/sendMessage.js";
+import searchUsers from "./api/searchUsers.js";
 //import getNotifications from "./api/getNotifications.js";
 
 // -------------------------- CORS Configuration --------------------------
@@ -13,44 +16,13 @@ const prodOrigins = ["https://auraplatform.vercel.app"];
 const allowedMethods = "GET, POST, PUT, DELETE, OPTIONS";
 const allowedHeaders = "Content-Type, Authorization";
 
-// -------------------------- Utility functions --------------------------
-
-function getAllowedOrigin(origin) {
-  const MODE = process.env.NODE_ENV || "development";
-  const whitelist = MODE !== "production" ? devOrigins : prodOrigins;
-  return whitelist.includes(origin) ? origin : null;
-}
-
-function parseBody(req) {
-  return new Promise((resolve, reject) => {
-    let body = "";
-    req.on("data", (chunk) => (body += chunk));
-    req.on("end", () => {
-      try {
-        resolve(body ? JSON.parse(body) : {});
-      } catch (err) {
-        reject(err);
-      }
-    });
-    req.on("error", reject);
-  });
-}
-
-function send(res, statusCode, payload, ContentType) {
-  if (!ContentType) {
-    ContentType = typeof payload === "object" ? "application/json" : "text/plain";
-  }
-  res.writeHead(statusCode, { "Content-Type": ContentType });
-  res.end(JSON.stringify(payload));
-}
-
 // -------------------------- Request Handler --------------------------
 
 export async function handleRequest(req, res) {
   // -------------------------- Initialization --------------------------
 
   const origin = req.headers.origin;
-  const allowedOrigin = getAllowedOrigin(origin);
+  const allowedOrigin = getAllowedOrigin(origin, devOrigins, prodOrigins);
 
   // Set CORS headers for all responses
   if (allowedOrigin) {
@@ -120,10 +92,10 @@ export async function handleRequest(req, res) {
     // takes in a body with either a user_id or null, null returns all
     "POST /api/getPosts": async () => {
       const { user_id } = await parseBody(req);
-      const result = await getPosts(user_id);
-      send(res, result.error ? 400 : 200, result);
+      const { data, error } = await getPosts(user_id);
+      send(res, error.length > 0 ? 400 : 200, data);
     },
-    // getPostsByID route
+    // getPostByID route
     "POST /api/getPostByID": async () => {
       const { post_id } = await parseBody(req);
       const result = await getPostByID(post_id);
@@ -145,14 +117,41 @@ export async function handleRequest(req, res) {
     // removePost route
     "POST /api/removePost": async () => {
       const { user_id, post_id } = await parseBody(req);
-      const result = await removePost(user_id, post_id);
-      send(res, result.error ? 400 : 200, result);
+      const { data, error } = await removePost(user_id, post_id);
+      console.log(data);
+      console.log(error);
+      send(res, error.length > 0 ? 400 : 200, data);
     },
+
     // getNotifications route
     // "GET /api/notifications": async () => {
-    //   const result = await getNotifications(username);
+    //   const result = await getNotifications(username); 1Has a conversation. Original line has a conversation.
     //   send(res, result.error ? 400 : 200, result);
     // },
+
+    // Get messages route
+    "GET /api/messages": async () => {
+      const result = await getMessages(username);
+      // Include current user ID in the response
+      if (!result.error) {
+        // result.currentUserId = userId;
+      }
+
+      send(res, result.error ? 400 : 200, result);
+    },
+    // Send message route
+    "POST /api/sendMessage": async () => {
+      const { user_id, receiver_id, content } = await parseBody(req);
+      console.log("Received content:", user_id, receiver_id, content);
+      const result = await sendMessage(user_id, receiver_id, content);
+      send(res, result.error ? 400 : 200, result);
+    },
+
+    "POST /api/searchUsers": async () => {
+      const { searchQuery } = await parseBody(req);
+      const result = await searchUsers(searchQuery);
+      send(res, result.error ? 400 : 200, result);
+    },
   };
 
   const routeKey = `${req.method} ${req.url}`;

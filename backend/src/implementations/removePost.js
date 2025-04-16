@@ -1,30 +1,24 @@
-import createPost from "../api/createPost.js";
 import deletePost from "../api/deletePost.js";
 import getPostByID from "../api/getPostByID.js";
-import getPosts from "../api/getPosts.js";
-import uploadImage from "../api/uploadImage.js";
 
 export default async function removePost(user_id, post_id) {
-  if ((user_id, post_id == null)) {
-    console.log("Null value entered for non-null required parameters.");
-    return;
+  if (user_id == null || post_id == null) {
+    return { data: null, error: "Null parameter entered." };
   }
 
-  const post = await getPostByID(post_id)
+  const post = await getPostByID(post_id);
 
-  if(post.length == 0) {
-    console.log("Post does not exist.");
-    return;
+  if (post.length == 0) {
+    return { data: null, error: "Post does not exist." };
   }
 
-  const post_user_id = post[0]["user"]; 
+  const post_user_id = post[0]["user"];
 
-  if(user_id != post_user_id) {
-    console.log("Attempting to delete post from different user.");
-    return;
+  if (user_id != post_user_id) {
+    return { data: null, error: "Attempting to delete post from different user." };
   }
 
-  const resp = await deletePost(post_id);
-  
-  return resp;
+  const { data, error } = await deletePost(post_id);
+
+  return { data, error };
 }
