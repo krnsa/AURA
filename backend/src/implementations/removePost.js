@@ -1,25 +1,24 @@
 import deletePost from "../api/deletePost.js";
 import getPostByID from "../api/getPostByID.js";
 
-
 export default async function removePost(user_id, post_id) {
-  if ((user_id, post_id == null)) {
-    return {data: null, error: "Null parameter entered."};
+  if (user_id == null || post_id == null) {
+    return { data: null, error: "Null parameter entered." };
   }
 
-  const post = await getPostByID(post_id)
+  const post = await getPostByID(post_id);
 
-  if(post.length == 0) {
-    return {data: null, error: "Post does not exist."};
+  if (post.length == 0) {
+    return { data: null, error: "Post does not exist." };
   }
 
-  const post_user_id = post[0]["user"]; 
+  const post_user_id = post[0]["user"];
 
-  if(user_id != post_user_id) {
-    return {data: null, error: "Attempting to delete post from different user."};
+  if (user_id != post_user_id) {
+    return { data: null, error: "Attempting to delete post from different user." };
   }
 
-  const {data, error} = await deletePost(post_id);
-  
-  return { data, error } ;
+  const { data, error } = await deletePost(post_id);
+
+  return { data, error };
 }

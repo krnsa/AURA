@@ -95,7 +95,7 @@ export async function handleRequest(req, res) {
       const { data, error } = await getPosts(user_id);
       send(res, error.length > 0 ? 400 : 200, data);
     },
-    // getPostsByID route
+    // getPostByID route
     "POST /api/getPostByID": async () => {
       const { post_id } = await parseBody(req);
       const result = await getPostByID(post_id);

@@ -76,7 +76,7 @@ function updateNotificationContent(notifications) {
     
     // Update button preview
     const usernameElement = document.querySelector('.username');
-    const messagePreview = document.querySelector('.lable-message');
+    const messagePreview = document.querySelector('.label-message');
     
     if (usernameElement) {
         usernameElement.textContent = latestNotification.from_user.username;

@@ -29,9 +29,7 @@ async function getMessages(userName) {
     }
 
     // Mark received messages as read
-    const unreadConversations = data.filter(
-      (conv) => conv.receiver_id === userId && !conv.is_read
-    );
+    const unreadConversations = data.filter((conv) => conv.receiver_id === userId && !conv.is_read);
 
     if (unreadConversations.length > 0) {
       // Update conversations to mark them as read
@@ -50,10 +48,7 @@ async function getMessages(userName) {
 
     // Get unique user IDs from the conversations for fetching user data
     const userIds = [
-      ...new Set([
-        ...data.map((conv) => conv.sender_id),
-        ...data.map((conv) => conv.receiver_id),
-      ]),
+      ...new Set([...data.map((conv) => conv.sender_id), ...data.map((conv) => conv.receiver_id)]),
     ].filter((id) => id !== userId);
 
     // Fetch user data for the conversations
@@ -75,12 +70,10 @@ async function getMessages(userName) {
       });
     }
 
-    // Enhance conversations with user data where available
+    // Enhance conversations with user data where availabel
     const enhancedConversations = data.map((conversation) => {
       const otherUserId =
-        conversation.sender_id === userId
-          ? conversation.receiver_id
-          : conversation.sender_id;
+        conversation.sender_id === userId ? conversation.receiver_id : conversation.sender_id;
 
       // Parse the content JSON if it exists
       let parsedContent = [];
