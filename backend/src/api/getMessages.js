@@ -70,7 +70,7 @@ async function getMessages(userName) {
       });
     }
 
-    // Enhance conversations with user data where availabel
+    // Enhance conversations with user data where available
     const enhancedConversations = data.map((conversation) => {
       const otherUserId =
         conversation.sender_id === userId ? conversation.receiver_id : conversation.sender_id;
