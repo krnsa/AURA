@@ -111,7 +111,7 @@ export async function handleRequest(req, res) {
     },
     // newPost route
     "POST /api/newPost": async () => {
-      const { user_id, post_body, post_file } = await parseBody(req);
+      const { user_id, post_body, post_file, linked_listing } = await parseBody(req);
       const result = await newPost(user_id, post_body, post_file);
       send(res, result.error ? 400 : 200, result);
     },
