@@ -8,6 +8,7 @@ import removePost from "./implementations/removePost.js";
 import getMessages from "./api/getMessages.js";
 import sendMessage from "./implementations/sendMessage.js";
 import searchUsers from "./api/searchUsers.js";
+import getProducts from "./api/getProducts.js";
 //import getNotifications from "./api/getNotifications.js";
 
 // -------------------------- CORS Configuration --------------------------
@@ -110,7 +111,7 @@ export async function handleRequest(req, res) {
     },
     // newPost route
     "POST /api/newPost": async () => {
-      const { user_id, post_body, post_file } = await parseBody(req);
+      const { user_id, post_body, post_file, linked_listing } = await parseBody(req);
       const result = await newPost(user_id, post_body, post_file);
       send(res, result.error ? 400 : 200, result);
     },
@@ -150,6 +151,12 @@ export async function handleRequest(req, res) {
     "POST /api/searchUsers": async () => {
       const { searchQuery } = await parseBody(req);
       const result = await searchUsers(searchQuery);
+      send(res, result.error ? 400 : 200, result);
+    },
+
+    "POST /api/getProducts": async () => {
+      const { searchQuery } = await parseBody(req);
+      const result = await getProducts(searchQuery);
       send(res, result.error ? 400 : 200, result);
     },
   };

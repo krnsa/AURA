@@ -1,19 +1,22 @@
 // import supabase client
 import supabase from "../supabase/supabaseClient.js";
 
-export default async function createPost(user, body, url = null) {
+export default async function createPost(user, body, url = null, linked_listing = null) {
 
   if (user, body == null) {
     console.log("Null parameters entered for required field.");
     return;
   }
  
+
+
   try {
     const { data, error } = await supabase.from("posts").insert([
       {
         "user": user,
         "body": body,
         "url": url,
+        "linked_listing": linked_listing
       }
     ]);
 
