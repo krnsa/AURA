@@ -14,4 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   hideLoadingScreen();
+
+  document.querySelector('a[href="/search.html"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    window.location.href = './search.html';
+  });
 });
