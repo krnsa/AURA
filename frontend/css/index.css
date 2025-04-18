@@ -457,3 +457,72 @@ body {
   color: #888;
   margin-top: 4px;
 }
+
+/* Update the title styling */
+.title-button, .subtitle-button {
+    cursor: pointer;
+    padding: 1em;
+    font-size: 1em;
+    color: white;
+    background: #212121;
+    background-size: cover;
+    background-blend-mode: overlay;
+    border-radius: 0.5em;
+    outline: 0.1em solid #353535;
+    border: 0;
+    box-shadow: 0 0 1em 1em rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    margin: 10px;
+}
+
+.title-button:hover, .subtitle-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 1em 0.45em rgba(0, 0, 0, 0.1);
+    background: radial-gradient(
+        circle at bottom,
+        rgba(50, 100, 180, 0.5) 10%,
+        #212121 70%
+    );
+    outline: 0;
+}
+
+.aura-title {
+    font-size: 4rem;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(to right, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.from-text, .magic-bus {
+    margin: 0;
+    font-size: 1.5em;
+    color: white;
+    animation: none;
+}
+
+.subtitle-button .magic-bus {
+    font-size: 2em;
+}
+
+/* Remove the existing animation from these elements */
+.from-text, .magic-bus {
+    animation: none;
+}
+
+/* Optional: Add a pulse animation to the buttons instead */
+@keyframes buttonPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.title-button, .subtitle-button {
+    animation: buttonPulse 2s infinite;
+}
+
+.title-button:hover, .subtitle-button:hover {
+    animation-play-state: paused;
+}
