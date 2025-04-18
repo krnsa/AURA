@@ -326,7 +326,7 @@ body {
   height: 10px;
   right: 1px;
   bottom: 1px;
-  outline: solid 3px var(--bg-hover-color);
+  outline: solid 3px var(--btn-hover-color);
 }
 
 .notice-content {
@@ -464,13 +464,9 @@ body {
     padding: 1em;
     font-size: 1em;
     color: white;
-    background: #212121;
-    background-size: cover;
-    background-blend-mode: overlay;
-    border-radius: 0.5em;
-    outline: 0.1em solid #353535;
-    border: 0;
-    box-shadow: 0 0 1em 1em rgba(0, 0, 0, 0.1);
+    background: transparent;
+    border: none;
+    outline: none;
     transition: all 0.3s ease-in-out;
     position: relative;
     margin: 10px;
@@ -478,13 +474,6 @@ body {
 
 .title-button:hover, .subtitle-button:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 1em 0.45em rgba(0, 0, 0, 0.1);
-    background: radial-gradient(
-        circle at bottom,
-        rgba(50, 100, 180, 0.5) 10%,
-        #212121 70%
-    );
-    outline: 0;
 }
 
 .aura-title {
@@ -494,35 +483,33 @@ body {
     background: linear-gradient(to right, #6366f1, #8b5cf6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
 }
 
 .from-text, .magic-bus {
     margin: 0;
     font-size: 1.5em;
-    color: white;
-    animation: none;
+    background: linear-gradient(to right, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease-in-out;
 }
 
 .subtitle-button .magic-bus {
     font-size: 2em;
+    background: linear-gradient(to right, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
 }
 
-/* Remove the existing animation from these elements */
+/* Optional: Add a subtle glow effect on hover */
+.title-button:hover .aura-title,
+.subtitle-button:hover .magic-bus {
+    text-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+}
+
+/* Remove the existing animation */
 .from-text, .magic-bus {
     animation: none;
-}
-
-/* Optional: Add a pulse animation to the buttons instead */
-@keyframes buttonPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.title-button, .subtitle-button {
-    animation: buttonPulse 2s infinite;
-}
-
-.title-button:hover, .subtitle-button:hover {
-    animation-play-state: paused;
 }
