@@ -1,17 +1,15 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", main);
+
+async function main() {
   const loadingScreen = document.getElementById("loading-screen");
   const menu = document.querySelector(".menu");
 
-  const hideLoadingScreen = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    loadingScreen.style.opacity = "0";
+  loadingScreen.style.opacity = "0";
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-    loadingScreen.style.display = "none";
-    menu.classList.add("show");
-  };
-
-  hideLoadingScreen();
-});
+  loadingScreen.style.display = "none";
+  menu.classList.add("show");
+}

@@ -1,0 +1,103 @@
+.menu::-webkit-scrollbar {
+  display: none;
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  transition: width 0.3s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s;
+  scrollbar-width: none;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background: var(--secondary-color);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  width: 120px;
+  padding: 5px;
+  -ms-overflow-style: none;
+  box-shadow: 8px 0px 9px 0px #00000014;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.menu.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.menu:hover {
+  width: 260px;
+  transition: width 0.3s ease-in-out;
+}
+
+.menu:hover li span:nth-child(2) {
+  display: block;
+}
+
+.menu svg {
+  height: 20px;
+  width: 20px;
+}
+
+.menu-content li {
+  list-style: none;
+  border-radius: 8px;
+  transition: var(--transition);
+  margin-bottom: 0.5rem;
+  padding-left: 20px;
+}
+
+.menu-content li:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.menu-content li:hover a {
+  color: var(--text-primary);
+}
+
+.menu-content li span:nth-child(2) {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.menu:hover .menu-content li span:nth-child(2) {
+  display: block;
+  opacity: 1;
+}
+
+.menu-content li a {
+  position: relative;
+  padding: 5px 10px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.menu-content li a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -20px;
+  width: 0;
+  height: 2px;
+  background: #667eea;
+  transition: width 0.3s ease;
+}
+
+.menu-content li a:hover::after {
+  width: 100%;
+}
+
+.menu a {
+  text-decoration: none;
+  color: rgb(213, 213, 213);
+  display: flex;
+  align-items: center;
+  font-family: "calibri";
+}
