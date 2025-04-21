@@ -1,11 +1,17 @@
 .slogan-container {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 60px;
+    width: 100%;
     font-family: 'Manrope', sans-serif;
     font-size: 1.5rem;
     color: var(--text-color);
+    z-index: 10;
 }
 
 .static-text {

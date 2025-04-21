@@ -1,5 +1,8 @@
 @import url(./components/navbar.css);
 @import url(./components/animationHomePage.css);
+@import url(./components/backgroundAnimation.css);
+@import url(./components/linkshomePage.css);
+
 
 @keyframes moveBus {
   from {
