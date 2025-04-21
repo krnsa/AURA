@@ -1,0 +1,47 @@
+.slogan-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
+
+.static-text {
+    margin-right: 8px;
+}
+
+.dynamic-text-wrapper {
+    position: relative;
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.dynamic-text {
+    position: relative;
+}
+
+.dynamic-text::after {
+    content: "";
+    position: absolute;
+    right: -8px;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background-color: var(--accent-color);
+    animation: blink 0.7s infinite;
+}
+
+.dynamic-text.typing::after {
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.hidden-text {
+    display: none;
+}
