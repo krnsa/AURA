@@ -1,25 +1,31 @@
-.menu::-webkit-scrollbar {
-  display: none;
-}
-
 .menu {
+  --navbar-height: calc(460px + 120px);
   position: fixed;
-  top: 0;
+  top: calc((100% - var(--navbar-height)) / 2);
+  z-index: 10;
   left: 0;
-  height: 100%;
-  transition: width 0.3s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s;
+  height: var(--navbar-height);
+  transition: width 0.3s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s,
+    left 0.3s ease-in-out;
   scrollbar-width: none;
   overflow-x: hidden;
   overflow-y: scroll;
   background: var(--secondary-color);
   backdrop-filter: blur(10px);
   border-right: 1px solid rgba(255, 255, 255, 0.1);
-  width: 120px;
-  padding: 5px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  width: 70px;
   -ms-overflow-style: none;
   box-shadow: 8px 0px 9px 0px #00000014;
   opacity: 0;
   visibility: hidden;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.menu::-webkit-scrollbar {
+  display: none;
 }
 
 .menu.show {
@@ -28,62 +34,53 @@
 }
 
 .menu:hover {
-  width: 260px;
-  transition: width 0.3s ease-in-out;
+  width: 180px;
+  left: 10px;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
-.menu:hover li span:nth-child(2) {
-  display: block;
+.menu .menu-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  width: 100%;
+  gap: 12px;
 }
 
-.menu svg {
-  height: 20px;
-  width: 20px;
-}
-
-.menu-content li {
+.menu .menu-content li {
   list-style: none;
-  border-radius: 8px;
-  transition: var(--transition);
-  margin-bottom: 0.5rem;
-  padding-left: 20px;
-}
-
-.menu-content li:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.menu-content li:hover a {
-  color: var(--text-primary);
-}
-
-.menu-content li span:nth-child(2) {
-  display: none;
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
-}
-
-.menu:hover .menu-content li span:nth-child(2) {
-  display: block;
-  opacity: 1;
+  transition: all 0.3s ease;
+  padding-left: 5px;
+  width: 165px;
 }
 
 .menu-content li a {
   position: relative;
-  padding: 5px 10px;
+  padding: 8px 15px;
   color: var(--text-secondary);
   font-weight: 500;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.menu .menu-content li a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
 }
 
 .menu-content li a::after {
   content: "";
   position: absolute;
   bottom: 0;
-  left: -20px;
+  left: 0;
   width: 0;
   height: 2px;
   background: #667eea;
@@ -94,10 +91,18 @@
   width: 100%;
 }
 
-.menu a {
-  text-decoration: none;
-  color: rgb(213, 213, 213);
-  display: flex;
-  align-items: center;
-  font-family: "calibri";
+.menu .menu-content li span {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.menu:hover .menu-content li span {
+  display: block;
+  opacity: 1;
+}
+
+.menu .menu-content li svg {
+  height: 30px;
+  width: 30px;
 }
