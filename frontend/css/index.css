@@ -11,19 +11,6 @@
   }
 }
 
-/* Base Styles */
-body {
-  margin: 0;
-  background-color: black;
-  color: grey;
-  font-family: "Arial", sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow: hidden;
-}
-
 /* Text Elements */
 .from-text {
   text-align: center;
@@ -90,11 +77,6 @@ body {
 
 /* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
-  body {
-    background: var(--background-dark);
-    color: var(--text-dark);
-  }
-
   .login-container {
     background: #1f1f1f;
   }

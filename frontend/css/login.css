@@ -41,17 +41,6 @@ button[type="submit"].loading .loading-spinner {
   display: inline-block;
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #333;
-  line-height: 1.6;
-}
-
 .login-container {
   background: rgba(255, 255, 255, 0.95);
   padding: 2.5rem;
@@ -62,6 +51,7 @@ body {
   animation: slideUp 0.5s ease-out;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #333;
 }
 
 h2 {
