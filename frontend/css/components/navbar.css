@@ -7,16 +7,12 @@
   height: var(--navbar-height);
   transition: width 0.3s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s,
     left 0.3s ease-in-out;
-  scrollbar-width: none;
-  overflow-x: hidden;
-  overflow-y: scroll;
   background: var(--secondary-color);
   backdrop-filter: blur(10px);
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   width: 70px;
-  -ms-overflow-style: none;
   box-shadow: 8px 0px 9px 0px #00000014;
   opacity: 0;
   visibility: hidden;
@@ -24,8 +20,14 @@
   border-bottom-right-radius: 10px;
 }
 
-.menu::-webkit-scrollbar {
-  display: none;
+.menu .menu-trigger-area {
+  position: absolute;
+  top: 0;
+  left: -25px;
+  height: 100%;
+  width: 35px;
+  z-index: 1;
+  pointer-events: auto;
 }
 
 .menu.show {
@@ -49,6 +51,7 @@
   height: 100%;
   width: 100%;
   gap: 12px;
+  overflow-x: hidden;
 }
 
 .menu .menu-content li {
