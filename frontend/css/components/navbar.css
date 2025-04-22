@@ -2,7 +2,6 @@
   --navbar-height: calc(460px + 120px);
   position: fixed;
   top: calc((100% - var(--navbar-height)) / 2);
-  z-index: 10;
   left: 0;
   height: var(--navbar-height);
   transition: width 0.3s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s,
@@ -24,6 +23,7 @@
   visibility: hidden;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
+  z-index: 100;
 }
 
 .menu .menu-trigger-area {
@@ -32,7 +32,7 @@
   left: -25px;
   height: 100%;
   width: 35px;
-  z-index: 1;
+  z-index: 99;
   pointer-events: auto;
 }
 
