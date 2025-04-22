@@ -27,6 +27,8 @@ async function deletePhrase(element) {
 }
 
 export default async function animateText() {
+  const sloganContainer = document.querySelector(".slogan-container");
+  sloganContainer.style.display = "flex";
   const dynamicText = document.querySelector(".dynamic-text");
   let currentIndex = 0;
 

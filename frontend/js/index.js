@@ -19,4 +19,8 @@ async function main() {
   // Initialize the text animation and background elements after loading
   animateText();
   createBackgroundElements();
+
+  // show the links container after loading
+  const linksContainer = document.querySelector(".links-container");
+  linksContainer.style.display = "flex";
 }
