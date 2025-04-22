@@ -13,7 +13,8 @@
 
 <body>
     <div class="login-container">
-        <h2>Register</h2>
+        <h2 class="loginTitle">AURA</h2>
+        <div class="welcomeContent">Connect with friends and the world around you</div>
 
         <form id="register-form">
             <div class="form-group">
@@ -26,10 +27,12 @@
                 <input type="password" id="password" name="password" required placeholder="Enter your password" />
             </div>
 
-            <button type="submit">Register</button>
-            <div id="error-container"></div>
+            <button type="submit">Register<span class="loading-spinner"></span></button>
         </form>
-        <p>Already have an account? <a href="./login.html">Login here</a></p>
+
+        <div id="error-container"></div>
+        <div class="alternative">Already have an account? <a href="./login.html">Login here</a></div>
+
     </div>
 
     <script type="module" src="./js/register.js"></script>
