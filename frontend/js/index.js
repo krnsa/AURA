@@ -16,11 +16,19 @@ async function main() {
   loadingScreen.style.display = "none";
   menu.classList.add("show");
 
+  // Logout button event listener
+  const logoutButton = document.querySelector(".menu .menu-content li a.logoutButton");
+  logoutButton.addEventListener("click", async (e) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    window.location.href = "/login.html";
+  });
+
   // Initialize the text animation and background elements after loading
   animateText();
   createBackgroundElements();
 
   // show the links container after loading
   const linksContainer = document.querySelector(".links-container");
-  linksContainer.style.display = "flex";
+  linksContainer.classList.add("show");
 }
