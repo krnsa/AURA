@@ -1,5 +1,5 @@
 .menu {
-  --navbar-height: calc(460px + 120px);
+  --navbar-height: calc(46px * 9 + 12px * 9);
   position: fixed;
   top: calc((100% - var(--navbar-height)) / 2);
   left: 0;
