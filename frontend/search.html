@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA - Search</title>
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/search.css">
+    <script src="./js/global.js"></script>
+</head>
+<body>
+    <div class="search-page">
+        <div class="search-header">
+            <h1>Search AURA</h1>
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="Search users, posts, or tags...">
+                    <button class="search-icon">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="search-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="users">Users</button>
+                <button class="filter-btn" data-filter="posts">Posts</button>
+                <button class="filter-btn" data-filter="tags">Tags</button>
+            </div>
+        </div>
+
+        <div class="search-results">
+            <!-- Results will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <script type="module" src="./js/search.js"></script>
+</body>
+</html>

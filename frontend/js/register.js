@@ -35,7 +35,6 @@ window.addEventListener("DOMContentLoaded", () => {
     Object.keys(errors).forEach((key) => {
       const errorMessage = document.createElement("p");
       errorMessage.textContent = errors[key];
-      errorMessage.style.color = "red";
       errorContainer.appendChild(errorMessage);
     });
   };
@@ -44,12 +43,16 @@ window.addEventListener("DOMContentLoaded", () => {
   const handleRegister = async (event) => {
     event.preventDefault();
 
+    const spinner = document.querySelector("button[type='submit'] .loading-spinner");
+    spinner.classList.add("loading");
+
     const username = registerForm.querySelector("#username").value.trim();
     const password = registerForm.querySelector("#password").value.trim();
 
     // Validate form inputs
     const errors = validateForm(username, password);
     if (Object.keys(errors).length > 0) {
+      spinner.classList.remove("loading");
       displayErrors(errors);
       return;
     }
@@ -72,6 +75,7 @@ window.addEventListener("DOMContentLoaded", () => {
         errorContainer.innerHTML = ""; // Clear errors
         window.location.href = "/login.html";
       } else {
+        spinner.classList.remove("loading");
         displayErrors({ general: result.error });
       }
     } catch (err) {

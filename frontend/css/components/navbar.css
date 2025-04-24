@@ -1,0 +1,117 @@
+.menu {
+  --navbar-height: calc(46px * 9 + 12px * 9);
+  position: fixed;
+  top: calc((100% - var(--navbar-height)) / 2);
+  left: 0;
+  height: var(--navbar-height);
+  transition: width 0.3s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s,
+    left 0.3s ease-in-out, border-radius 0.3s ease-in-out;
+  background-color: hsla(240, 15%, 9%, 1);
+  background-image: radial-gradient(at 88% 40%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
+    radial-gradient(at 49% 30%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
+    radial-gradient(at 14% 26%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
+    radial-gradient(at 0% 64%, hsl(189, 99%, 26%) 0px, transparent 85%),
+    radial-gradient(at 41% 94%, hsl(189, 97%, 36%) 0px, transparent 85%),
+    radial-gradient(at 100% 99%, hsl(188, 94%, 13%) 0px, transparent 85%);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  width: 70px;
+  box-shadow: 0px -16px 24px 0px rgba(255, 255, 255, 0.25) inset;
+  opacity: 0;
+  visibility: hidden;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  z-index: 100;
+}
+
+.menu .menu-trigger-area {
+  position: absolute;
+  top: 0;
+  left: -25px;
+  height: 100%;
+  width: 35px;
+  z-index: 99;
+  pointer-events: auto;
+}
+
+.menu.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.menu:hover {
+  width: 180px;
+  left: 7px;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.menu .menu-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  width: 100%;
+  gap: 12px;
+  overflow-x: hidden;
+}
+
+.menu .menu-content li {
+  list-style: none;
+  transition: all 0.3s ease;
+  padding-left: 5px;
+  width: 165px;
+}
+
+.menu-content li a {
+  position: relative;
+  padding: 8px 15px;
+  color: white;
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.menu .menu-content li a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.menu-content li a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #667eea;
+  transition: width 0.3s ease;
+}
+
+.menu-content li a:hover::after {
+  width: 100%;
+}
+
+.menu .menu-content li span {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.menu:hover .menu-content li span {
+  display: block;
+  opacity: 1;
+}
+
+.menu .menu-content li svg {
+  height: 30px;
+  width: 30px;
+}

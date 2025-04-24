@@ -1,17 +1,34 @@
-document.addEventListener("DOMContentLoaded", () => {
+import animateText from "./components/animateText.js";
+import createBackgroundElements from "./components/createBackgroundElements.js";
+
+document.addEventListener("DOMContentLoaded", main);
+
+async function main() {
   const loadingScreen = document.getElementById("loading-screen");
   const menu = document.querySelector(".menu");
 
-  const hideLoadingScreen = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+  // Simulate loading time
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  loadingScreen.style.opacity = "0";
 
-    loadingScreen.style.opacity = "0";
+  // Wait for the fade-out transition to finish
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  loadingScreen.style.display = "none";
+  menu.classList.add("show");
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+  // Logout button event listener
+  const logoutButton = document.querySelector(".menu .menu-content li a.logoutButton");
+  logoutButton.addEventListener("click", async (e) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    window.location.href = "/login.html";
+  });
 
-    loadingScreen.style.display = "none";
-    menu.classList.add("show");
-  };
+  // Initialize the text animation and background elements after loading
+  animateText();
+  createBackgroundElements();
 
-  hideLoadingScreen();
-});
+  // show the links container after loading
+  const linksContainer = document.querySelector(".links-container");
+  linksContainer.classList.add("show");
+}

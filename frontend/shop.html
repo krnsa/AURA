@@ -21,67 +21,14 @@
             </div>
             <div class="cart-button">
                 <span class="material-symbols-outlined">shopping_cart</span>
-                <span class="cart-count">3</span>
+                <span class="cart-count">0</span>
             </div>
         </div>
         <div class="shop-content">
             <div class="products-grid">
-                <!-- Product 1 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="/api/placeholder/400/320" alt="Aura Glow Serum">
-                    </div>
-                    <div class="product-info">
-                        <h3>Aura Glow Serum</h3>
-                        <p class="product-description">A luxurious facial serum that enhances your natural aura with
-                            vitamin C and hyaluronic acid.</p>
-                        <div class="product-footer">
-                            <span class="product-price">$49.99</span>
-                            <button class="add-to-cart-btn">
-                                <span class="material-symbols-outlined">shopping_cart</span>
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Product 2 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="/api/placeholder/400/320" alt="Cosmic Balance Necklace">
-                    </div>
-                    <div class="product-info">
-                        <h3>Cosmic Balance Necklace</h3>
-                        <p class="product-description">Handcrafted crystal pendant that helps balance your energy and
-                            enhance your spiritual connection.</p>
-                        <div class="product-footer">
-                            <span class="product-price">$89.99</span>
-                            <button class="add-to-cart-btn">
-                                <span class="material-symbols-outlined">shopping_cart</span>
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <p> Loading Products...</p>
 
-                <!-- Product 3 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="/api/placeholder/400/320" alt="Meditation Essence Candle">
-                    </div>
-                    <div class="product-info">
-                        <h3>Meditation Essence Candle</h3>
-                        <p class="product-description">Aromatherapy candle with essential oils designed to deepen your
-                            meditation practice and clear negative energy.</p>
-                        <div class="product-footer">
-                            <span class="product-price">$32.99</span>
-                            <button class="add-to-cart-btn">
-                                <span class="material-symbols-outlined">shopping_cart</span>
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -142,7 +89,56 @@
         </label>
     </div>
 
-    <script type="module" src="./js/shop.js"></script>
+    <button class="floating-action-btn">
+        <span class="material-symbols-outlined">add</span>
+    </button>
+
+    <div class="overlay-backdrop">
+        <div class="product-upload-form">
+            <div class="form-header">
+                <h3>Add New Product</h3>
+                <span class="close-overlay material-symbols-outlined">close</span>
+            </div>
+            <div class="form-content">
+                <div class="form-group">
+                    <label for="product-title">Product Title</label>
+                    <input type="text" id="product-title" placeholder="Enter product title">
+                </div>
+                <div class="form-group">
+                    <label for="product-description">Description</label>
+                    <textarea id="product-description" rows="4" placeholder="Enter product description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="product-price">Price ($)</label>
+                    <input type="number" id="product-price" placeholder="0.00" step="0.01" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="product-image">Product Image</label>
+                    <div class="file-upload-container">
+                        <input type="file" id="product-image" accept="image/*" class="file-input">
+                        <div class="file-upload-button">
+                            <span class="material-symbols-outlined">upload_file</span>
+                            Choose Image
+                        </div>
+                        <div class="file-name">No file selected</div>
+                    </div>
+                </div>
+                <div class="image-preview-container">
+                    <p>Image Preview</p>
+                    <div class="image-preview">
+                        <img src="/api/placeholder/400/320" alt="Product preview" id="image-preview-element">
+                    </div>
+                </div>
+                <button class="publish-btn">
+                    <span class="material-symbols-outlined">publish</span>
+                    Publish Product
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./js/shop/shop.js"></script>
+    <script type="module" src="./js/shop/createProductForm.js"></script>
 </body>
 
 </html>

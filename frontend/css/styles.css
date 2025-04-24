@@ -1,32 +1,36 @@
 :root {
-    --navbarHeight: 50px;
-    --background-light: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --background-dark: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    --text-light: #333;
-    --text-dark: #fff;
-    --primary-color: #18181B;
-    --secondary-color: #27272A;
-    --accent-color: #6366F1;
-    --text-primary: #FFFFFF;
-    --text-secondary: #A1A1AA;
-    --transition: all 0.3s ease;
+  --navbarHeight: 50px;
+  --background-light: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --background-dark: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  --text-light: #333;
+  --text-dark: #fff;
+  --primary-color: #18181b;
+  --secondary-color: #27272a;
+  --accent-color: #6366f1;
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --transition: all 0.3s ease;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background-color: var(--primary-color);
-    color: var(--text-primary);
-    line-height: 1.5;
+  background: var(--background-dark);
+  color: var(--text-dark);
+  font-family: "Arial", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }

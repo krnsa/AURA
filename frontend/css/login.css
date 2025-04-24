@@ -1,10 +1,30 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.login-container {
+  background: rgba(250, 250, 250, 1);
+  padding: 60px 40px;
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 1);
+  width: auto;
+  animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(10px);
+  color: #393939;
+}
+.login-container:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
 }
 
-/* Add focus visible for better accessibility */
+.loginTitle {
+  font-size: 40px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.welcomeContent {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
 input:focus-visible,
 button:focus-visible,
 a:focus-visible {
@@ -27,50 +47,13 @@ button[type="submit"].loading {
   border-radius: 50%;
   border-top-color: transparent;
   animation: spin 0.8s linear infinite;
-  display: none;
-  margin-left: 8px;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-button[type="submit"].loading .loading-spinner {
   display: inline-block;
+  margin-left: 8px;
+  opacity: 0;
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #333;
-  line-height: 1.6;
-}
-
-.login-container {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 2.5rem;
-  border-radius: 15px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 400px;
-  animation: slideUp 0.5s ease-out;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-h2 {
-  color: #333;
-  text-align: center;
-  margin-bottom: 1.5rem;
-  font-size: 1.8rem;
-  font-weight: 600;
-  letter-spacing: -0.5px;
+button[type="submit"] .loading-spinner.loading {
+  opacity: 1;
 }
 
 .form-group {
@@ -82,18 +65,22 @@ label {
   display: block;
   margin-bottom: 0.5rem;
   color: #555;
-  font-size: 0.9rem;
+  font-size: 17px;
   font-weight: 500;
 }
 
 input {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 12px 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 16px;
   transition: all 0.3s ease;
   background: #f9f9f9;
+}
+
+input::placeholder {
+  font-size: 16px;
 }
 
 input:focus {
@@ -135,51 +122,6 @@ button:active {
   box-shadow: none;
 }
 
-.error-message {
-  color: #dc3545;
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
-  display: none;
-}
-
-.form-group.error input {
-  border-color: #dc3545;
-  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
-}
-
-/* Additional Animations */
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive Design */
-@media (max-width: 480px) {
-  .login-container {
-    margin: 1rem;
-    padding: 1.5rem;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-  }
-
-  input {
-    font-size: 16px; /* Prevents zoom on mobile */
-  }
-}
-
-/* Enhancements for better UX */
-.login-container {
-  animation: fadeIn 0.5s ease-out, slideUp 0.5s ease-out;
-}
-
 button:disabled {
   background: #a0aec0;
   cursor: not-allowed;
@@ -191,25 +133,43 @@ button:disabled:hover {
   box-shadow: none;
 }
 
-/* Add a subtle hover effect for links */
-a {
-  color: #667eea;
+#error-container {
+  color: #721c24;
+  border-radius: 8px;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 25px;
+}
+
+.alternative {
+  text-align: center;
+
+  font-size: 17px;
+}
+.alternative a {
+  color: #5e74d7;
   text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-a:hover {
-  color: #5a6fd6;
-}
-
-/* Add a smooth transition for all interactive elements */
-input,
-button,
-a {
   transition: all 0.3s ease;
 }
 
-/* Add a subtle shadow to the login container on hover */
-.login-container:hover {
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+.alternative a:hover {
+  color: #1e3dd6;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
