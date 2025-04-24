@@ -93,6 +93,50 @@
         <span class="material-symbols-outlined">add</span>
     </button>
 
+    <div class="overlay-backdrop">
+        <div class="product-upload-form">
+            <div class="form-header">
+                <h3>Add New Product</h3>
+                <span class="close-overlay material-symbols-outlined">close</span>
+            </div>
+            <div class="form-content">
+                <div class="form-group">
+                    <label for="product-title">Product Title</label>
+                    <input type="text" id="product-title" placeholder="Enter product title">
+                </div>
+                <div class="form-group">
+                    <label for="product-description">Description</label>
+                    <textarea id="product-description" rows="4" placeholder="Enter product description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="product-price">Price ($)</label>
+                    <input type="number" id="product-price" placeholder="0.00" step="0.01" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="product-image">Product Image</label>
+                    <div class="file-upload-container">
+                        <input type="file" id="product-image" accept="image/*" class="file-input">
+                        <div class="file-upload-button">
+                            <span class="material-symbols-outlined">upload_file</span>
+                            Choose Image
+                        </div>
+                        <div class="file-name">No file selected</div>
+                    </div>
+                </div>
+                <div class="image-preview-container">
+                    <p>Image Preview</p>
+                    <div class="image-preview">
+                        <img src="/api/placeholder/400/320" alt="Product preview" id="image-preview-element">
+                    </div>
+                </div>
+                <button class="publish-btn">
+                    <span class="material-symbols-outlined">publish</span>
+                    Publish Product
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="./js/shop/shop.js"></script>
     <script type="module" src="./js/shop/createProductForm.js"></script>
 </body>

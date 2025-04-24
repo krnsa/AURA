@@ -9,6 +9,7 @@ import getMessages from "./api/getMessages.js";
 import sendMessage from "./implementations/sendMessage.js";
 import searchUsers from "./api/searchUsers.js";
 import getProducts from "./api/getProducts.js";
+import createProduct from "./api/createProduct.js";
 //import getNotifications from "./api/getNotifications.js";
 
 // -------------------------- CORS Configuration --------------------------
@@ -111,7 +112,9 @@ export async function handleRequest(req, res) {
     },
     // newPost route
     "POST /api/newPost": async () => {
-      const { user_id, post_body, post_file, linked_listing } = await parseBody(req);
+      const { user_id, post_body, post_file, linked_listing } = await parseBody(
+        req
+      );
       const result = await newPost(user_id, post_body, post_file);
       send(res, result.error ? 400 : 200, result);
     },
@@ -158,6 +161,21 @@ export async function handleRequest(req, res) {
       const { searchQuery } = await parseBody(req);
       const result = await getProducts(searchQuery);
       send(res, result.error ? 400 : 200, result);
+    },
+
+    "POST /api/createProduct": async () => {
+      try {
+        const productData = await parseBody(req);
+
+        const result = await createProduct(productData);
+        send(res, result.error ? 400 : 200, result);
+      } catch (error) {
+        console.error("Error in upload route:", error);
+        send(res, 400, {
+          error: true,
+          message: "Failed to process upload: " + error.message,
+        });
+      }
     },
   };
 
