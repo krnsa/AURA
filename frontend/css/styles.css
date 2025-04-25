@@ -1,15 +1,13 @@
 :root {
-  --navbarHeight: 50px;
   --background-light: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --background-dark: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  --text-light: #333;
+  --bg-gradient-1: #000510;
+  --bg-gradient-2: #001233;
   --text-dark: #fff;
-  --primary-color: #18181b;
   --secondary-color: #27272a;
   --accent-color: #6366f1;
   --text-primary: #ffffff;
   --text-secondary: #a1a1aa;
-  --transition: all 0.3s ease;
 }
 
 * {
@@ -19,7 +17,7 @@
 }
 
 body {
-  background: var(--background-dark);
+  background: linear-gradient(to bottom right, var(--bg-gradient-1), var(--bg-gradient-2));
   color: var(--text-dark);
   font-family: "Arial", sans-serif;
   display: flex;
@@ -27,10 +25,4 @@ body {
   align-items: center;
   height: 100vh;
   overflow: hidden;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
 }
