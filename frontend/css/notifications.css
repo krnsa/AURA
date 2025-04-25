@@ -1,128 +1,159 @@
-/* Modern AI-inspired Notifications Page */
+/* Base styles */
 :root {
-    --ai-gradient: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(147, 51, 234, 0.15) 50%, rgba(236, 72, 153, 0.15) 100%);
-    --ai-accent: #7C3AED;
-    --ai-accent-light: rgba(124, 58, 237, 0.1);
-    --ai-text: #111827;
-    --ai-text-secondary: #4B5563;
-    --ai-text-tertiary: #9CA3AF;
-    --ai-border: rgba(229, 231, 235, 0.8);
-    --ai-card-bg: rgba(255, 255, 255, 0.8);
-    --ai-card-hover: rgba(255, 255, 255, 0.95);
-    --ai-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-    --ai-shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
-    --ai-radius: 16px;
-    --ai-radius-sm: 12px;
-    --animation-duration: 0.8s;
+    --primary-color: #7C3AED;
+    --text-color: #fff;  /* Changed to white */
+    --text-secondary: rgba(255, 255, 255, 0.7);  /* Semi-transparent white */
+    --bg-light: rgba(255, 255, 255, 0.1);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --hover-bg: rgba(255, 255, 255, 0.2);
 }
 
-.dark-mode {
-    --ai-text: #F9FAFB;
-    --ai-text-secondary: #E5E7EB;
-    --ai-text-tertiary: #9CA3AF;
-    --ai-border: rgba(55, 65, 81, 0.5);
-    --ai-card-bg: rgba(17, 24, 39, 0.7);
-    --ai-card-hover: rgba(17, 24, 39, 0.95);
-    --ai-accent-light: rgba(124, 58, 237, 0.2);
+/* Menu styles - matching index.css */
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateX(-180px);
+    transition: transform 0.3s;
+    z-index: 1000;
 }
 
-/* Adjust Container and Layout */
+.menu:hover,
+.menu.active,
+.menu.show {
+    transform: translateX(0);
+}
+
+.menu-trigger-area {
+    position: absolute;
+    top: 0;
+    right: -70px;
+    width: 70px;
+    height: 100%;
+}
+
+.menu-content {
+    list-style: none;
+    padding: 1rem;
+    margin: 0;
+}
+
+.menu-content li {
+    margin-bottom: 0.5rem;
+}
+
+.menu-content li a {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    color: var(--text-color);  /* Using white text color */
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: all 0.3s;
+}
+
+.menu-content li.active a,
+.menu-content li a:hover {
+    background-color: var(--hover-bg);  /* Lighter background on hover */
+    color: #fff;  /* Ensure text stays white on hover */
+}
+
+.menu-content li a svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 1rem;
+    stroke: var(--text-color);  /* Make SVG icons white */
+}
+
+.menu-content li a span {
+    color: var(--text-color);  /* Ensure span text is white */
+    font-weight: 500;  /* Slightly bolder text */
+}
+
+/* Notifications Container */
 .notifications-container {
-    max-width: 300px;
-    margin: 0.5rem auto;
-    padding: 0.5rem;
-    max-height: 80vh; /* Limit maximum height */
-    overflow-y: auto; /* Enable scrolling if content exceeds height */
+    margin-left: 90px;
+    padding: 2rem;
+    max-width: 800px;
+    transition: margin-left 0.3s;
 }
 
-.notifications-wrapper {
-    min-height: 40px; /* Reduced from 60px */
-    max-height: 70vh; /* Limit maximum height */
+.menu:hover ~ .notifications-container,
+.menu.show ~ .notifications-container {
+    margin-left: 270px;
 }
 
-/* Adjust list spacing */
+/* Notification Items */
 .notifications-list {
-    gap: 0.25rem; /* Reduced from 0.5rem */
-    padding: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-/* Make items more compact */
 .notification-item {
-    padding: 0.35rem; /* Reduced from 0.5rem */
-    margin-bottom: 0.15rem; /* Reduced from 0.25rem */
-    min-height: 30px; /* Set minimum height */
-    max-height: 60px; /* Limit maximum height */
-    overflow: hidden; /* Hide overflow content */
+    background: var(--bg-light);
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s;
 }
 
-/* Adjust content spacing */
+.notification-item:hover {
+    transform: translateY(-2px);
+}
+
+.notification-item.unread {
+    border-left: 3px solid var(--primary-color);
+}
+
 .notice-content {
-    gap: 0.25rem; /* Reduced from 0.5rem */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-/* Further reduce text sizes */
 .username {
-    font-size: 0.75rem; /* Reduced from 0.8rem */
-    line-height: 1;
+    font-weight: 600;
+    color: var(--text-color);
 }
 
 .message {
-    font-size: 0.7rem; /* Reduced from 0.75rem */
-    line-height: 1.1;
-    max-height: 2.2em; /* Limit to 2 lines */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    color: var(--text-secondary);
 }
 
 .timestamp {
-    font-size: 0.6rem; /* Reduced from 0.65rem */
-    margin-top: 0.1rem; /* Reduced from 0.2rem */
+    font-size: 0.75rem;
+    color: var(--text-secondary);
 }
 
-/* Adjust AI Insights panel */
-.ai-insight-panel {
-    margin-top: 0.75rem; /* Reduced from 1.5rem */
-    padding: 0.75rem; /* Reduced from 1.25rem */
-    max-height: 150px; /* Limit height */
-    overflow: hidden;
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
 }
 
-/* Adjust chart height */
-.engagement-chart {
-    height: 40px; /* Reduced from 80px */
-}
-
-/* Responsive adjustments */
-@media (max-width: 400px) {
+/* Responsive Design */
+@media (max-width: 768px) {
     .notifications-container {
-        margin: 0.15rem;
-        padding: 0.15rem;
-        max-height: 75vh;
+        margin-left: 70px;
+        padding: 1rem;
     }
-    
-    .notification-item {
-        padding: 0.25rem;
-        margin-bottom: 0.1rem;
+
+    .menu:hover ~ .notifications-container {
+        margin-left: 250px;
     }
 }
 
-/* Add custom scrollbar for better UX */
-.notifications-container::-webkit-scrollbar {
-    width: 4px;
-}
-
-.notifications-container::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.notifications-container::-webkit-scrollbar-thumb {
-    background: var(--ai-accent-light);
-    border-radius: 4px;
-}
-
-.notifications-container::-webkit-scrollbar-thumb:hover {
-    background: var(--ai-accent);
+@media (max-width: 480px) {
+    .notifications-container {
+        margin-left: 0;
+        margin: 0.5rem;
+        padding: 0.5rem;
+    }
 }
