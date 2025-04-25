@@ -28,7 +28,7 @@
     visibility: visible;
 }
 
-/* Update hover transition to match menu transition timing */
+
 .menu:hover {
     width: 260px;
     transition: width 0.3s ease-in-out;
@@ -54,7 +54,7 @@
     color: var(--text-primary);
 }
 
-/* Optional: Make text transition smoother */
+
 .menu-content li span:nth-child(2) {
     display: none;
     opacity: 0;
@@ -108,7 +108,7 @@
     background: transparent;
 }
 
-/* Base Styles */
+
 body {
     margin: 0;
     background-color: black;
@@ -121,7 +121,7 @@ body {
     overflow: hidden;
 }
 
-/* Text Elements */
+
 .from-text {
     text-align: center;
     margin-top: 10px;
@@ -131,7 +131,7 @@ body {
     font-weight: 500;
 }
 
-/* Dark Mode Support */
+
 @media (prefers-color-scheme: dark) {
     body {
         background: var(--background-dark);
@@ -149,7 +149,7 @@ body {
     }
 }
 
-/* Shop Container Styles - Similar to Messages Container */
+
 .shop-container {
     margin-left: 120px;
     padding: 20px;
@@ -178,7 +178,7 @@ body {
     padding: 20px 0;
 }
 
-/* Search Input Container */
+
 .search-input-container {
     display: flex;
     align-items: center;
@@ -210,7 +210,7 @@ body {
     color: var(--text-primary);
 }
 
-/* Products Grid */
+
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -218,7 +218,7 @@ body {
     padding: 20px;
 }
 
-/* Product Card */
+
 .product-card {
     background-color: rgba(255, 255, 255, 0.05);
     border-radius: 10px;
@@ -307,32 +307,32 @@ body {
     padding: 0;
 }
 
-/* Apply glow effect to the entire search bar container */
+
 .search-input-container:focus-within {
     background-color: rgba(255, 255, 255, 0.15);
     transform: translateY(-2px);
     transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
     border-radius: 8px;
-    /* Ensure the border radius matches your design */
+
 }
 
-/* Remove any individual glow on just the input element */
+
 .search-input-container input:focus {
     outline: none;
-    /* Remove any box-shadow here if it exists */
-    /* Remove any transform here if it exists */
+
+
 }
 
 
-/* Container for search bar and cart button */
+
 .header-controls {
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
-/* Cart button styles */
+
 .cart-button {
     position: relative;
     background-color: rgba(255, 255, 255, 0.1);
@@ -358,7 +358,7 @@ body {
     color: var(--text-primary, #ffffff);
 }
 
-/* Cart count badge */
+
 .cart-count {
     position: absolute;
     bottom: -2px;
@@ -377,7 +377,6 @@ body {
 }
 
 
-/* Floating Action Button (FAB) */
 .floating-action-btn {
     position: fixed;
     bottom: 30px;
@@ -415,9 +414,8 @@ body {
 }
 
 
-/* Add these styles to shop.css */
 
-/* Overlay Backdrop */
+
 .overlay-backdrop {
     position: fixed;
     top: 0;
@@ -440,7 +438,7 @@ body {
     visibility: visible;
 }
 
-/* Product Upload Form */
+
 .product-upload-form {
     background-color: var(--secondary-color, #1a1a2e);
     border-radius: 16px;
@@ -472,7 +470,7 @@ body {
     }
 }
 
-/* Form Header */
+
 .form-header {
     display: flex;
     justify-content: space-between;
@@ -498,7 +496,7 @@ body {
     transform: rotate(90deg);
 }
 
-/* Form Content */
+
 .form-content {
     padding: 20px;
 }
@@ -533,7 +531,7 @@ body {
     box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
 }
 
-/* Image Preview */
+
 .image-preview-container {
     margin-bottom: 25px;
 }
@@ -559,7 +557,7 @@ body {
     object-fit: cover;
 }
 
-/* Publish Button */
+
 .publish-btn {
     display: flex;
     align-items: center;
@@ -592,9 +590,8 @@ body {
 
 
 
-/* Add these styles to your shop.css file */
 
-/* File Upload Container */
+
 .file-upload-container {
     border: 2px dashed rgba(255, 255, 255, 0.2);
     border-radius: 8px;
@@ -617,7 +614,7 @@ body {
     background-color: rgba(102, 126, 234, 0.1);
 }
 
-/* Hide the actual file input */
+
 .file-input {
     position: absolute;
     width: 0.1px;
@@ -627,7 +624,7 @@ body {
     z-index: -1;
 }
 
-/* File Upload Button */
+
 .file-upload-button {
     display: flex;
     align-items: center;
@@ -655,7 +652,7 @@ body {
     padding: 0;
 }
 
-/* File Name Display */
+
 .file-name {
     color: var(--text-secondary, #9e9e9e);
     font-size: 14px;
@@ -665,7 +662,7 @@ body {
     max-width: 100%;
 }
 
-/* Additional instruction text */
+
 .file-upload-container::after {
     content: "or drag and drop image here";
     display: block;
@@ -673,4 +670,23 @@ body {
     font-size: 12px;
     margin-top: 10px;
     opacity: 0.7;
+}
+
+
+
+.overlay-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-backdrop.active {
+    display: flex;
 }
