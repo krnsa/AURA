@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="AURA - Social Media Platform with E-commerce" />
-    <title>AURA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AURA - Notifications" />
+    <title>AURA - Notifications</title>
     <script src="./js/global.js"></script>
     <link rel="icon" type="image/png" sizes="32x32" href="./img/AuraLogo.png" />
     <link rel="stylesheet" href="./css/styles.css">
-    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/notifications.css">
 </head>
-
 <body>
     <div class="transparent-particle-bg">
         <div class="particle"></div>
@@ -23,25 +21,6 @@
         <div class="particle"></div>
         <div class="particle"></div>
         <div class="grid"></div>
-    </div>
-
-    <div id="loading-screen">
-        <button class="title-button">
-            <h1 class="aura-title">AURA</h1>
-        </button>
-        <button class="subtitle-button">
-            <p class="from-text">from</p>
-            <p class="magic-bus">Magic School Bus</p>
-        </button>
-        <img src="./img/bus.png" class="bus" alt="Magic School Bus">
-        <div class="wrapper">
-            <div class="circle"></div>
-            <div class="circle"></div>
-            <div class="circle"></div>
-            <div class="shadow"></div>
-            <div class="shadow"></div>
-            <div class="shadow"></div>
-        </div>
     </div>
 
     <nav class="menu">
@@ -74,15 +53,15 @@
                     <span>Messages</span>
                 </a>
             </li>
-            <li><a href="/notification.html">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5" />
-                </svg>
-                <span>Notifications</span>
-            </a></li>
-            
+            <li class="active"><a href="/notification.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5" />
+                    </svg>
+                    <span>Notifications</span>
+                </a>
+            </li>
             <li><a href="/create.html">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -139,58 +118,72 @@
         </ul>
     </nav>
 
-    <button id="btn-message" class="button-message">
-        <div class="content-avatar">
-            <div class="status-user"></div>
-            <div class="avatar">
-                <svg class="user-img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path
-                        d="M12,12.5c-3.04,0-5.5,1.73-5.5,3.5s2.46,3.5,5.5,3.5,5.5-1.73,5.5-3.5-2.46-3.5-5.5-3.5Zm0-.5c1.66,0,3-1.34,3-3s-1.34-3-3-3-3,1.34-3,3,1.34,3,3,3Z">
-                    </path>
-                </svg>
-            </div>
-        </div>
-        <div class="notice-content">
-            <div class="username">Aditya Sharma</div>
-            <div class="label-message">Message<span class="number-message">3</span></div>
-            <div class="user-id">@_theadityasharmaa</div>
-        </div>
-    </button>
-
-    <div class="slogan-container" style="display: none;">
-        <span class="static-text">Social Media Platform With Integrated E-commerce Useful For</span>
-        <div class="dynamic-text-wrapper">
-            <span class="dynamic-text"></span>
-        </div>
-    </div>
-
-    <div class="links-container">
-        <div data-text=" AURA" style="--r:-15;" class="glass-card">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="1em">
-                <path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 16h2v2h-2zm0-6h2v4h-2z" />
-            </svg>
-        </div>
-        <div data-text="Legal" style="--r:5;" class="glass-card">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="1em">
-                <path
-                    d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 2.18l7 3.12v5.7c0 4.83-3.4 9.36-7 10.8-3.6-1.44-7-5.97-7-10.8V6.3l7-3.12z" />
-            </svg>
-        </div>
-        <div data-text="Links" style="--r:25;" class="glass-card">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="1em">
-                <path
-                    d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z" />
-            </svg>
-        </div>
-    </div>
-
     <div class="ui-switch">
         <label for="dark-mode-toggle" class="slider">
             <div class="circle"></div>
         </label>
     </div>
 
-    <script type="module" src="./js/index.js"></script>
-</body>
+    <div class="notifications-container">
+        <header class="notifications-header">
+            <div class="header-content">
+                <h1>Notifications</h1>
+                <div class="filter-controls">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="unread">Unread</button>
+                    <button class="filter-btn" data-filter="mentions">Mentions</button>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="action-btn mark-all-read">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                    Mark all as read
+                </button>
+            </div>
+        </header>
 
+        <div class="notifications-wrapper">
+            <div class="notification-status">
+                <div class="notification-status-icon"></div>
+                <div class="notification-status-message">Analyzing your notifications...</div>
+            </div>
+
+            <div class="notifications-list">
+                <!-- Notifications will be populated here by JS -->
+            </div>
+
+            <div class="notifications-summary">
+                <div class="summary-dots">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+                <div class="summary-text">Creating personalized insights...</div>
+            </div>
+        </div>
+
+        <div class="ai-insight-panel">
+            <div class="insight-header">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                </svg>
+                <h3>AURA Insights</h3>
+            </div>
+            <div class="insight-content">
+                <p class="insight-text">Your engagement is increasing. You've received 27% more interactions this week compared to last week.</p>
+                <div class="engagement-chart">
+                    <div class="chart-bar" style="height: 30%"></div>
+                    <div class="chart-bar" style="height: 45%"></div>
+                    <div class="chart-bar" style="height: 38%"></div>
+                    <div class="chart-bar" style="height: 60%"></div>
+                    <div class="chart-bar highlight" style="height: 75%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./js/notifications.js"></script>
+</body>
 </html>
