@@ -1,27 +1,21 @@
-// Wait for the DOM to be fully loaded
 document.addEventListener("DOMContentLoaded", function () {
   let cartCount = 0;
   const productsGrid = document.querySelector(".products-grid");
   const productSearch = document.getElementById("product-search");
 
-  // Get token from localStorage (global.js already checks this)
   const token = localStorage.getItem("token");
 
-  // Load products when page loads
   loadProducts();
 
-  // Add search functionality
   productSearch.addEventListener("input", function (e) {
     const query = e.target.value.trim();
 
-    // Debounce search for better performance
     if (this.searchTimeout) clearTimeout(this.searchTimeout);
     this.searchTimeout = setTimeout(() => {
       loadProducts(query);
     }, 300);
   });
 
-  // Function to load products from API
   async function loadProducts(searchQuery = null) {
     try {
       const response = await fetch(`${window.CONFIG.API_URL}/api/getProducts`, {
@@ -56,9 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Function to display products on the page
   function displayProducts(products) {
-    // Clear existing products
     productsGrid.innerHTML = "";
 
     if (!products || products.length === 0) {
@@ -70,15 +62,12 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Create product cards
     products.forEach((product) => {
       const productCard = document.createElement("div");
       productCard.className = "product-card";
 
-      // Format price to 2 decimal places
       const formattedPrice = parseFloat(product.price).toFixed(2);
 
-      // Use product image if available, otherwise use placeholder
       const imageUrl = product.image || "/api/placeholder/400/320";
 
       productCard.innerHTML = `
@@ -101,47 +90,37 @@ document.addEventListener("DOMContentLoaded", function () {
       productsGrid.appendChild(productCard);
     });
 
-    // Reattach event listeners to new buttons
     attachAddToCartListeners();
   }
 
-  // Function to attach event listeners to "Add to Cart" buttons
   function attachAddToCartListeners() {
     const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
 
     addToCartButtons.forEach((button) => {
       button.addEventListener("click", function (event) {
-        // Prevent default button behavior
         event.preventDefault();
 
-        // Get the product info
         const productCard = this.closest(".product-card");
         const productName = productCard.querySelector("h3").textContent;
         const productPrice =
           productCard.querySelector(".product-price").textContent;
 
-        // Increment cart count
         cartCount++;
 
-        // Update the cart count display
         updateCartCountDisplay();
 
-        // Animate the button
         animateAddToCart(this);
 
-        // Optionally, show a notification
         showAddedToCartNotification(productName);
       });
     });
   }
 
-  // Update the cart count display
   function updateCartCountDisplay() {
     const cartCountElement = document.querySelector(".cart-count");
     if (cartCountElement) {
       cartCountElement.textContent = cartCount;
 
-      // Toggle visibility based on count
       if (cartCount === 0) {
         cartCountElement.style.display = "none";
       } else {
@@ -150,20 +129,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Function to animate the "Add to Cart" button
   function animateAddToCart(button) {
-    // Add a class for animation
     button.classList.add("button-clicked");
 
-    // Remove the class after animation completes
     setTimeout(() => {
       button.classList.remove("button-clicked");
     }, 300);
   }
 
-  // Function to show a notification when a product is added to cart
   function showAddedToCartNotification(productName) {
-    // Check if notification container exists, create if not
     let notificationContainer = document.querySelector(
       ".notification-container"
     );
@@ -173,7 +147,6 @@ document.addEventListener("DOMContentLoaded", function () {
       document.body.appendChild(notificationContainer);
     }
 
-    // Create notification element
     const notification = document.createElement("div");
     notification.className = "notification";
     notification.innerHTML = `
@@ -181,10 +154,8 @@ document.addEventListener("DOMContentLoaded", function () {
       <p>${productName} added to cart</p>
     `;
 
-    // Add notification to container
     notificationContainer.appendChild(notification);
 
-    // Remove notification after 3 seconds
     setTimeout(() => {
       notification.classList.add("fade-out");
       setTimeout(() => {
@@ -193,16 +164,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 3000);
   }
 
-  // Cart button functionality
   const cartButton = document.querySelector(".cart-button");
   if (cartButton) {
     cartButton.addEventListener("click", function () {
-      // Alert for demonstration (you would replace this with proper cart view)
       alert(`You have ${cartCount} item(s) in your cart.`);
     });
   }
 
-  // Add CSS for animations and notifications
   const style = document.createElement("style");
   style.textContent = `
     .button-clicked {
