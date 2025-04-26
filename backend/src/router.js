@@ -10,6 +10,7 @@ import sendMessage from "./implementations/sendMessage.js";
 import searchUsers from "./api/searchUsers.js";
 import getProducts from "./api/getProducts.js";
 import createProduct from "./api/createProduct.js";
+import getSearches from "./api/getSearches.js";
 //import getNotifications from "./api/getNotifications.js";
 
 // -------------------------- CORS Configuration --------------------------
@@ -176,6 +177,12 @@ export async function handleRequest(req, res) {
           message: "Failed to process upload: " + error.message,
         });
       }
+    },
+
+    "POST /api/search": async () => {
+      const { searchQuery, filter } = await parseBody(req);
+      const result = await getSearches(searchQuery, filter);
+      send(res, result.error ? 400 : 200, result);
     },
   };
 
