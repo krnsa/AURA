@@ -1,10 +1,11 @@
+import { getAvatarHTML } from "./components/avatarHelper.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("search-input");
   const filterButtons = document.querySelectorAll(".filter-btn");
   const resultsContainer = document.querySelector(".search-results");
   let filter = "all";
 
-  // Simple debounce helper
   function debounce(fn, delay) {
     let timer;
     return (...args) => {
@@ -14,13 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const debouncedSearch = debounce(() => performSearch(), 300);
-
-  // Trigger search on input
-  input.addEventListener("input", () => {
-    debouncedSearch();
-  });
-
-  // Switch active filter
+  input.addEventListener("input", debouncedSearch);
   filterButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       filterButtons.forEach((b) => b.classList.remove("active"));
@@ -36,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
       resultsContainer.innerHTML = "";
       return;
     }
-
     try {
       const response = await fetch(`${window.CONFIG.API_URL}/api/search`, {
         method: "POST",
@@ -46,8 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         body: JSON.stringify({ searchQuery: query, filter }),
       });
-
-      if (!response.ok) throw new Error("Search request failed");
+      if (!response.ok) throw new Error("Search failed");
       const data = await response.json();
       renderResults(data);
     } catch (err) {
@@ -65,13 +58,17 @@ document.addEventListener("DOMContentLoaded", () => {
       section.innerHTML = `<h3>People</h3><div class="search-result-list"></div>`;
       const list = section.querySelector(".search-result-list");
       users.forEach((u) => {
+        const avatarUrl = `${window.CONFIG.API_URL}/api/avatar/${u.id}`;
         const item = document.createElement("div");
         item.className = "search-result-item person";
+        console.log("URLS");
         item.innerHTML = `
-            <div class="avatar"><img src="/api/avatar/${u.id}" alt="${u.username}"></div>
-            <div class="search-result-info"><h4>${u.username}</h4><p>@${u.username}</p></div>
-            <button class="message-btn">Message</button>
-          `;
+          <div class="avatar">${getAvatarHTML(u.username, avatarUrl)}</div>
+          <div class="search-result-info"><h4>${u.username}</h4><p>@${
+          u.username
+        }</p></div>
+          <button class="message-btn">Message</button>
+        `;
         list.appendChild(item);
       });
       resultsContainer.appendChild(section);
@@ -83,21 +80,20 @@ document.addEventListener("DOMContentLoaded", () => {
       section.innerHTML = `<h3>Posts</h3><div class="search-result-list"></div>`;
       const list = section.querySelector(".search-result-list");
       posts.forEach((p) => {
+        const avatarUrl = `${window.CONFIG.API_URL}/api/avatar/${p.user_id}`;
         const item = document.createElement("div");
         item.className = "search-result-item post";
         item.innerHTML = `
-            <div class="avatar"><img src="/api/avatar/${
-              p.user_id
-            }" alt="user"></div>
-            <div class="search-result-info">
-              <div class="post-header"><h4>${
-                p.username
-              }</h4><span class="post-time">${new Date(
+          <div class="avatar">${getAvatarHTML(p.username, avatarUrl)}</div>
+          <div class="search-result-info">
+            <div class="post-header"><h4>${
+              p.username
+            }</h4><span class="post-time">${new Date(
           p.created_at
         ).toLocaleString()}</span></div>
-              <p class="post-content">${p.body}</p>
-            </div>
-          `;
+            <p class="post-content">${p.body}</p>
+          </div>
+        `;
         list.appendChild(item);
       });
       resultsContainer.appendChild(section);
@@ -112,16 +108,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const item = document.createElement("div");
         item.className = "search-result-item product";
         item.innerHTML = `
-            <div class="product-image"><img src="${
-              prod.image || "/api/placeholder/50/50"
-            }" alt="${prod.title}"></div>
-            <div class="search-result-info"><h4>${
-              prod.title
-            }</h4><p class="product-price">$${parseFloat(prod.price).toFixed(
+          <div class="product-image"><img src="${
+            prod.image || "/api/placeholder/50/50"
+          }" alt="${prod.title}"></div>
+          <div class="search-result-info"><h4>${
+            prod.title
+          }</h4><p class="product-price">$${parseFloat(prod.price).toFixed(
           2
         )}</p></div>
-            <button class="buy-btn">Buy Now</button>
-          `;
+          <button class="buy-btn">Buy Now</button>
+        `;
         list.appendChild(item);
       });
       resultsContainer.appendChild(section);

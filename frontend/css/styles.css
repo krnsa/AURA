@@ -26,3 +26,32 @@ body {
   height: 100vh;
   overflow: hidden;
 }
+
+
+
+
+.avatar-text {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.avatar-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  object-fit: cover;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  margin-right: 12px;
+}

@@ -1,3 +1,5 @@
+import { getAvatarHTML } from "./components/avatarHelper.js";
+
 document.addEventListener("DOMContentLoaded", function () {
   const conversationList = document.querySelector(".conversation-list");
   const chatHeader = document.querySelector(".chat-header");
@@ -263,7 +265,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     conversationElement.innerHTML = `
       <div class="avatar">
-        <img src="${avatarUrl}" alt="Avatar">
+        ${getAvatarHTML(conversation.otherUserName)}
       </div>
       <div class="conversation-info">
         <h3>${conversation.otherUserName}</h3>
@@ -310,7 +312,7 @@ document.addEventListener("DOMContentLoaded", function () {
     chatHeader.innerHTML = `
       <div class="chat-contact">
         <div class="avatar">
-          <img src="${avatarUrl}" alt="Avatar">
+        ${getAvatarHTML(conversation.otherUserName)}
         </div>
         <div class="contact-info">
           <h3>${conversation.otherUserName}</h3>
