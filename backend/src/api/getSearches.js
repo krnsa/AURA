@@ -12,9 +12,11 @@ export default async function getSearches(searchQuery, filter = "all") {
   if (filter === "all" || filter === "posts") {
     const { data: posts, error: pErr } = await supabase
       .from("posts")
-      .select("*, user:users(username)")
+      .select("*, user:users!posts_user_fkey(username)")
       .ilike("body", `%${searchQuery}%`)
       .limit(10);
+    console.log("Posts:", posts);
+    console.log("Error:", pErr);
     if (pErr) return { error: "Failed to search posts" };
     results.posts = posts.map((p) => ({ ...p, username: p.user.username }));
   }

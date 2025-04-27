@@ -69,6 +69,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }</p></div>
           <button class="message-btn">Message</button>
         `;
+
+        item.querySelector(".message-btn").addEventListener("click", () => {
+          localStorage.setItem(
+            "redirectToMessageUser",
+            JSON.stringify({
+              id: u.id,
+              username: u.username,
+            })
+          );
+
+          window.location.href = "/messages.html";
+        });
         list.appendChild(item);
       });
       resultsContainer.appendChild(section);
