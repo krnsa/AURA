@@ -13,12 +13,12 @@ import createProduct from "./api/createProduct.js";
 import getSearches from "./api/getSearches.js";
 import likePost from "./api/likes/likePost.js";
 import removeLike from "./api/likes/removeLike.js";
-import getFollowers from "./api/followers/getFollowers.js"
+import getFollowers from "./api/followers/getFollowers.js";
 import followUser from "./api/followers/followUser.js";
 import unfollowUser from "./api/followers/unfollowUser.js";
 //import getNotifications from "./api/getNotifications.js";
 
-const { URL } = await import('url'); // Node's built-in URL module
+const { URL } = await import("url"); // Node's built-in URL module
 
 // -------------------------- CORS Configuration --------------------------
 const devOrigins = ["http://localhost:3000"];
@@ -33,8 +33,7 @@ export async function handleRequest(req, res) {
 
   console.log(req.url);
 
-  const fullUrl = new URL(req.url, `http://${req.headers.host}`); 
-
+  const fullUrl = new URL(req.url, `http://${req.headers.host}`);
 
   const origin = req.headers.origin;
   const allowedOrigin = getAllowedOrigin(origin, devOrigins, prodOrigins);
@@ -106,22 +105,22 @@ export async function handleRequest(req, res) {
     // getPosts route
     // takes in a body with either a user_id or null, null returns all
     "GET /api/getPosts": async () => {
-      const user_id = fullUrl.searchParams.get('user_id');
+      const user_id = fullUrl.searchParams.get("user_id");
       const { data, error } = await getPosts(user_id);
       send(res, error.length > 0 ? 400 : 200, data);
     },
     // getPostByID route
     "GET /api/getPostByID": async () => {
-      const post_id = fullUrl.searchParams.get('id');
+      const post_id = fullUrl.searchParams.get("id");
       const result = await getPostByID(post_id);
       send(res, result.error ? 404 : 200, result);
     },
     // findUser route
     // takes in username returns user_id
     "GET /api/findUser": async () => {
-      const param_username = fullUrl.searchParams.get('username');
-      const result = await findUser(param_username);
-      send(res, result.error ? 404 : 200, result);
+      const param_username = fullUrl.searchParams.get("username");
+      const user = await findUser(param_username);
+      send(res, user.error ? 404 : 200, user);
     },
     // newPost route
     "POST /api/newPost": async () => {
@@ -205,7 +204,7 @@ export async function handleRequest(req, res) {
       send(res, result.error ? 400 : 200, result);
     },
     "GET /api/getFollowers": async () => {
-      const param_username = fullUrl.searchParams.get('username');
+      const param_username = fullUrl.searchParams.get("username");
       const result = await getFollowers(param_username);
       send(res, result.error ? 400 : 200, result);
     },

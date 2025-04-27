@@ -7,35 +7,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("token");
   let currentUserId;
 
-  async function fetchUsername() {
-    const res = await fetch(`${window.CONFIG.API_URL}/`, {
+  async function findUser() {
+    const result1 = await fetch(`${window.CONFIG.API_URL}/`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    const json = await res.json();
-    userNameEl.textContent = json.user.username;
-  }
+    const data1 = await result1.json();
+    userNameEl.textContent = data1.user.username;
 
-  // To be implemented in the backend
-  async function fetchStats() {
-    const res = await fetch(`${window.CONFIG.API_URL}/api/user/stats`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!res.ok) throw new Error("Stats fetch failed");
-    const stats = await res.json();
-    currentUserId = stats.userId;
-    postsCountEl.textContent = stats.posts;
-    followersCountEl.textContent = stats.followers;
-    followingCountEl.textContent = stats.following;
+    const result2 = await fetch(
+      `${window.CONFIG.API_URL}/api/findUser?username=${data1.user.username}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    const data2 = await result2.json();
+    currentUserId = data2.id;
+    console.log(data2);
   }
 
   async function fetchPosts() {
-    const res = await fetch(`${window.CONFIG.API_URL}/api/getPosts`, {
-      method: "POST",
+    const res = await fetch(`${window.CONFIG.API_URL}/api/getPosts?user_id=${currentUserId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ user_id: currentUserId }),
     });
     postsListEl.innerHTML = "";
     if (!res.ok) {
@@ -55,8 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function init() {
-    await fetchUsername();
-    // await fetchStats();
+    await findUser();
     await fetchPosts();
   }
 

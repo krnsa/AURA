@@ -2,8 +2,7 @@
 import supabase from "../supabase/supabaseClient.js";
 
 export default async function findUser(username) {
-
-  if(username == null) {
+  if (username == null) {
     console.log("Null username provided.");
     return;
   }
@@ -18,7 +17,10 @@ export default async function findUser(username) {
       return { message: "No data found" };
     } else {
       console.log(data, "Supabase query succeeded:");
-      return data;
+      // username is unique, so we can safely access the first element
+      const user = data[0];
+      user.password = undefined; // Remove password from the user object
+      return user;
     }
   } catch (err) {
     console.error("Supabase query failed:", err.message);
