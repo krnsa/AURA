@@ -110,44 +110,43 @@
   </nav>
 
   <main class="main-container">
-    <!-- Profile Section -->
-    <section class="profile-container">
-      <div id="username">Welcome, User</div>
-      <div class="profile-stats">
-        <span><b id="posts-count">0</b> Posts</span>
-        <span><b id="followers-count">0</b> Followers</span>
-        <span><b id="following-count">0</b> Following</span>
+
+    <!-- User info -->
+    <div class="user-card">
+      <div class="user-avatar">
+        <!-- user image: to be finished -->
       </div>
-    </section>
-
-    <!-- Posts Section -->
-    <section class="post-container">
-
-      <div class="upload-section">
-        <div class="upload-header">
-          <h2>Upload a new post</h2>
-          <button id="close-upload">X</button>
-        </div>
-        <div class="upload-content">
-          <input type="file" id="file-input" accept="image/*" />
-          <button id="upload-button">Upload</button>
-        </div>
+      <div class="user-name">Username</div>
+      <div class="user-stats">
+        <span><strong id="posts-count">0</strong> Posts</span>
+        <span><strong id="followers-count">0</strong> Followers</span>
+        <span><strong id="following-count">0</strong> Following</span>
       </div>
-
-      <div class="post-section">
-        <h2>Your Posts</h2>
-        <div class="posts"></div>
-      </div>
-
-    </section>
-  </main>
-
-  <div class="modal">
-    <div class="modal-content">
-      <input type="file" id="post-image" accept="image/*" />
-      <button id="upload-post">Upload</button>
     </div>
-  </div>
+
+    <!-- Posts area -->
+    <div class="post-container">
+
+      <!-- Upload posts -->
+      <section class="upload-widget">
+        <div class="upload-title">New Post</div>
+        <div class="upload-controls">
+          <input type="file" class="upload-input" accept="image/*" />
+          <button class="upload-submit">Upload</button>
+        </div>
+      </section>
+
+      <!-- View Posts -->
+      <section class="post-section">
+        <div class="posts-title">Your Posts</div>
+        <div class="posts-list">
+          <!-- posts will be rendered here by JS -->
+        </div>
+      </section>
+
+    </div>
+
+  </main>
 
   <script type="module" src="./js/profile.js"></script>
 </body>
