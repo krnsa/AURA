@@ -60,7 +60,7 @@ export async function loginUser(username, password) {
   // Default role is "user"
   const payload = { username, role: "user" };
   // Generate a JWT token
-  const token = jwt.sign(payload, SECRET, { expiresIn: "1h" });
+  const token = jwt.sign(payload, SECRET, { expiresIn: "2d" });
   return { success: true, token };
 }
 
