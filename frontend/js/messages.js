@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       resultItem.innerHTML = `
       <div class="avatar">
-        <img src="${avatarUrl}" alt="Avatar">
+      ${getAvatarHTML(user.username)}
       </div>
       <h4>${user.username}</h4>
     `;
@@ -244,6 +244,12 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       chatHeader.innerHTML = `<div class="chat-contact"><h3>No conversations</h3></div>`;
       chatMessages.innerHTML = `<div class="no-messages">You have no messages yet.</div>`;
+    }
+    const stored = localStorage.getItem("redirectToMessageUser");
+    if (stored) {
+      const { id, username } = JSON.parse(stored);
+      localStorage.removeItem("redirectToMessageUser");
+      startConversationWithUser({ id, username });
     }
   }
 

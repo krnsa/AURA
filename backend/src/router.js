@@ -74,24 +74,24 @@ export async function handleRequest(req, res) {
 
   // -------------------------- Authentication Check --------------------------
 
-  // // Check for authorization header
-  // const authHeader = req.headers["authorization"];
-  // if (!authHeader) {
-  //   send(res, 401, { error: "Missing token" });
-  //   return;
-  // }
+  // Check for authorization header
+  const authHeader = req.headers["authorization"];
+  if (!authHeader) {
+    send(res, 401, { error: "Missing token" });
+    return;
+  }
 
-  // const token = authHeader.split(" ")[1];
-  // const authResult = requireAuth(token);
-  // if (authResult.error) {
-  //   send(res, 401, { error: "Invalid or expired token." });
-  //   return;
-  // }
+  const token = authHeader.split(" ")[1];
+  const authResult = requireAuth(token);
+  if (authResult.error) {
+    send(res, 401, { error: "Invalid or expired token." });
+    return;
+  }
 
   // user information is decoded and can be used in the routes below
-  // const decodedData = authResult.data;
-  const username = 'MerrickCai';//decodedData.username;
-
+  const decodedData = authResult.data;
+  const username = decodedData.username;
+  const role = decodedData.role;
   // -------------------------- Protected Routes --------------------------
 
   const routes = {
@@ -125,9 +125,7 @@ export async function handleRequest(req, res) {
     },
     // newPost route
     "POST /api/newPost": async () => {
-      const { user_id, post_body, post_file, linked_listing } = await parseBody(
-        req
-      );
+      const { user_id, post_body, post_file, linked_listing } = await parseBody(req);
       const result = await newPost(user_id, post_body, post_file);
       send(res, result.error ? 400 : 200, result);
     },
