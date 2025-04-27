@@ -79,7 +79,7 @@ export async function handleRequest(req, res) {
   // user information is decoded and can be used in the routes below
   const decodedData = authResult.data;
   const username = decodedData.username;
-
+  const role = decodedData.role;
   // -------------------------- Protected Routes --------------------------
 
   const routes = {
@@ -100,22 +100,20 @@ export async function handleRequest(req, res) {
     },
     // getPostByID route
     "GET /api/getPostByID": async () => {
-      const post_id = url.searchParams.get('id');
+      const post_id = url.searchParams.get("id");
       const result = await getPostByID(post_id);
       send(res, result.error ? 404 : 200, result);
     },
     // findUser route
     // takes in username returns user_id
     "GET /api/findUser": async () => {
-      const param_username = url.searchParams.get('username');
+      const param_username = url.searchParams.get("username");
       const result = await findUser(param_username);
       send(res, result.error ? 400 : 200, result);
     },
     // newPost route
     "POST /api/newPost": async () => {
-      const { user_id, post_body, post_file, linked_listing } = await parseBody(
-        req
-      );
+      const { user_id, post_body, post_file, linked_listing } = await parseBody(req);
       const result = await newPost(user_id, post_body, post_file);
       send(res, result.error ? 400 : 200, result);
     },

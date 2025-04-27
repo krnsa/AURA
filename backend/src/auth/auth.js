@@ -57,8 +57,9 @@ export async function loginUser(username, password) {
   if (user[0].password !== password) {
     return { error: "Invalid credentials: Password does not match." };
   }
-  // Default role is "user"
-  const payload = { username, role: "user" };
+
+  // console.log("User found:", user[0].username, user[0].role);
+  const payload = { username: user[0].username, role: user[0].role };
   // Generate a JWT token
   const token = jwt.sign(payload, SECRET, { expiresIn: "2d" });
   return { success: true, token };
