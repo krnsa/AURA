@@ -106,9 +106,9 @@ export async function handleRequest(req, res) {
     },
     // findUser route
     // takes in username returns user_id
-    "POST /api/findUser": async () => {
-      const { username } = await parseBody(req);
-      const result = await findUser(username);
+    "GET /api/findUser": async () => {
+      const param_username = url.searchParams.get('username');
+      const result = await findUser(param_username);
       send(res, result.error ? 400 : 200, result);
     },
     // newPost route
