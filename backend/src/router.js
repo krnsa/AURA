@@ -99,10 +99,10 @@ export async function handleRequest(req, res) {
       send(res, error.length > 0 ? 400 : 200, data);
     },
     // getPostByID route
-    "POST /api/getPostByID": async () => {
-      const { post_id } = await parseBody(req);
+    "GET /api/getPostByID": async () => {
+      const post_id = url.searchParams.get('id');
       const result = await getPostByID(post_id);
-      send(res, result.error ? 400 : 200, result);
+      send(res, result.error ? 404 : 200, result);
     },
     // findUser route
     // takes in username returns user_id
