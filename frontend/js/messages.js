@@ -189,9 +189,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const data = await response.json();
 
+      const prevActiveId = activeConversation?.id ?? null;
       currentUserId = data.currentUserId;
-
-      processConversations(data.conversations);
+      processConversations(data.conversations, prevActiveId);
     } catch (error) {
       console.error("Error fetching conversations:", error);
 
@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function processConversations(conversationsData) {
+  function processConversations(conversationsData, preservedActiveId) {
     conversationList.innerHTML = "";
 
     conversations = conversationsData.map((conversation) => {
@@ -235,16 +235,30 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     conversations.forEach((conversation, index) => {
-      createConversationElement(conversation, index === 0);
+      const isActive = preservedActiveId
+        ? conversation.id === preservedActiveId
+        : index === 0;
+      createConversationElement(conversation, isActive);
     });
 
-    if (conversations.length > 0) {
-      activeConversation = conversations[0];
-      displayConversation(activeConversation);
-    } else {
+    if (conversations.length === 0) {
       chatHeader.innerHTML = `<div class="chat-contact"><h3>No conversations</h3></div>`;
       chatMessages.innerHTML = `<div class="no-messages">You have no messages yet.</div>`;
+      return;
     }
+
+    const stillThere = conversations.find((c) => c.id === preservedActiveId);
+    if (stillThere) {
+      activeConversation = stillThere;
+    } else {
+      activeConversation = conversations[0];
+
+      document
+        .querySelector(`[data-conversation-id="${activeConversation.id}"]`)
+        .classList.add("active");
+    }
+
+    displayConversation(activeConversation);
     const stored = localStorage.getItem("redirectToMessageUser");
     if (stored) {
       const { id, username } = JSON.parse(stored);
@@ -528,4 +542,14 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     });
   }
+
+  let pollInterval = null;
+
+  function startPolling() {
+    if (pollInterval) clearInterval(pollInterval);
+
+    pollInterval = setInterval(fetchConversations, 3000);
+  }
+
+  startPolling();
 });
