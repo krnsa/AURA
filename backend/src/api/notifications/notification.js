@@ -1,10 +1,11 @@
-import supabase from "../supabase/supabaseClient.js";
+import supabase from "../../supabase/supabaseClient.js";
 
 export async function getNotifications(userId) {
   try {
     const { data, error } = await supabase
       .from("notifications")
-      .select(`
+      .select(
+        `
         id,
         type,
         title,
@@ -13,7 +14,8 @@ export async function getNotifications(userId) {
         read,
         trigger_user_id,
         users:trigger_user_id(username, avatar)
-      `)
+      `
+      )
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .limit(50);
