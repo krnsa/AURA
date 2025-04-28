@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const followingCountEl = document.getElementById("following-count");
   const postsListEl = document.querySelector(".posts-list");
   const token = localStorage.getItem("token");
+  const avatar = document.querySelector(".user-avatar");
   let currentUserId;
 
   async function findUser() {
@@ -20,9 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    const data2 = await result2.json();
-    currentUserId = data2.id;
-    console.log(data2);
+    const user = await result2.json();
+    currentUserId = user.id;
+    avatar.innerHTML = `<img src="${user.avatar_url}"/>`;
+    console.log(user);
   }
 
   async function fetchPosts() {
