@@ -14,7 +14,10 @@ document.addEventListener("DOMContentLoaded", function () {
   let conversations = [];
   let activeConversation = null;
 
+  const notificationsList = document.querySelector(".notifications-list");
+
   fetchConversations();
+  fetchNotifications();
 
   function showUserSearch() {
     startConversationBtn.style.opacity = "0";
@@ -132,4 +135,79 @@ document.addEventListener("DOMContentLoaded", function () {
 
   startConversationBtn.addEventListener("click", showUserSearch);
   closeSearchBtn.addEventListener("click", hideUserSearch);
+
+  async function fetchNotifications() {
+    try {
+      const response = await fetch(`${window.CONFIG.API_URL}/api/notifications`, {
+        method: "GET",
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+      });
+      
+      const data = await response.json();
+      displayNotifications(data.notifications);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  }
+
+  function displayNotifications(notifications) {
+    notificationsList.innerHTML = notifications.map(notification => `
+      <div class="notification ${notification.read ? '' : 'unread'}" data-id="${notification.id}">
+        <div class="notification-avatar">
+          ${getNotificationIcon(notification.type)}
+        </div>
+        <div class="notification-content">
+          <div class="notification-title">${notification.title}</div>
+          <div class="notification-message">${notification.message}</div>
+        </div>
+        <div class="notification-time">${formatTimeAgo(notification.created_at)}</div>
+      </div>
+    `).join('');
+
+    // Add click handlers
+    document.querySelectorAll('.notification').forEach(notif => {
+      notif.addEventListener('click', () => markAsRead(notif.dataset.id));
+    });
+  }
+
+  function getNotificationIcon(type) {
+    const icons = {
+      like: '❤️',
+      comment: '💬',
+      follow: '👤',
+      message: '✉️',
+      system: '🔔'
+    };
+    return icons[type] || '🔔';
+  }
+
+  async function markAsRead(notificationId) {
+    try {
+      await fetch(`${window.CONFIG.API_URL}/api/notifications/${notificationId}/read`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      
+      const notification = document.querySelector(`[data-id="${notificationId}"]`);
+      if (notification) {
+        notification.classList.remove('unread');
+      }
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+    }
+  }
+
+  function formatTimeAgo(timestamp) {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+
+    if (seconds < 60) return 'just now';
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+    return date.toLocaleDateString();
+  }
 });
