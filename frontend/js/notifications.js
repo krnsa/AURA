@@ -1,132 +1,213 @@
-import { supabase } from './supabaseClient.js';
+import { getAvatarHTML } from "./components/avatarHelper.js";
 
-async function fetchNotifications() {
+document.addEventListener("DOMContentLoaded", function () {
+  const conversationList = document.querySelector(".conversation-list");
+  const chatMessages = document.querySelector(".chat-messages");
+  const chatInput = document.querySelector(".chat-input input");
+  const sendButton = document.querySelector(".send-btn");
+
+  const startConversationBtn = document.getElementById("start-conversation-btn");
+  const userSearchContainer = document.getElementById("user-search-container");
+  const closeSearchBtn = document.querySelector(".close-search-btn");
+
+  const token = localStorage.getItem("token");
+  let conversations = [];
+  let activeConversation = null;
+
+  const notificationsList = document.querySelector(".notifications-list");
+
+  fetchConversations();
+  fetchNotifications();
+
+  function showUserSearch() {
+    startConversationBtn.style.opacity = "0";
+    userSearchContainer.style.display = "block";
+    document.getElementById("user-search").value = "";
+  }
+
+  function hideUserSearch() {
+    userSearchContainer.style.display = "none";
+    startConversationBtn.style.opacity = "1";
+  }
+
+  async function searchUsers(query) {
     try {
-        const { data: { user } } = await supabase.auth.getUser();
-        
-        if (!user) {
-            console.error('No user logged in');
-            return;
-        }
-
-        // Fetch unread notifications first
-        const { data: unreadNotifications, error: unreadError } = await supabase
-            .from('notifications')
-            .select(`
-                *,
-                from_user:users!notifications_from_user_id_fkey(username)
-            `)
-            .eq('to_user_id', user.id)
-            .eq('read', false)
-            .order('created_at', { ascending: false });
-
-        if (unreadError) throw unreadError;
-
-        // Update UI with unread notifications
-        updateNotificationCount(unreadNotifications?.length || 0);
-        if (unreadNotifications?.length > 0) {
-            updateNotificationContent(unreadNotifications);
-        }
-
+      const response = await fetch(`${window.CONFIG.API_URL}/api/searchUsers`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ searchQuery: query }),
+      });
+      const data = await response.json();
+      return data.users || [];
     } catch (error) {
-        console.error('Error fetching notifications:', error.message);
+      console.error("Error searching users:", error);
+      return [];
     }
-}
+  }
 
-async function markNotificationAsRead(notificationId) {
+  function displaySearchResults(users) {
+    const searchResults = document.getElementById("search-results");
+    if (users.length === 0) {
+      searchResults.innerHTML = "<div class='no-results'>No users found</div>";
+      return;
+    }
+
+    searchResults.innerHTML = users.map(user => `
+      <div class="search-result-item" onclick="startConversationWithUser(${user.id})">
+        <div class="avatar">${getAvatarHTML(user.username)}</div>
+        <h4>${user.username}</h4>
+      </div>
+    `).join('');
+  }
+
+  async function fetchConversations() {
     try {
-        const { error } = await supabase
-            .from('notifications')
-            .update({ read: true })
-            .eq('id', notificationId);
-
-        if (error) throw error;
-
-        // Refresh notifications after marking as read
-        fetchNotifications();
-
+      const response = await fetch(`${window.CONFIG.API_URL}/api/messages`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json();
+      conversations = data.conversations;
+      conversations.forEach(conversation => createConversationElement(conversation));
     } catch (error) {
-        console.error('Error marking notification as read:', error.message);
+      console.error("Error fetching conversations:", error);
     }
-}
+  }
 
-function createNotificationElement(notification) {
-    const notificationDiv = document.createElement('div');
-    notificationDiv.className = 'notification-item';
-    notificationDiv.innerHTML = `
-        <div class="notice-content">
-            <div class="username">${notification.from_user.username}</div>
-            <div class="message">${notification.message}</div>
-            <div class="timestamp">${new Date(notification.created_at).toLocaleString()}</div>
-        </div>
+  function createConversationElement(conversation) {
+    const conversationElement = document.createElement("div");
+    conversationElement.className = "conversation";
+    conversationElement.dataset.conversationId = conversation.id;
+    conversationElement.innerHTML = `
+      <div class="avatar">${getAvatarHTML(conversation.otherUserName)}</div>
+      <div class="conversation-info">
+        <h3>${conversation.otherUserName}</h3>
+        <p>${conversation.lastMessage}</p>
+      </div>
     `;
 
-    // Add click handler to mark as read
-    notificationDiv.addEventListener('click', () => {
-        markNotificationAsRead(notification.id);
+    conversationElement.addEventListener("click", () => {
+      activeConversation = conversation;
+      displayConversation(conversation);
     });
 
-    return notificationDiv;
-}
+    conversationList.appendChild(conversationElement);
+  }
 
-function updateNotificationContent(notifications) {
-    if (!notifications?.length) return;
+  function displayConversation(conversation) {
+    chatMessages.innerHTML = conversation.messages.map(message => `
+      <div class="message ${message.sender_id !== activeConversation.otherUserId ? 'sent' : 'received'}">
+        <p>${message.content}</p>
+      </div>
+    `).join('');
+  }
 
-    const latestNotification = notifications[0];
-    
-    // Update button preview
-    const usernameElement = document.querySelector('.username');
-    const messagePreview = document.querySelector('.label-message');
-    
-    if (usernameElement) {
-        usernameElement.textContent = latestNotification.from_user.username;
+  async function sendMessage() {
+    const messageText = chatInput.value.trim();
+    if (!messageText || !activeConversation) return;
+
+    chatInput.value = "";
+    const message = { sender_id: activeConversation.otherUserId, content: messageText };
+
+    chatMessages.innerHTML += `
+      <div class="message sent">
+        <p>${messageText}</p>
+      </div>
+    `;
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    try {
+      await fetch(`${window.CONFIG.API_URL}/api/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ receiver_id: activeConversation.otherUserId, content: messageText }),
+      });
+    } catch (error) {
+      console.error("Failed to send message:", error);
     }
-    if (messagePreview) {
-        messagePreview.textContent = 'New Messages';
-    }
+  }
 
-    // Create notifications panel if doesn't exist
-    let notificationsPanel = document.querySelector('.notifications-panel');
-    if (!notificationsPanel) {
-        notificationsPanel = document.createElement('div');
-        notificationsPanel.className = 'notifications-panel';
-        document.body.appendChild(notificationsPanel);
-    }
+  sendButton.addEventListener("click", sendMessage);
+  chatInput.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
 
-    // Clear and update notifications panel
-    notificationsPanel.innerHTML = '';
-    notifications.forEach(notification => {
-        notificationsPanel.appendChild(createNotificationElement(notification));
+  startConversationBtn.addEventListener("click", showUserSearch);
+  closeSearchBtn.addEventListener("click", hideUserSearch);
+
+  async function fetchNotifications() {
+    try {
+      const response = await fetch(`${window.CONFIG.API_URL}/api/notifications`, {
+        method: "GET",
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+      });
+      
+      const data = await response.json();
+      displayNotifications(data.notifications);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  }
+
+  function displayNotifications(notifications) {
+    notificationsList.innerHTML = notifications.map(notification => `
+      <div class="notification ${notification.read ? '' : 'unread'}" data-id="${notification.id}">
+        <div class="notification-avatar">
+          ${getNotificationIcon(notification.type)}
+        </div>
+        <div class="notification-content">
+          <div class="notification-title">${notification.title}</div>
+          <div class="notification-message">${notification.message}</div>
+        </div>
+        <div class="notification-time">${formatTimeAgo(notification.created_at)}</div>
+      </div>
+    `).join('');
+
+    // Add click handlers
+    document.querySelectorAll('.notification').forEach(notif => {
+      notif.addEventListener('click', () => markAsRead(notif.dataset.id));
     });
-}
+  }
 
-// Initialize notification system
-document.addEventListener('DOMContentLoaded', () => {
-    const btnMessage = document.getElementById('btn-message');
-    
-    if (btnMessage) {
-        btnMessage.addEventListener('click', () => {
-            const panel = document.querySelector('.notifications-panel');
-            if (panel) {
-                panel.classList.toggle('show');
-            }
-            fetchNotifications();
-        });
+  function getNotificationIcon(type) {
+    const icons = {
+      like: '❤️',
+      comment: '💬',
+      follow: '👤',
+      message: '✉️',
+      system: '🔔'
+    };
+    return icons[type] || '🔔';
+  }
+
+  async function markAsRead(notificationId) {
+    try {
+      await fetch(`${window.CONFIG.API_URL}/api/notifications/${notificationId}/read`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      
+      const notification = document.querySelector(`[data-id="${notificationId}"]`);
+      if (notification) {
+        notification.classList.remove('unread');
+      }
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
     }
+  }
 
-    // Close panel when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('#btn-message') && !e.target.closest('.notifications-panel')) {
-            const panel = document.querySelector('.notifications-panel');
-            if (panel) {
-                panel.classList.remove('show');
-            }
-        }
-    });
+  function formatTimeAgo(timestamp) {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
 
-    // Initial fetch
-    fetchNotifications();
-
-    // Periodic fetch every 30 seconds
-    setInterval(fetchNotifications, 30000);
+    if (seconds < 60) return 'just now';
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+    return date.toLocaleDateString();
+  }
 });

@@ -37,6 +37,13 @@
       // Proceed if token valid
       const data = await res.json();
       console.log("User authenticated:", data.message);
+      // Logout button event listener
+      const logoutButton = document.querySelector(".menu .menu-content li a.logoutButton");
+      logoutButton?.addEventListener("click", async (e) => {
+        e.preventDefault();
+        localStorage.removeItem("token");
+        window.location.href = "/login.html";
+      });
     }
   } catch (error) {
     console.error("Network or server error:", error);

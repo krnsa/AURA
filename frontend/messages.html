@@ -4,8 +4,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AURA - Your personal space for sharing and connecting." />
   <title>AURA</title>
   <script src="./js/global.js"></script>
+  <link rel="icon" type="image/png" sizes="32x32" href="./img/AuraLogo.png" />
   <link rel="stylesheet" href="./css/styles.css">
   <link rel="stylesheet" href="./css/messages.css">
 </head>
@@ -52,55 +54,100 @@
 
   </div>
 
-  <div class="menu">
+  <nav class="menu show">
+    <div class="menu-trigger-area"></div>
     <ul class="menu-content">
       <li><a href="/">
-          <span class="material-symbols-outlined">home</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+          </svg>
           <span>Home</span>
         </a>
       </li>
-      <li><a href="/">
-          <span class="material-symbols-outlined">dashboard</span>
+      <li><a href="/search.html">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
           <span>Search</span>
         </a>
       </li>
       <li><a href="/messages.html">
-          <span class="material-symbols-outlined">explore</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+          </svg>
           <span>Messages</span>
         </a>
       </li>
-      <li><a href="/">
-          <span class="material-symbols-outlined">analytics</span>
+      <li><a href="/notification.html">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5" />
+          </svg>
           <span>Notifications</span>
         </a>
       </li>
-      <li><a href="/">
-          <span class="material-symbols-outlined">settings</span>
+      <li><a href="/profile.html">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
           <span>Create</span>
         </a>
       </li>
       <li><a href="/profile.html">
-          <span class="material-symbols-outlined">person</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+          </svg>
           <span>Profile</span>
         </a>
       </li>
       <li><a href="/shop.html">
-          <span class="material-symbols-outlined">report</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
+          </svg>
           <span>Shop</span>
         </a>
       </li>
-      <li><a href="/">
-          <span class="material-symbols-outlined">email</span>
+      <li><a href="/more.html">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+          </svg>
           <span>More</span>
         </a>
       </li>
-      <li><a href="/login.html">
-          <span class="material-symbols-outlined">login</span>
+      <li style="display: none;"><a href="/login.html">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+          </svg>
           <span>Login</span>
         </a>
       </li>
+      <li><a href="/" class="logoutButton">
+          <svg style="transform: rotate(180deg);" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+          </svg>
+          <span>Log out</span>
+        </a>
+      </li>
     </ul>
-  </div>
+  </nav>
 
   <div class="ui-switch">
     <label for="dark-mode-toggle" class="slider">

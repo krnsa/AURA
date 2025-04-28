@@ -1,11 +1,6 @@
 import supabase from "../supabase/supabaseClient.js";
 import findUser from "./findUser.js";
 
-/**
- * Get all messages for a specific user (both sent and received)
- * @param {string} userName - The username to get messages for
- * @returns {object} Object with messages array or error
- */
 async function getMessages(userName) {
   try {
     const user = await findUser(userName);
@@ -13,11 +8,10 @@ async function getMessages(userName) {
     if (!user || user.length === 0) {
       return { error: "User not found" };
     }
-    const userId = user[0].id;
+    const userId = user.id;
 
     console.log("User ID:", userId);
 
-    // Query Supabase for conversations where user is either sender or receiver
     const { data, error } = await supabase
       .from("messages")
       .select("*")
@@ -28,11 +22,9 @@ async function getMessages(userName) {
       return { error: "Failed to fetch messages" };
     }
 
-    // Mark received messages as read
     const unreadConversations = data.filter((conv) => conv.receiver_id === userId && !conv.is_read);
 
     if (unreadConversations.length > 0) {
-      // Update conversations to mark them as read
       const { error: updateError } = await supabase
         .from("messages")
         .update({ is_read: true })
@@ -46,12 +38,10 @@ async function getMessages(userName) {
       }
     }
 
-    // Get unique user IDs from the conversations for fetching user data
     const userIds = [
       ...new Set([...data.map((conv) => conv.sender_id), ...data.map((conv) => conv.receiver_id)]),
     ].filter((id) => id !== userId);
 
-    // Fetch user data for the conversations
     const { data: userData, error: userError } = await supabase
       .from("users")
       .select("id, username")
@@ -59,10 +49,8 @@ async function getMessages(userName) {
 
     if (userError) {
       console.error("Error fetching user data:", userError);
-      // Continue anyway, we'll use placeholder names
     }
 
-    // Create a map of user IDs to usernames
     const userMap = {};
     if (userData) {
       userData.forEach((user) => {
@@ -70,12 +58,10 @@ async function getMessages(userName) {
       });
     }
 
-    // Enhance conversations with user data where available
     const enhancedConversations = data.map((conversation) => {
       const otherUserId =
         conversation.sender_id === userId ? conversation.receiver_id : conversation.sender_id;
 
-      // Parse the content JSON if it exists
       let parsedContent = [];
       try {
         if (conversation.content) {

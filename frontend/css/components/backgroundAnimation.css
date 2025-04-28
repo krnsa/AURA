@@ -1,478 +1,490 @@
 :root {
-    --particle-color-1: rgba(0, 150, 255, 0.8);
-    --particle-color-2: rgba(0, 200, 255, 0.4);
-    --particle-color-3: rgba(0, 100, 255, 0.6);
-    --glow-color: rgba(0, 60, 255, 0.1);
-    --bg-gradient-1: #000510;
-    --bg-gradient-2: #001233;
-    --neon-glow: 0 0 10px rgba(0, 150, 255, 0.5),
-                 0 0 20px rgba(0, 150, 255, 0.3),
-                 0 0 30px rgba(0, 150, 255, 0.2),
-                 0 0 40px rgba(0, 150, 255, 0.1);
+  --particle-color-1: rgba(0, 150, 255, 0.8);
+  --particle-color-2: rgba(0, 200, 255, 0.4);
+  --particle-color-3: rgba(0, 100, 255, 0.6);
+  --glow-color: rgba(0, 60, 255, 0.1);
+  --bg-gradient-1: #000510;
+  --bg-gradient-2: #001233;
+  --neon-glow: 0 0 10px rgba(0, 150, 255, 0.5), 0 0 20px rgba(0, 150, 255, 0.3),
+    0 0 30px rgba(0, 150, 255, 0.2), 0 0 40px rgba(0, 150, 255, 0.1);
 }
 
 .transparent-particle-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-    overflow: hidden;
-    background: linear-gradient(to bottom right, var(--bg-gradient-1), var(--bg-gradient-2));
-    perspective: 1500px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+  background: linear-gradient(to bottom right, var(--bg-gradient-1), var(--bg-gradient-2));
+  perspective: 1500px;
 }
 
 /* Add a subtle noise texture */
 .transparent-particle-bg::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        radial-gradient(circle at 50% 50%, var(--glow-color), transparent 70%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.05;
-    mix-blend-mode: overlay;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, var(--glow-color), transparent 70%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  mix-blend-mode: overlay;
 }
 
 .transparent-particle-bg .particle {
-    position: absolute;
-    background: linear-gradient(135deg, var(--particle-color-1), var(--particle-color-2));
-    border-radius: 50%;
-    filter: blur(1px);
-    box-shadow: 
-        0 0 10px rgba(0, 150, 255, 0.5),
-        0 0 20px rgba(0, 150, 255, 0.3);
-    animation: 
-        floatModern linear infinite,
-        pulse 2s ease-in-out infinite alternate;
-    transform-style: preserve-3d;
+  position: absolute;
+  background: linear-gradient(135deg, var(--particle-color-1), var(--particle-color-2));
+  border-radius: 50%;
+  filter: blur(1px);
+  box-shadow: 0 0 10px rgba(0, 150, 255, 0.5), 0 0 20px rgba(0, 150, 255, 0.3);
+  animation: floatModern linear infinite, pulse 2s ease-in-out infinite alternate;
+  transform-style: preserve-3d;
 }
 
 /* Modernized particles with different sizes and animations */
 .transparent-particle-bg .particle:nth-child(1) {
-    width: 3px;
-    height: 3px;
-    top: 20%;
-    left: 25%;
-    animation-duration: 15s;
-    animation-delay: 0s;
+  width: 3px;
+  height: 3px;
+  top: 20%;
+  left: 25%;
+  animation-duration: 15s;
+  animation-delay: 0s;
 }
 
 .transparent-particle-bg .particle:nth-child(2) {
-    width: 4px;
-    height: 4px;
-    top: 60%;
-    left: 80%;
-    animation-duration: 20s;
-    animation-delay: 2s;
+  width: 4px;
+  height: 4px;
+  top: 60%;
+  left: 80%;
+  animation-duration: 20s;
+  animation-delay: 2s;
 }
 
 .transparent-particle-bg .particle:nth-child(3) {
-    width: 2px;
-    height: 2px;
-    top: 80%;
-    left: 10%;
-    animation-duration: 25s;
-    animation-delay: 1s;
+  width: 2px;
+  height: 2px;
+  top: 80%;
+  left: 10%;
+  animation-duration: 25s;
+  animation-delay: 1s;
 }
 
 .transparent-particle-bg .particle:nth-child(4) {
-    width: 5px;
-    height: 5px;
-    top: 30%;
-    left: 50%;
-    animation-duration: 18s;
-    animation-delay: 3s;
+  width: 5px;
+  height: 5px;
+  top: 30%;
+  left: 50%;
+  animation-duration: 18s;
+  animation-delay: 3s;
 }
 
 .transparent-particle-bg .particle:nth-child(5) {
-    width: 3px;
-    height: 3px;
-    top: 70%;
-    left: 30%;
-    animation-duration: 22s;
-    animation-delay: 4s;
+  width: 3px;
+  height: 3px;
+  top: 70%;
+  left: 30%;
+  animation-duration: 22s;
+  animation-delay: 4s;
 }
 
 .transparent-particle-bg .particle:nth-child(6) {
-    width: 4px;
-    height: 4px;
-    top: 40%;
-    left: 70%;
-    animation-duration: 17s;
-    animation-delay: 5s;
+  width: 4px;
+  height: 4px;
+  top: 40%;
+  left: 70%;
+  animation-duration: 17s;
+  animation-delay: 5s;
 }
 
 .transparent-particle-bg .particle:nth-child(7) {
-    width: 2px;
-    height: 2px;
-    top: 10%;
-    left: 90%;
-    animation-duration: 30s;
-    animation-delay: 6s;
+  width: 2px;
+  height: 2px;
+  top: 10%;
+  left: 90%;
+  animation-duration: 30s;
+  animation-delay: 6s;
 }
 
 .transparent-particle-bg .particle:nth-child(8) {
-    width: 3px;
-    height: 3px;
-    top: 50%;
-    left: 15%;
-    animation-duration: 19s;
-    animation-delay: 7s;
+  width: 3px;
+  height: 3px;
+  top: 50%;
+  left: 15%;
+  animation-duration: 19s;
+  animation-delay: 7s;
 }
 
 /* Modern glow effects */
 .transparent-particle-bg::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(
-        circle,
-        rgba(0, 100, 255, 0.1) 0%,
-        rgba(0, 60, 255, 0.05) 30%,
-        rgba(0, 30, 255, 0) 70%
-    );
-    filter: blur(40px);
-    animation: pulse 8s ease-in-out infinite;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 100, 255, 0.1) 0%,
+    rgba(0, 60, 255, 0.05) 30%,
+    rgba(0, 30, 255, 0) 70%
+  );
+  filter: blur(40px);
+  animation: pulse 8s ease-in-out infinite;
 }
 
 /* Remove grid lines */
 .transparent-particle-bg .grid {
-    display: none;
+  display: none;
 }
 
 /* Enhanced modern floating animation */
 @keyframes floatModern {
-    0% {
-        transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) scale(1);
-        opacity: 0;
-    }
-    25% {
-        opacity: 1;
-        transform: translate3d(50px, -25px, 20px) rotateX(45deg) rotateY(45deg) scale(1.1);
-    }
-    75% {
-        opacity: 0.5;
-        transform: translate3d(var(--move-x, 100px), var(--move-y, -100px), -20px) 
-                  rotateX(-45deg) rotateY(-45deg) scale(1.2);
-    }
-    100% {
-        transform: translate3d(var(--move-x, 150px), var(--move-y, -150px), 0) 
-                  rotateX(0) rotateY(0) scale(0.8);
-        opacity: 0;
-    }
+  0% {
+    transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) scale(1);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+    transform: translate3d(50px, -25px, 20px) rotateX(45deg) rotateY(45deg) scale(1.1);
+  }
+  75% {
+    opacity: 0.5;
+    transform: translate3d(var(--move-x, 100px), var(--move-y, -100px), -20px) rotateX(-45deg)
+      rotateY(-45deg) scale(1.2);
+  }
+  100% {
+    transform: translate3d(var(--move-x, 150px), var(--move-y, -150px), 0) rotateX(0) rotateY(0)
+      scale(0.8);
+    opacity: 0;
+  }
 }
 
 /* Pulse animation for the central glow */
 @keyframes pulse {
-    0% {
-        opacity: 0.3;
-        transform: translate(-50%, -50%) scale(0.8);
-    }
-    50% {
-        opacity: 0.5;
-        transform: translate(-50%, -50%) scale(1.1);
-    }
-    100% {
-        opacity: 0.3;
-        transform: translate(-50%, -50%) scale(0.8);
-    }
+  0% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  100% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
 }
 
 /* Add random movement to particles using CSS variables */
 .transparent-particle-bg .particle {
-    --move-x: random(200px);
-    --move-y: random(-200px);
+  --move-x: random(200px);
+  --move-y: random(-200px);
 }
 
 /* Add more particles with different behaviors */
 .particle-trail {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: var(--particle-color-1);
-    animation: trailAnimation 8s linear infinite;
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--particle-color-1);
+  animation: trailAnimation 8s linear infinite;
 }
 
 /* Add connection lines between particles */
 .particle-connection {
-    position: absolute;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--particle-color-2), transparent);
-    transform-origin: left center;
-    animation: connectionAnimation 10s ease-in-out infinite;
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--particle-color-2), transparent);
+  transform-origin: left center;
+  animation: connectionAnimation 10s ease-in-out infinite;
 }
 
 /* Add floating orbs */
 .orb {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, 
-        rgba(0, 150, 255, 0.1),
-        rgba(0, 60, 255, 0.05) 60%,
-        transparent 70%);
-    filter: blur(5px);
-    animation: orbFloat 20s ease-in-out infinite;
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(0, 150, 255, 0.1),
+    rgba(0, 60, 255, 0.05) 60%,
+    transparent 70%
+  );
+  filter: blur(5px);
+  animation: orbFloat 20s ease-in-out infinite;
 }
 
 @keyframes trailAnimation {
-    0% {
-        transform: translateY(-100%) translateX(var(--start-x, 50%));
-        opacity: 0;
-    }
-    50% {
-        opacity: 0.5;
-    }
-    100% {
-        transform: translateY(100vh) translateX(var(--end-x, 60%));
-        opacity: 0;
-    }
+  0% {
+    transform: translateY(-100%) translateX(var(--start-x, 50%));
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(100vh) translateX(var(--end-x, 60%));
+    opacity: 0;
+  }
 }
 
 @keyframes connectionAnimation {
-    0%, 100% {
-        transform: scaleX(0) translateY(var(--y-pos, 50%));
-        opacity: 0;
-    }
-    50% {
-        transform: scaleX(1) translateY(var(--y-pos, 50%));
-        opacity: 0.5;
-    }
+  0%,
+  100% {
+    transform: scaleX(0) translateY(var(--y-pos, 50%));
+    opacity: 0;
+  }
+  50% {
+    transform: scaleX(1) translateY(var(--y-pos, 50%));
+    opacity: 0.5;
+  }
 }
 
 @keyframes orbFloat {
-    0%, 100% {
-        transform: translate(0, 0) scale(1);
-    }
-    25% {
-        transform: translate(100px, -50px) scale(1.2);
-    }
-    50% {
-        transform: translate(50px, 100px) scale(0.8);
-    }
-    75% {
-        transform: translate(-50px, -25px) scale(1.1);
-    }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(100px, -50px) scale(1.2);
+  }
+  50% {
+    transform: translate(50px, 100px) scale(0.8);
+  }
+  75% {
+    transform: translate(-50px, -25px) scale(1.1);
+  }
 }
 
 /* Add mousemove interaction */
 .transparent-particle-bg:hover .particle {
-    transition: transform 0.2s ease-out;
-    transform: scale(1.2);
+  transition: transform 0.2s ease-out;
+  transform: scale(1.2);
 }
 
 /* Add media queries for better performance on mobile */
 @media (max-width: 768px) {
-    .particle-connection,
-    .particle-trail {
-        display: none;
-    }
-    
-    .transparent-particle-bg .particle {
-        filter: none;
-    }
+  .particle-connection,
+  .particle-trail {
+    display: none;
+  }
+
+  .transparent-particle-bg .particle {
+    filter: none;
+  }
 }
 
 /* Enhanced 3D space effect */
 .particle-space {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    animation: rotate3D 20s linear infinite;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: rotate3D 20s linear infinite;
 }
 
 /* Floating circles with improved glow */
 .floating-circle {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid rgba(0, 150, 255, 0.3);
-    box-shadow: var(--neon-glow);
-    animation: floatCircle 15s ease-in-out infinite;
-    backdrop-filter: blur(3px);
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 150, 255, 0.3);
+  box-shadow: var(--neon-glow);
+  animation: floatCircle 15s ease-in-out infinite;
+  backdrop-filter: blur(3px);
 }
 
 /* Energy beams */
 .energy-beam {
-    position: absolute;
-    width: 2px;
-    background: linear-gradient(to bottom, transparent, var(--particle-color-1), transparent);
-    filter: blur(1px);
-    animation: energyBeam 8s ease-in-out infinite;
-    transform-origin: center top;
+  position: absolute;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--particle-color-1), transparent);
+  filter: blur(1px);
+  animation: energyBeam 8s ease-in-out infinite;
+  transform-origin: center top;
 }
 
 /* Neural network nodes */
 .neural-node {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--particle-color-1);
-    border-radius: 50%;
-    box-shadow: var(--neon-glow);
-    animation: pulseNode 4s ease-in-out infinite;
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--particle-color-1);
+  border-radius: 50%;
+  box-shadow: var(--neon-glow);
+  animation: pulseNode 4s ease-in-out infinite;
 }
 
 /* Neural network connections */
 .neural-connection {
-    position: absolute;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--particle-color-2), transparent);
-    transform-origin: left center;
-    animation: connectNodes 6s ease-in-out infinite;
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--particle-color-2), transparent);
+  transform-origin: left center;
+  animation: connectNodes 6s ease-in-out infinite;
 }
 
 /* Data stream effect */
 .data-stream {
-    position: absolute;
-    font-family: monospace;
-    color: var(--particle-color-1);
-    font-size: 10px;
-    opacity: 0.3;
-    animation: streamData 10s linear infinite;
-    text-shadow: 0 0 5px var(--particle-color-1);
+  position: absolute;
+  font-family: monospace;
+  color: var(--particle-color-1);
+  font-size: 10px;
+  opacity: 0.3;
+  animation: streamData 10s linear infinite;
+  text-shadow: 0 0 5px var(--particle-color-1);
 }
 
 /* Enhanced particle trails */
 .particle-trail {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: var(--particle-color-1);
-    filter: blur(1px);
-    animation: trailEffect 8s linear infinite;
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--particle-color-1);
+  filter: blur(1px);
+  animation: trailEffect 8s linear infinite;
 }
 
 @keyframes rotate3D {
-    0% { transform: rotateX(20deg) rotateY(0deg); }
-    100% { transform: rotateX(20deg) rotateY(360deg); }
+  0% {
+    transform: rotateX(20deg) rotateY(0deg);
+  }
+  100% {
+    transform: rotateX(20deg) rotateY(360deg);
+  }
 }
 
 @keyframes floatCircle {
-    0%, 100% {
-        transform: translate3d(0, 0, 0) scale(1);
-        opacity: 0.3;
-    }
-    50% {
-        transform: translate3d(100px, -50px, 50px) scale(1.2);
-        opacity: 0.6;
-    }
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate3d(100px, -50px, 50px) scale(1.2);
+    opacity: 0.6;
+  }
 }
 
 @keyframes energyBeam {
-    0% {
-        height: 0;
-        opacity: 0;
-    }
-    50% {
-        height: 100vh;
-        opacity: 0.5;
-    }
-    100% {
-        height: 0;
-        opacity: 0;
-    }
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+  50% {
+    height: 100vh;
+    opacity: 0.5;
+  }
+  100% {
+    height: 0;
+    opacity: 0;
+  }
 }
 
 @keyframes pulseNode {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 0.5;
-    }
-    50% {
-        transform: scale(1.5);
-        opacity: 1;
-    }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 1;
+  }
 }
 
 @keyframes connectNodes {
-    0%, 100% {
-        transform: scaleX(0);
-        opacity: 0;
-    }
-    50% {
-        transform: scaleX(1);
-        opacity: 0.5;
-    }
+  0%,
+  100% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scaleX(1);
+    opacity: 0.5;
+  }
 }
 
 @keyframes streamData {
-    0% {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-    10% { opacity: 0.3; }
-    90% { opacity: 0.3; }
-    100% {
-        transform: translateY(100%);
-        opacity: 0;
-    }
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
 }
 
 @keyframes trailEffect {
-    0% {
-        transform: translate3d(0, -100%, 0) rotate(0deg);
-        opacity: 0;
-    }
-    50% {
-        opacity: 0.5;
-        transform: translate3d(100px, 0, 50px) rotate(180deg);
-    }
-    100% {
-        transform: translate3d(0, 100%, 0) rotate(360deg);
-        opacity: 0;
-    }
+  0% {
+    transform: translate3d(0, -100%, 0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate3d(100px, 0, 50px) rotate(180deg);
+  }
+  100% {
+    transform: translate3d(0, 100%, 0) rotate(360deg);
+    opacity: 0;
+  }
 }
 
 /* Hexagon grid background */
 .hex-grid {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        linear-gradient(30deg, var(--particle-color-3) 1px, transparent 1px),
-        linear-gradient(-30deg, var(--particle-color-3) 1px, transparent 1px);
-    background-size: 30px 30px;
-    opacity: 0.1;
-    animation: gridPulse 10s ease-in-out infinite;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(30deg, var(--particle-color-3) 1px, transparent 1px),
+    linear-gradient(-30deg, var(--particle-color-3) 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: 0.1;
+  animation: gridPulse 10s ease-in-out infinite;
 }
 
 @keyframes gridPulse {
-    0%, 100% { opacity: 0.05; }
-    50% { opacity: 0.1; }
+  0%,
+  100% {
+    opacity: 0.05;
+  }
+  50% {
+    opacity: 0.1;
+  }
 }
 
 /* Mouse interaction effect */
 .cursor-effect {
-    position: absolute;
-    pointer-events: none;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--particle-color-1) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  position: absolute;
+  pointer-events: none;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--particle-color-1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
-    .neural-connection,
-    .energy-beam {
-        display: none;
-    }
-    
-    .floating-circle {
-        border-width: 0.5px;
-    }
+  .neural-connection,
+  .energy-beam {
+    display: none;
+  }
+
+  .floating-circle {
+    border-width: 0.5px;
+  }
 }

@@ -1,7 +1,7 @@
 @import url(./components/navbar.css);
 @import url(./components/animationHomePage.css);
 @import url(./components/backgroundAnimation.css);
-@import url(./components/linkshomePage.css);
+@import url(./components/more.css);
 
 
 @keyframes moveBus {
@@ -50,7 +50,6 @@
 #loading-screen {
   width: 100%;
   height: 100%;
-  background: var(--primary-color);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -356,3 +355,6 @@
 .subtitle-button:hover .magic-bus {
   text-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
 }
+
+
+
