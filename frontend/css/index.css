@@ -29,7 +29,7 @@
   font-weight: 500;
   transition: all 0.3s ease-in-out;
   font-size: 2em;
-  background: linear-gradient(to right, #6366f1, #8b5cf6);
+  background: linear-gradient(to right, #171a9e, #4119df);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
@@ -38,7 +38,7 @@
 .aura-title {
   font-size: 4rem;
   font-weight: 800;
-  background: linear-gradient(to right, #6366f1, #8b5cf6);
+  background: linear-gradient(to right, #171a9e, #4119df);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 1rem;
@@ -335,7 +335,7 @@
   font-size: 4rem;
   font-weight: 800;
   margin: 0;
-  background: linear-gradient(to right, #6366f1, #8b5cf6);
+  background: linear-gradient(to right, #171a9e, #4119df);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
@@ -343,8 +343,8 @@
 
 .from-text {
   margin: 0;
-  font-size: 1.5em;
-  background: linear-gradient(to right, #6366f1, #8b5cf6);
+  font-size: 1em;
+  background: linear-gradient(to right, #171a9e, #4119df);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -352,5 +352,5 @@
 /* Optional: Add a subtle glow effect on hover */
 .title-button:hover .aura-title,
 .subtitle-button:hover .magic-bus {
-  text-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+  text-shadow: 0 0 30px rgb(80, 72, 202);
 }
