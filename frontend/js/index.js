@@ -2,8 +2,18 @@ import animateText from "./components/animateText.js";
 import createBackgroundElements from "./components/createBackgroundElements.js";
 
 document.addEventListener("DOMContentLoaded", main);
+const token = localStorage.getItem("token");
+const userNameEl = document.querySelector(".username");
+const userNameIdEl = document.querySelector(".user-id");
 
 async function main() {
+  const res = await fetch(`${window.CONFIG.API_URL}/`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await res.json();
+  userNameEl.textContent = data.user.username;
+  userNameIdEl.textContent = `@${data.user.username}`;
+
   const loadingScreen = document.getElementById("loading-screen");
   const menu = document.querySelector(".menu");
 
@@ -20,7 +30,4 @@ async function main() {
   animateText();
   createBackgroundElements();
 
-  // show the links container after loading
-  const linksContainer = document.querySelector(".links-container");
-  linksContainer.classList.add("show");
 }
