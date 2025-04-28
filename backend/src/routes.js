@@ -50,7 +50,9 @@ export const routes = {
   },
 
   "POST /api/newPost": async (req, res, decodedData) => {
-    const { user_id, post_body, post_file, linked_listing } = await parseBody(req);
+    const { user_id, post_body, post_file, linked_listing } = await parseBody(
+      req
+    );
     const result = await newPost(user_id, post_body, post_file);
     send(res, result.error ? 400 : 200, result);
   },
@@ -72,10 +74,6 @@ export const routes = {
   "GET /api/messages": async (req, res, decodedData) => {
     const username = decodedData.username;
     const result = await getMessages(username);
-    // Include current user ID in the response
-    if (!result.error) {
-      // result.currentUserId = userId;
-    }
     send(res, result.error ? 400 : 200, result);
   },
 
@@ -86,8 +84,9 @@ export const routes = {
     send(res, result.error ? 400 : 200, result);
   },
 
-  "POST /api/searchUsers": async (req, res, decodedData) => {
-    const { searchQuery } = await parseBody(req);
+  "GET /api/searchUsers": async (req, res, decodedData) => {
+    const fullUrl = new URL(req.url, `http://${req.headers.host}`);
+    const searchQuery = fullUrl.searchParams.get("searchQuery") || "";
     const result = await searchUsers(searchQuery);
     send(res, result.error ? 400 : 200, result);
   },

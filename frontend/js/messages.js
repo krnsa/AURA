@@ -54,15 +54,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function searchUsers(query) {
     try {
-      const response = await fetch(`${window.CONFIG.API_URL}/api/searchUsers`, {
-        method: "POST",
+      const url = new URL(`${window.CONFIG.API_URL}/api/searchUsers`);
+      url.searchParams.set("searchQuery", query);
+      const response = await fetch(url.toString(), {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          searchQuery: query,
-        }),
       });
 
       if (!response.ok) {
