@@ -136,11 +136,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       displayConversation(existingConversation);
+
+      startPolling();
     } else {
       const newConversation = {
         id: `temp_${Date.now()}`,
         otherUserId: user.id,
         otherUserName: user.username,
+        avatar_url: user.avatar_url,
         messages: [],
         lastMessage: "No messages yet",
         lastMessageTime: new Date().toISOString(),
@@ -150,6 +153,10 @@ document.addEventListener("DOMContentLoaded", function () {
       activeConversation = newConversation;
 
       displayConversation(newConversation);
+
+      if (pollInterval) {
+        clearInterval(pollInterval);
+      }
     }
   }
 
@@ -311,6 +318,26 @@ document.addEventListener("DOMContentLoaded", function () {
     conversationList.appendChild(conversationElement);
   }
 
+  function updateActiveConversationItem() {
+    const id = activeConversation.id.toString();
+    const item = document.querySelector(
+      `.conversation-list .conversation[data-conversation-id="${id}"]`
+    );
+    if (!item) return;
+
+    const infoP = item.querySelector(".conversation-info p");
+    infoP.textContent = activeConversation.lastMessage;
+
+    const timeSpan = item.querySelector(".conversation-time span");
+    const ts = new Date(activeConversation.lastMessageTime);
+    timeSpan.textContent = ts.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+
+    conversationList.prepend(item);
+  }
+
   function displayConversation(conversation) {
     updateChatHeader(conversation);
 
@@ -337,7 +364,6 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         <div class="contact-info">
           <h3>${conversation.otherUserName}</h3>
-          <p>Online</p>
         </div>
       </div>
     `;
@@ -517,7 +543,9 @@ document.addEventListener("DOMContentLoaded", function () {
           activeConversation = newConversation;
         }
 
-        updateConversationList();
+        updateActiveConversationItem();
+
+        startPolling();
       }
     } catch (error) {
       console.error("Error sending message:", error);
@@ -530,26 +558,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function updateConversationList() {
-    conversations.sort(
-      (a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime)
-    );
-
-    conversationList.innerHTML = "";
-    conversations.forEach((conversation, index) => {
-      createConversationElement(
-        conversation,
-        conversation.id === activeConversation.id
-      );
-    });
-  }
-
   let pollInterval = null;
 
   function startPolling() {
     if (pollInterval) clearInterval(pollInterval);
 
-    pollInterval = setInterval(fetchConversations, 3000);
+    pollInterval = setInterval(fetchConversations, 1000);
   }
 
   startPolling();
