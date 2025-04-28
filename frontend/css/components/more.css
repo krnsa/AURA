@@ -1,57 +1,174 @@
 @import url(../components/navbar.css);
 
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-y: auto;
+    background-color: black;
+    color: white;
+    font-family: "Manrope", sans-serif;
+}
+
 .links-container {
-  position: absolute;
-  bottom: 50px;
-  left: 50%;
-  transform: translateX(-50%) scale(0.95);
-  display: flex;
-  visibility: hidden;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  z-index: 10;
+    position: fixed; /* Change from absolute to fixed */
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.95);
+    display: flex;
+    visibility: hidden;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    z-index: 10;
 }
 
 .links-container.show {
-  visibility: visible;
-  transform: translateX(-50%) scale(1);
-  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    visibility: visible;
+    transform: translateX(-50%) scale(1);
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .links-container .glass-card {
-  position: relative;
-  width: 180px;
-  height: 200px;
-  background: linear-gradient(#fff2, transparent);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: 0.5s;
-  border-radius: 10px;
-  margin: 0 -45px;
-  transform: rotate(calc(var(--r) * 1deg));
+    position: relative;
+    width: 180px;
+    height: 200px;
+    background: linear-gradient(#fff2, transparent);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+    border-radius: 10px;
+    margin: 0 -45px;
+    transform: rotate(calc(var(--r) * 1deg));
 }
 
 .links-container:hover .glass-card {
-  transform: rotate(0deg);
-  margin: 0 10px;
+    transform: rotate(0deg);
+    margin: 0 10px;
 }
 
 .links-container .glass-card::before {
-  content: attr(data-text);
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.05);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  font-family: "Manrope", sans-serif;
-  font-weight: 500;
+    content: attr(data-text);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-family: "Manrope", sans-serif;
+    font-weight: 500;
+}
+
+.tech-container {
+    margin: 90px auto 400px; /* Increased bottom margin to make space for cards */
+    padding: 2rem;
+    color: white;
+    max-width: 1200px;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* Updated team member cards to match glass-card style */
+.team-member {
+    position: relative;
+    height: 200px;
+    background: linear-gradient(#fff2, transparent);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+}
+
+.team-member-content {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    text-align: center;
+}
+
+.team-member:hover .team-member-content {
+    opacity: 1;
+}
+
+.team-member::before {
+    content: attr(data-name);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-family: "Manrope", sans-serif;
+    font-weight: 500;
+}
+
+/* Stack section styling */
+.stack-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.stack-item {
+    background: linear-gradient(#fff2, transparent);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    padding: 1.5rem;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+}
+
+.stack-item:hover {
+    transform: translateY(-5px);
+}
+
+/* Section headings */
+.team-section h2,
+.tech-stack h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .tech-container {
+        margin: 70px auto 300px;
+        padding: 1rem;
+    }
+    
+    .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    
+    .links-container .glass-card {
+        width: 150px;
+        height: 180px;
+        margin: 0 -30px;
+    }
 }
