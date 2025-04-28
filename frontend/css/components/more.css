@@ -1,7 +1,4 @@
-@import url(./components/navbar.css);
-@import url(./components/animationHomePage.css);
-@import url(./components/backgroundAnimation.css);
-@import url(./components/more.css);
+@import url(../components/navbar.css);
 
 .links-container {
   position: absolute;
