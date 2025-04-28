@@ -1,17 +1,15 @@
 @import url(../components/navbar.css);
 
 body {
-    margin: 0;
-    min-height: 100vh;
+    min-height: 200vh;
     overflow-y: auto;
+    margin: 0;
     background-color: black;
-    color: white;
-    font-family: "Manrope", sans-serif;
 }
 
 .links-container {
-    position: fixed; /* Change from absolute to fixed */
-    bottom: 50px;
+    position: fixed;
+    bottom: 20px;  /* Changed from 50px to 20px to move cards down */
     left: 50%;
     transform: translateX(-50%) scale(0.95);
     display: flex;
@@ -23,103 +21,124 @@ body {
 }
 
 .links-container.show {
-    visibility: visible;
-    transform: translateX(-50%) scale(1);
-    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  visibility: visible;
+  transform: translateX(-50%) scale(1);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .links-container .glass-card {
-    position: relative;
-    width: 180px;
-    height: 200px;
-    background: linear-gradient(#fff2, transparent);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.5s;
-    border-radius: 10px;
-    margin: 0 -45px;
-    transform: rotate(calc(var(--r) * 1deg));
+  position: relative;
+  width: 180px;
+  height: 190px;
+  background: linear-gradient(#fff2, transparent);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+  border-radius: 10px;
+  margin: 0 -45px;
+  transform: rotate(calc(var(--r) * 1deg));
 }
 
 .links-container:hover .glass-card {
-    transform: rotate(0deg);
-    margin: 0 10px;
+  transform: rotate(0deg);
+  margin: 0 10px;
 }
 
 .links-container .glass-card::before {
-    content: attr(data-text);
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.05);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    font-family: "Manrope", sans-serif;
-    font-weight: 500;
+  content: attr(data-text);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-family: "Manrope", sans-serif;
+  font-weight: 500;
 }
 
 .tech-container {
-    margin: 90px auto 400px; /* Increased bottom margin to make space for cards */
+    margin: 90px auto 700px;  /* Increased bottom margin from 600px to 700px */
     padding: 2rem;
     color: white;
     max-width: 1200px;
 }
 
+.team-section {
+    margin-bottom: 3rem;
+}
+
 .team-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, 1fr); /* 3 members per row */
     gap: 2rem;
     margin-top: 2rem;
 }
 
-/* Updated team member cards to match glass-card style */
 .team-member {
     position: relative;
-    height: 200px;
     background: linear-gradient(#fff2, transparent);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100px;
+    overflow: hidden;
+}
+
+.member-name {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.member-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: 0.5s;
-}
-
-.team-member-content {
+    background: rgba(255, 255, 255, 0.05);
     opacity: 0;
     transition: opacity 0.3s ease;
-    text-align: center;
 }
 
-.team-member:hover .team-member-content {
+.member-hover p {
+    color: white;
+    margin: 5px 0;
+    font-size: 0.9rem;
+}
+
+.team-member:hover .member-name {
+    opacity: 0;
+}
+
+.team-member:hover .member-hover {
     opacity: 1;
 }
 
-.team-member::before {
-    content: attr(data-name);
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.05);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    font-family: "Manrope", sans-serif;
-    font-weight: 500;
+.tech-stack {
+    margin-bottom: 3rem;
 }
 
-/* Stack section styling */
 .stack-details {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -128,47 +147,46 @@ body {
 }
 
 .stack-item {
-    background: linear-gradient(#fff2, transparent);
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 1.5rem;
-    height: 150px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: 0.5s;
 }
 
-.stack-item:hover {
-    transform: translateY(-5px);
-}
-
-/* Section headings */
-.team-section h2,
-.tech-stack h2 {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 2rem;
+.glass-card .card-content {
+    opacity: 0;
+    transition: opacity 0.3s ease;
     color: white;
+    text-align: center;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .tech-container {
-        margin: 70px auto 300px;
-        padding: 1rem;
-    }
-    
+.glass-card:hover .card-content {
+    opacity: 1;
+}
+
+.glass-card .card-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+}
+
+.glass-card .card-content li {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 1200px) {
     .team-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .team-grid {
+        grid-template-columns: 1fr;
     }
     
-    .links-container .glass-card {
-        width: 150px;
-        height: 180px;
-        margin: 0 -30px;
+    .team-member {
+        height: 80px;
     }
 }
