@@ -8,7 +8,7 @@ async function getMessages(userName) {
     if (!user || user.length === 0) {
       return { error: "User not found" };
     }
-    const userId = user[0].id;
+    const userId = user.id;
 
     console.log("User ID:", userId);
 
@@ -22,9 +22,7 @@ async function getMessages(userName) {
       return { error: "Failed to fetch messages" };
     }
 
-    const unreadConversations = data.filter(
-      (conv) => conv.receiver_id === userId && !conv.is_read
-    );
+    const unreadConversations = data.filter((conv) => conv.receiver_id === userId && !conv.is_read);
 
     if (unreadConversations.length > 0) {
       const { error: updateError } = await supabase
@@ -41,10 +39,7 @@ async function getMessages(userName) {
     }
 
     const userIds = [
-      ...new Set([
-        ...data.map((conv) => conv.sender_id),
-        ...data.map((conv) => conv.receiver_id),
-      ]),
+      ...new Set([...data.map((conv) => conv.sender_id), ...data.map((conv) => conv.receiver_id)]),
     ].filter((id) => id !== userId);
 
     const { data: userData, error: userError } = await supabase
@@ -65,9 +60,7 @@ async function getMessages(userName) {
 
     const enhancedConversations = data.map((conversation) => {
       const otherUserId =
-        conversation.sender_id === userId
-          ? conversation.receiver_id
-          : conversation.sender_id;
+        conversation.sender_id === userId ? conversation.receiver_id : conversation.sender_id;
 
       let parsedContent = [];
       try {
