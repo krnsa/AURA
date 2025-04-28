@@ -10,6 +10,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./img/AuraLogo.png" />
     <link rel="stylesheet" href="./css/styles.css">
     <link rel="stylesheet" href="./css/notifications.css">
+
 </head>
 
 <body>
@@ -112,13 +113,59 @@
     
     
     
+    
         <div class="ui-switch">
             <label for="dark-mode-toggle" class="slider">
                 <div class="circle"></div>
             </label>
         </div>
     
-        <script type="module" src="./js/index.js"></script>
+
+    <div class="container">
+        <div class="notificationContainer">
+            <header>
+                <div class="notificationHeader">
+                    <h1>Notifications</h1>
+                    <span id="num-of-notif"></span>
+                </div>
+                <p id="mark-as-read">Mark as All Read</p>
+            </header>
+            <main>
+                <div class="notificationCard unread">
+                    <img alt="photo" src="https://lrksmbylzrlsvbtymslu.supabase.co/storage/v1/object/public/content/avatar/FC_Barcelona_1_2.webp" />
+                    <div class="description">
+                        <p>I approved PR request 13!</p>
+                        <p id="notif-time">1 Min Ago</p>
+                    </div>
+                </div>
+                <div class="notificationCard unread">
+                    <img alt="photo" src="https://lrksmbylzrlsvbtymslu.supabase.co/storage/v1/object/public/content/avatar/FC_Barcelona_1_2.webp" />
+                    <div class="description">
+                        <p>Report 3 is due May 5!!!</p>
+                        <p id="notif-time">25 Min Ago</p>
+                    </div>
+                </div>
+                <div class="notificationCard unread">
+                    <img alt="photo" src="https://lrksmbylzrlsvbtymslu.supabase.co/storage/v1/object/public/content/avatar/k43GMz63_400x400.jpg" />
+                    <div class="description">
+                        <p>Hi Guys, this is Sam, we would love to buy AURA. Lets Talk!</p>
+                        <p id="notif-time">4 Day Ago</p>
+                    </div>
+                </div>
+                <div class="notificationCard">
+                    <img alt="photo" src="https://lrksmbylzrlsvbtymslu.supabase.co/storage/v1/object/public/content/avatar/taco.jpg" />
+                    <div class="description">
+                        <p>Wanna Collab??!!</p>
+                        <p id="notif-time">5 Days Ago</p>
+                    </div>
+                </div>
+                
+            </main>
+        </div>
+    </div>
+ 
+
+        <script type="module" src="./js/notifications.js"></script>
     </body>
     
     </html>
