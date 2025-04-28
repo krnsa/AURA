@@ -88,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
     searchResults.innerHTML = "";
 
     users.forEach((user) => {
+      console.log(user);
       const resultItem = document.createElement("div");
       resultItem.className = "search-result-item";
 
@@ -97,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       resultItem.innerHTML = `
       <div class="avatar">
-      ${getAvatarHTML(user.username)}
+      <img src="${user.avatar_url}" alt="${user.username}" />
       </div>
       <h4>${user.username}</h4>
     `;
@@ -285,7 +286,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     conversationElement.innerHTML = `
       <div class="avatar">
-        ${getAvatarHTML(conversation.otherUserName)}
+        <img src="${conversation.avatar_url}" alt="${conversation.otherUserName}" />
       </div>
       <div class="conversation-info">
         <h3>${conversation.otherUserName}</h3>
@@ -332,7 +333,7 @@ document.addEventListener("DOMContentLoaded", function () {
     chatHeader.innerHTML = `
       <div class="chat-contact">
         <div class="avatar">
-        ${getAvatarHTML(conversation.otherUserName)}
+        <img src="${conversation.avatar_url}" alt="${conversation.otherUserName}" />
         </div>
         <div class="contact-info">
           <h3>${conversation.otherUserName}</h3>

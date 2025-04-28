@@ -4,13 +4,12 @@ import findUser from "./findUser.js";
 async function getMessages(userName) {
   try {
     const user = await findUser(userName);
+    const avatarUrl = user.avatar_url || "";
 
     if (!user || user.length === 0) {
       return { error: "User not found" };
     }
     const userId = user.id;
-
-    console.log("User ID:", userId);
 
     const { data, error } = await supabase
       .from("messages")
@@ -22,7 +21,9 @@ async function getMessages(userName) {
       return { error: "Failed to fetch messages" };
     }
 
-    const unreadConversations = data.filter((conv) => conv.receiver_id === userId && !conv.is_read);
+    const unreadConversations = data.filter(
+      (conv) => conv.receiver_id === userId && !conv.is_read
+    );
 
     if (unreadConversations.length > 0) {
       const { error: updateError } = await supabase
@@ -39,12 +40,15 @@ async function getMessages(userName) {
     }
 
     const userIds = [
-      ...new Set([...data.map((conv) => conv.sender_id), ...data.map((conv) => conv.receiver_id)]),
+      ...new Set([
+        ...data.map((conv) => conv.sender_id),
+        ...data.map((conv) => conv.receiver_id),
+      ]),
     ].filter((id) => id !== userId);
 
     const { data: userData, error: userError } = await supabase
       .from("users")
-      .select("id, username")
+      .select("id, username, avatar_url")
       .in("id", userIds);
 
     if (userError) {
@@ -52,15 +56,19 @@ async function getMessages(userName) {
     }
 
     const userMap = {};
+    const avatarMap = {};
     if (userData) {
       userData.forEach((user) => {
         userMap[user.id] = user.username;
+        avatarMap[user.id] = user.avatar_url;
       });
     }
 
     const enhancedConversations = data.map((conversation) => {
       const otherUserId =
-        conversation.sender_id === userId ? conversation.receiver_id : conversation.sender_id;
+        conversation.sender_id === userId
+          ? conversation.receiver_id
+          : conversation.sender_id;
 
       let parsedContent = [];
       try {
@@ -79,6 +87,7 @@ async function getMessages(userName) {
         otherUserName: userMap[otherUserId] || `User ${otherUserId}`,
         messages: parsedContent,
         otherUserId: otherUserId,
+        avatar_url: avatarMap[otherUserId] || avatarUrl,
       };
     });
 
