@@ -15,7 +15,7 @@ A Social Media Platform with Integrated E-Commerce
   - Supabase for database, authentication, and storage
   - JWT-based authentication (custom implementation using `jsonwebtoken` library)
 - **Architecture:** Monorepo (`frontend/` + `backend/`)
-- **Database:** Supabase (PostgreSQL + Auth + Storage)
+- **Database:** Supabase (PostgreSQL + Storage)
 
 ## Features
 
