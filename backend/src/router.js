@@ -16,7 +16,8 @@ import removeLike from "./api/likes/removeLike.js";
 import getFollowers from "./api/followers/getFollowers.js"
 import followUser from "./api/followers/followUser.js";
 import unfollowUser from "./api/followers/unfollowUser.js";
-//import getNotifications from "./api/getNotifications.js";
+import getNotifications from "./api/notifications/getNotifications.js";
+import markNotificationRead from "./api/notifications/markNotifications.js";
 
 const { URL } = await import('url'); // Node's built-in URL module
 
@@ -139,10 +140,10 @@ export async function handleRequest(req, res) {
     },
 
     // getNotifications route
-    // "GET /api/notifications": async () => {
-    //   const result = await getNotifications(username); 1Has a conversation. Original line has a conversation.
-    //   send(res, result.error ? 400 : 200, result);
-    // },
+    "GET /api/notifications": async () => {
+      const result = await getNotifications(username);
+      send(res, result.error ? 400 : 200, result);
+    },
 
     // Get messages route
     "GET /api/messages": async () => {
@@ -217,6 +218,12 @@ export async function handleRequest(req, res) {
     "POST /api/unfollowUser": async () => {
       const { user_to_unfollow } = await parseBody(req);
       const result = await unfollowUser(user_to_unfollow, username);
+      send(res, result.error ? 400 : 200, result);
+    },
+
+    "POST /api/notifications/read": async () => {
+      const { notification_id } = await parseBody(req);
+      const result = await markNotificationRead(username, notification_id);
       send(res, result.error ? 400 : 200, result);
     },
   };
