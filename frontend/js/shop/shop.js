@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   let cartCount = 0;
+  const cartItems = [];
   const productsGrid = document.querySelector(".products-grid");
   const productSearch = document.getElementById("product-search");
 
@@ -101,9 +102,25 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
 
         const productCard = this.closest(".product-card");
+        const productId = this.dataset.productId;
         const productName = productCard.querySelector("h3").textContent;
-        const productPrice =
-          productCard.querySelector(".product-price").textContent;
+        const priceText = productCard.querySelector(".product-price").textContent;
+        const productPrice = Number(priceText.replace("$", ""));
+
+          const productData = {
+            id: productId,
+            name: productName,
+            price: productPrice,
+          };
+  
+          if (cartItems[productId]) {
+            cartItems[productId].quantity += 1;
+          } else {
+            cartItems[productId] = {
+              product: productData,
+              quantity: 1,
+            };
+          }
 
         cartCount++;
 
@@ -169,6 +186,55 @@ document.addEventListener("DOMContentLoaded", function () {
     cartButton.addEventListener("click", function () {
       alert(`You have ${cartCount} item(s) in your cart.`);
     });
+  }
+
+  
+  const cartPanel = document.getElementById("cart-panel");
+  const closeCartButton = document.getElementById("close-cart");
+  const cartItemsDiv = document.getElementById("cart-items");
+  const cartTotalEl = document.getElementById("cart-total");
+
+  if (cartButton) {
+    cartButton.addEventListener("click", () => {
+      renderCartItemsPanel();
+      cartPanel.classList.remove("hidden");
+    });
+  }
+
+  if (closeCartButton) {
+    closeCartButton.addEventListener("click", () => {
+      cartPanel.classList.add("hidden");
+    });
+  }
+
+  function renderCartItemsPanel() {
+    cartItemsDiv.innerHTML = "";
+
+    const entries = Object.values(cartItems); 
+
+    if (entries.length === 0) {
+      cartItemsDiv.innerHTML = "<p>Your cart is empty.</p>";
+      cartTotalEl.textContent = "0.00";
+      return;
+    }
+
+    let total = 0;
+
+    entries.forEach(({ product, quantity }) => {
+      const itemEl = document.createElement("div");
+      itemEl.classList.add("cart-item");
+      const subtotal = product.price * quantity;
+      total += subtotal;
+
+      itemEl.innerHTML = `
+        <p>${product.name} x ${quantity}</p>
+        <p>$${subtotal.toFixed(2)}</p>
+      `;
+
+      cartItemsDiv.appendChild(itemEl);
+    });
+
+    cartTotalEl.textContent = total.toFixed(2);
   }
 
   const style = document.createElement("style");
