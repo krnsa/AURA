@@ -2,22 +2,6 @@
 @import url(./components/navbar.css);
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 
-/* Import base styles */
-@import url(./styles.css);
-
-/* General Styles */
-body {
-  margin: 0;
-  background-color: black;
-  color: grey;
-  font-family: "Arial", sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow: hidden;
-}
-
 :root {
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.7);
@@ -28,32 +12,51 @@ body {
 
 /* Container styles */
 .container {
-    margin-left: 90px;
-    padding: 2rem;
-    min-height: calc(100vh - 4rem);
-    transition: margin-left 0.3s;
-}
-
-.menu:hover ~ .container {
-    margin-left: 270px;
+    position:fixed;
+    padding-left: 90px;
+    height:100%;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
 }
 
 .notificationContainer {
     max-width: 800px;
+    min-width:500px;
     margin: 0 auto;
     background: var(--notification-bg);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
+    border-radius: 9px;
     border: 1px solid var(--notification-border);
     overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s;
+    animation: slideUp 0.5s ease-in-out;
+}
+
+@keyframes slideUp {
+    from {
+      transform: translateY(15px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+.notificationContainer:hover {
+    box-shadow: 0 4px 20px rgb(48, 40, 54);
 }
 
 /* Header styles */
 .notificationHeader {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    padding: 1.5rem;
+    padding: 15px 20px;
+    gap:10px;
     border-bottom: 1px solid var(--notification-border);
 }
 
@@ -63,18 +66,36 @@ body {
     margin: 0;
 }
 
-/* Update the mark-as-read button styles */
+.mark-as-read-container{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right:12px;
+    height:40px;
+    width:100%;
+    font-weight: bold;
+    font-size:16px;
+ 
+}
+
 #mark-as-read {
-    color: var(--text-secondary);
+    color: #9b74df;
     cursor: pointer;
-    transition: color 0.3s;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
+    transition: all 0.25s;
+    border-radius: 6px;
+    border: solid 2px #9b74df;
+    padding:2px 5px;
+    background: #3c364f;
+    height:28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #mark-as-read:hover {
-    color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.1);
+    color: #dfd0f8;
+    transform: scale(1.02);
+
 }
 
 /* Notification card styles */
@@ -128,7 +149,6 @@ body {
     padding: 0.25rem 0.75rem;
     border-radius: 12px;
     font-size: 0.9rem;
-    margin-left: 1rem;
 }
 
 /* Main content area */
