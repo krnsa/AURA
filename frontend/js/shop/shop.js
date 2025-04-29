@@ -236,8 +236,161 @@ document.addEventListener("DOMContentLoaded", function () {
     cartTotalEl.textContent = total.toFixed(2);
   }
 
+  const payNowButton = document.createElement("button");
+  payNowButton.id = "pay-now-btn";
+  payNowButton.classList.add("pay-now-btn"); 
+  payNowButton.textContent = "Pay Now";
+  cartPanel.appendChild(payNowButton);
+
+  if (payNowButton) {
+    payNowButton.addEventListener("click", () => {
+      const entries = Object.values(cartItems);
+  
+      if (entries.length === 0) {
+        alert("Your cart is empty.");
+        return;
+      }
+  
+      cartPanel.classList.add("hidden");
+  
+      renderCheckoutPanel(entries);
+    });
+  }
+
+  function renderCheckoutPanel() {
+    const checkoutPanel = document.createElement("div");
+    checkoutPanel.classList.add("checkout-panel");
+
+    const entries = Object.values(cartItems);
+    let total = 0;
+
+    entries.forEach(({ product, quantity }) => {
+      total += product.price * quantity;
+    });
+
+    checkoutPanel.innerHTML = `
+      <h2>Checkout</h2>
+      <div class="cart-summary">
+        <h3>Order Summary</h3>
+        <ul>
+          ${entries.map(({ product, quantity }) => `
+            <li>${product.name} x ${quantity} - $${(product.price * quantity).toFixed(2)}</li>
+          `).join('')}
+        </ul>
+        <p>Total: $${total.toFixed(2)}</p>
+      </div>
+      <form id="payment-form">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" required />
+        </div>
+        <div class="form-group">
+          <label for="address">Shipping Address</label>
+          <textarea id="address" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="credit-card">Credit Card Number</label>
+          <input type="text" id="credit-card" required />
+        </div>
+        <button type="submit" id="confirm-payment">Confirm Payment</button>
+      </form>
+    `;
+
+    document.body.appendChild(checkoutPanel);
+
+    const paymentForm = document.getElementById("payment-form");
+    paymentForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      confirmPayment();
+    });
+  }
+
+  function confirmPayment() {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const address = document.getElementById("address").value;
+    const creditCard = document.getElementById("credit-card").value;
+
+    if (!name || !email || !address || !creditCard) {
+      alert("Please fill in all the fields.");
+      return;
+    }
+
+    alert("Payment confirmed! Your order will be processed shortly.");
+    document.querySelector(".checkout-panel").remove(); 
+  }
+
+
   const style = document.createElement("style");
   style.textContent = `
+    .pay-now-btn {
+      background-color: #4CAF50; /* Green background */
+      color: white; /* White text */
+      font-family: 'Arial', sans-serif; /* Custom font */
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .pay-now-btn:hover {
+      background-color: #45a049;
+    }
+
+    .checkout-panel {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgb(18, 7, 58);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
+    .checkout-panel h2 {
+      margin-bottom: 20px;
+    }
+
+    .checkout-panel .form-group {
+      margin-bottom: 15px;
+    }
+
+    .checkout-panel .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .checkout-panel .form-group input,
+    .checkout-panel .form-group textarea {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .checkout-panel button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .checkout-panel button:hover {
+      background-color: #45a049;
+    }
     .button-clicked {
       transform: scale(0.95);
       opacity: 0.8;
