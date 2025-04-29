@@ -19,15 +19,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function loadProducts(searchQuery = null) {
     try {
-      const response = await fetch(`${window.CONFIG.API_URL}/api/getProducts`, {
-        method: "POST",
+      const url = new URL(`${window.CONFIG.API_URL}/api/getProducts`);
+      url.searchParams.set("searchQuery", searchQuery);
+
+      const response = await fetch(url, {
+        method: "GET",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          searchQuery: searchQuery,
-        }),
       });
 
       if (!response.ok) {
@@ -104,23 +103,24 @@ document.addEventListener("DOMContentLoaded", function () {
         const productCard = this.closest(".product-card");
         const productId = this.dataset.productId;
         const productName = productCard.querySelector("h3").textContent;
-        const priceText = productCard.querySelector(".product-price").textContent;
+        const priceText =
+          productCard.querySelector(".product-price").textContent;
         const productPrice = Number(priceText.replace("$", ""));
 
-          const productData = {
-            id: productId,
-            name: productName,
-            price: productPrice,
+        const productData = {
+          id: productId,
+          name: productName,
+          price: productPrice,
+        };
+
+        if (cartItems[productId]) {
+          cartItems[productId].quantity += 1;
+        } else {
+          cartItems[productId] = {
+            product: productData,
+            quantity: 1,
           };
-  
-          if (cartItems[productId]) {
-            cartItems[productId].quantity += 1;
-          } else {
-            cartItems[productId] = {
-              product: productData,
-              quantity: 1,
-            };
-          }
+        }
 
         cartCount++;
 
@@ -188,7 +188,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  
   const cartPanel = document.getElementById("cart-panel");
   const closeCartButton = document.getElementById("close-cart");
   const cartItemsDiv = document.getElementById("cart-items");
@@ -210,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function renderCartItemsPanel() {
     cartItemsDiv.innerHTML = "";
 
-    const entries = Object.values(cartItems); 
+    const entries = Object.values(cartItems);
 
     if (entries.length === 0) {
       cartItemsDiv.innerHTML = "<p>Your cart is empty.</p>";

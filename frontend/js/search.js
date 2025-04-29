@@ -32,14 +32,17 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     try {
-      const response = await fetch(`${window.CONFIG.API_URL}/api/search`, {
-        method: "POST",
+      const url = new URL(`${window.CONFIG.API_URL}/api/search`);
+      url.searchParams.set("searchQuery", query);
+      url.searchParams.set("filter", filter);
+
+      const response = await fetch(url, {
+        method: "GET",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ searchQuery: query, filter }),
       });
+
       if (!response.ok) throw new Error("Search failed");
       const data = await response.json();
       renderResults(data);

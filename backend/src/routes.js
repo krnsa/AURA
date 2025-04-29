@@ -91,8 +91,9 @@ export const routes = {
     send(res, result.error ? 400 : 200, result);
   },
 
-  "POST /api/getProducts": async (req, res, decodedData) => {
-    const { searchQuery } = await parseBody(req);
+  "GET /api/getProducts": async (req, res, decodedData) => {
+    const { searchParams } = new URL(req.url, `http://${req.headers.host}`);
+    const searchQuery = searchParams.get("searchQuery");
     const result = await getProducts(searchQuery);
     send(res, result.error ? 400 : 200, result);
   },
@@ -111,8 +112,10 @@ export const routes = {
     }
   },
 
-  "POST /api/search": async (req, res, decodedData) => {
-    const { searchQuery, filter } = await parseBody(req);
+  "GET /api/search": async (req, res, decodedData) => {
+    const { searchParams } = new URL(req.url, `http://${req.headers.host}`);
+    const searchQuery = searchParams.get("searchQuery");
+    const filter = searchParams.get("filter");
     const result = await getSearches(searchQuery, filter);
     send(res, result.error ? 400 : 200, result);
   },
