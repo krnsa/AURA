@@ -1,5 +1,3 @@
-import { getAvatarHTML } from "./components/avatarHelper.js";
-
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("search-input");
   const filterButtons = document.querySelectorAll(".filter-btn");
@@ -66,10 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
         item.className = "search-result-item person";
         console.log("URLS");
         item.innerHTML = `
-          <div class="avatar">${getAvatarHTML(u.username, avatarUrl)}</div>
-          <div class="search-result-info"><h4>${u.username}</h4><p>@${
-          u.username
-        }</p></div>
+          <div class="avatar"><img src="${u.avatar_url}" alt="${u.username}" /></div>
+          <div class="search-result-info"><h4>${u.username}</h4><p>@${u.username}</p></div>
           <button class="message-btn">Message</button>
         `;
 
@@ -95,11 +91,12 @@ document.addEventListener("DOMContentLoaded", () => {
       section.innerHTML = `<h3>Posts</h3><div class="search-result-list"></div>`;
       const list = section.querySelector(".search-result-list");
       posts.forEach((p) => {
+        console.log("Personsdf", p);
         const avatarUrl = `${window.CONFIG.API_URL}/api/avatar/${p.user_id}`;
         const item = document.createElement("div");
         item.className = "search-result-item post";
         item.innerHTML = `
-          <div class="avatar">${getAvatarHTML(p.username, avatarUrl)}</div>
+          <div class="avatar"><img src="${p.url}" alt="${p.username}" /></div>
           <div class="search-result-info">
             <div class="post-header"><h4>${
               p.username

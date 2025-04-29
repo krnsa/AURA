@@ -1,5 +1,3 @@
-import { getAvatarHTML } from "./components/avatarHelper.js";
-
 document.addEventListener("DOMContentLoaded", function () {
   const conversationList = document.querySelector(".conversation-list");
   const chatHeader = document.querySelector(".chat-header");
