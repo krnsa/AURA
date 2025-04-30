@@ -4,7 +4,7 @@
 
 @keyframes moveBus {
   from {
-    right: 100%;
+    left: -100px;
   }
 
   to {
@@ -53,42 +53,18 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
 }
 
 /* Bus Animation */
 .bus {
   position: absolute;
-  bottom: 20%;
+  bottom: 50px;
   left: -100px;
   width: 100px;
-  animation: moveBus 1s ease-in-out 0s forwards;
+  animation: moveBus 0.4s ease-in-out;
 }
 
-/* Utility Classes */
-.fade-transition {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-}
-
-.fade-transition.show {
-  opacity: 1;
-}
-
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  .login-container {
-    background: #1f1f1f;
-  }
-
-  input {
-    background: #2d2d2d;
-    border-color: #404040;
-    color: #fff;
-  }
-}
-
-/* From Uiverse.io by Li-Deheng */
 #btn-message {
   position: fixed;
   top: 20px;
