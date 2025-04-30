@@ -373,7 +373,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     chatMessages.innerHTML = `
       <div class="message-date">
-        <span>Today</span>
+
       </div>
     `;
 
