@@ -28,18 +28,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function fetchPosts() {
-    const res = await fetch(`${window.CONFIG.API_URL}/api/getPosts?user_id=${currentUserId}`, {
+    const response = await fetch(`${window.CONFIG.API_URL}/api/getPosts?user_id=${currentUserId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
     postsListEl.innerHTML = "";
-    if (!res.ok) {
+    if (!response.ok) {
       postsListEl.innerHTML = "<p>Error loading posts</p>";
       return;
     }
-    const posts = await res.json();
+    const result = await response.json();
+    const posts = result.data;
     posts.forEach((post) => {
       const card = document.createElement("div");
       card.className = "post-card";
