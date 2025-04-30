@@ -8,7 +8,7 @@ async function searchUsers(searchQuery) {
 
     const { data, error } = await supabase
       .from("users")
-      .select("id, username")
+      .select("id, username, avatar_url")
       .ilike("username", `%${searchQuery}%`)
       .limit(10);
 

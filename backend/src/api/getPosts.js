@@ -1,44 +1,40 @@
-// import supabase client
 import supabase from "../supabase/supabaseClient.js";
 
-export default async function getPosts(user_id = null) {
+async function fetchPosts(user_id) {
+  if (user_id) {
+    return supabase.from("posts").select("*").eq("user", user_id);
+  }
+  return supabase.from("posts").select("*");
+}
 
+async function fetchLikesForPost(postId) {
+  const { data: likesData, error: likesError } = await supabase
+    .from("likes")
+    .select("liking_user")
+    .eq("post", postId);
+
+  if (likesError) throw new Error(`Error fetching likes for post ${postId}: ${likesError.message}`);
+  return likesData.map((like) => like.liking_user);
+}
+
+export default async function getPosts(user_id) {
   try {
+    const { data: posts, error: postsError } = await fetchPosts(user_id);
 
-    let data = null;
-    let error = null;
-
-    if (user_id != null) {
-      ({ data, error } = await supabase.from("posts").select("*").eq("user", user_id));
-    } else {
-      ({ data, error } = await supabase.from("posts").select("*"));
+    if (postsError) throw new Error(`Error fetching posts: ${postsError.message}`);
+    if (!posts || posts.length === 0) {
+      return { data: [], error: "No posts found." };
     }
 
+    const postsWithLikes = await Promise.all(
+      posts.map(async (post) => {
+        const likes = await fetchLikesForPost(post.id);
+        return { ...post, likes };
+      })
+    );
 
-    let postsWithLikes = [];
-
-    for(const post of data) {
-      let likes = [];
-
-      const {data: like_d, error: error_d} = await supabase.from("likes").select("*").eq('post', post.id);
-
-      for(const p of like_d) {
-        likes.push(p.liking_user);
-      }
-
-      postsWithLikes.push(Object.assign({}, post, {likes}));
-
-    }
-
-    if(data.length == 0) {
-      return {'data': postsWithLikes, 'error': "No posts found."};
-    } else if(data === null) {
-      return {'data': postsWithLikes, 'error': "Supabase returns null."};
-    } else {
-      return {'data': postsWithLikes, 'error': ""};
-    }
-
+    return { data: postsWithLikes, error: "" };
   } catch (error) {
-      throw error;
-  } 
+    return { data: [], error: error.message };
+  }
 }

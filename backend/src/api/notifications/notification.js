@@ -1,10 +1,11 @@
-import supabase from "../supabase/supabaseClient.js";
+import supabase from "../../supabase/supabaseClient.js";
 
 export async function getNotifications(userId) {
   try {
     const { data, error } = await supabase
       .from("notifications")
-      .select(`
+      .select(
+        `
         id,
         type,
         title,
@@ -12,8 +13,9 @@ export async function getNotifications(userId) {
         created_at,
         read,
         trigger_user_id,
-        users:trigger_user_id(username, avatar)
-      `)
+        users:trigger_user_id(username, avatar) 
+      `
+      )
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .limit(50);
@@ -50,10 +52,10 @@ export async function markNotificationAsRead(notificationId, userId) {
       .single();
 
     if (error || !data) {
-      throw new Error("Notification not found");
+      throw new Error("Notification Not Found");
     }
 
-    return { message: "Notification marked as read" };
+    return { message: "Notification Marked as Read" };
   } catch (error) {
     console.error("Error marking notification as read:", error);
     return { error: error.message };
@@ -82,7 +84,7 @@ export async function createNotification(userId, type, title, message, triggerUs
 
     return { notification: data };
   } catch (error) {
-    console.error("Error creating notification:", error);
+    console.error("Error Creating Notification:", error);
     return { error: error.message };
   }
 }

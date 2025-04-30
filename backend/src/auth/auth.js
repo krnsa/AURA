@@ -55,8 +55,10 @@ export async function loginUser(username, password) {
   // username is unique, so we can safely access the first element
   // Check if the password matches
   if (user[0].password !== password) {
-    return { error: "Invalid credentials: Password does not match." };
+    return { error: "Invalid Credentials: Password does not match." };
   }
+
+  
 
   // console.log("User found:", user[0].username, user[0].role);
   const payload = { username: user[0].username, role: user[0].role };
@@ -70,6 +72,6 @@ export function requireAuth(token) {
     const decodedData = jwt.verify(token, SECRET);
     return { success: true, data: decodedData };
   } catch (err) {
-    return { error: "Token invalid or expired." };
+    return { error: "Token Invalid or Expired." };
   }
 }

@@ -1,5 +1,3 @@
-import { getAvatarHTML } from "./components/avatarHelper.js";
-
 document.addEventListener("DOMContentLoaded", function () {
   const conversationList = document.querySelector(".conversation-list");
   const chatHeader = document.querySelector(".chat-header");
@@ -54,15 +52,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function searchUsers(query) {
     try {
-      const response = await fetch(`${window.CONFIG.API_URL}/api/searchUsers`, {
-        method: "POST",
+      const url = new URL(`${window.CONFIG.API_URL}/api/searchUsers`);
+      url.searchParams.set("searchQuery", query);
+      const response = await fetch(url.toString(), {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          searchQuery: query,
-        }),
       });
 
       if (!response.ok) {
@@ -88,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
     searchResults.innerHTML = "";
 
     users.forEach((user) => {
+      console.log(user);
       const resultItem = document.createElement("div");
       resultItem.className = "search-result-item";
 
@@ -97,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       resultItem.innerHTML = `
       <div class="avatar">
-      ${getAvatarHTML(user.username)}
+      <img src="${user.avatar_url}" alt="${user.username}" />
       </div>
       <h4>${user.username}</h4>
     `;
@@ -135,11 +133,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       displayConversation(existingConversation);
+
+      startPolling();
     } else {
       const newConversation = {
         id: `temp_${Date.now()}`,
         otherUserId: user.id,
         otherUserName: user.username,
+        avatar_url: user.avatar_url,
         messages: [],
         lastMessage: "No messages yet",
         lastMessageTime: new Date().toISOString(),
@@ -149,6 +150,10 @@ document.addEventListener("DOMContentLoaded", function () {
       activeConversation = newConversation;
 
       displayConversation(newConversation);
+
+      if (pollInterval) {
+        clearInterval(pollInterval);
+      }
     }
   }
 
@@ -189,9 +194,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const data = await response.json();
 
+      const prevActiveId = activeConversation?.id ?? null;
       currentUserId = data.currentUserId;
-
-      processConversations(data.conversations);
+      processConversations(data.conversations, prevActiveId);
     } catch (error) {
       console.error("Error fetching conversations:", error);
 
@@ -206,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function processConversations(conversationsData) {
+  function processConversations(conversationsData, preservedActiveId) {
     conversationList.innerHTML = "";
 
     conversations = conversationsData.map((conversation) => {
@@ -235,16 +240,30 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     conversations.forEach((conversation, index) => {
-      createConversationElement(conversation, index === 0);
+      const isActive = preservedActiveId
+        ? conversation.id === preservedActiveId
+        : index === 0;
+      createConversationElement(conversation, isActive);
     });
 
-    if (conversations.length > 0) {
-      activeConversation = conversations[0];
-      displayConversation(activeConversation);
-    } else {
+    if (conversations.length === 0) {
       chatHeader.innerHTML = `<div class="chat-contact"><h3>No conversations</h3></div>`;
       chatMessages.innerHTML = `<div class="no-messages">You have no messages yet.</div>`;
+      return;
     }
+
+    const stillThere = conversations.find((c) => c.id === preservedActiveId);
+    if (stillThere) {
+      activeConversation = stillThere;
+    } else {
+      activeConversation = conversations[0];
+
+      document
+        .querySelector(`[data-conversation-id="${activeConversation.id}"]`)
+        .classList.add("active");
+    }
+
+    displayConversation(activeConversation);
     const stored = localStorage.getItem("redirectToMessageUser");
     if (stored) {
       const { id, username } = JSON.parse(stored);
@@ -271,7 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     conversationElement.innerHTML = `
       <div class="avatar">
-        ${getAvatarHTML(conversation.otherUserName)}
+        <img src="${conversation.avatar_url}" alt="${conversation.otherUserName}" />
       </div>
       <div class="conversation-info">
         <h3>${conversation.otherUserName}</h3>
@@ -296,6 +315,26 @@ document.addEventListener("DOMContentLoaded", function () {
     conversationList.appendChild(conversationElement);
   }
 
+  function updateActiveConversationItem() {
+    const id = activeConversation.id.toString();
+    const item = document.querySelector(
+      `.conversation-list .conversation[data-conversation-id="${id}"]`
+    );
+    if (!item) return;
+
+    const infoP = item.querySelector(".conversation-info p");
+    infoP.textContent = activeConversation.lastMessage;
+
+    const timeSpan = item.querySelector(".conversation-time span");
+    const ts = new Date(activeConversation.lastMessageTime);
+    timeSpan.textContent = ts.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+
+    conversationList.prepend(item);
+  }
+
   function displayConversation(conversation) {
     updateChatHeader(conversation);
 
@@ -318,11 +357,10 @@ document.addEventListener("DOMContentLoaded", function () {
     chatHeader.innerHTML = `
       <div class="chat-contact">
         <div class="avatar">
-        ${getAvatarHTML(conversation.otherUserName)}
+        <img src="${conversation.avatar_url}" alt="${conversation.otherUserName}" />
         </div>
         <div class="contact-info">
           <h3>${conversation.otherUserName}</h3>
-          <p>Online</p>
         </div>
       </div>
     `;
@@ -335,7 +373,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     chatMessages.innerHTML = `
       <div class="message-date">
-        <span>Today</span>
+
       </div>
     `;
 
@@ -502,7 +540,9 @@ document.addEventListener("DOMContentLoaded", function () {
           activeConversation = newConversation;
         }
 
-        updateConversationList();
+        updateActiveConversationItem();
+
+        startPolling();
       }
     } catch (error) {
       console.error("Error sending message:", error);
@@ -515,17 +555,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function updateConversationList() {
-    conversations.sort(
-      (a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime)
-    );
+  let pollInterval = null;
 
-    conversationList.innerHTML = "";
-    conversations.forEach((conversation, index) => {
-      createConversationElement(
-        conversation,
-        conversation.id === activeConversation.id
-      );
-    });
+  function startPolling() {
+    if (pollInterval) clearInterval(pollInterval);
+
+    pollInterval = setInterval(fetchConversations, 1000);
   }
+
+  startPolling();
 });

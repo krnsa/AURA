@@ -1,8 +1,8 @@
 @import url(../components/navbar.css);
 
 .links-container {
-  position: absolute;
-  bottom: 50px;
+  position: fixed;
+  bottom: 20px; /* Changed from 50px to 20px to move cards down */
   left: 50%;
   transform: translateX(-50%) scale(0.95);
   display: flex;
@@ -22,14 +22,14 @@
 .links-container .glass-card {
   position: relative;
   width: 180px;
-  height: 200px;
+  height: 160px;
   background: linear-gradient(#fff2, transparent);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   transition: 0.5s;
   border-radius: 10px;
   margin: 0 -45px;
@@ -54,4 +54,140 @@
   color: #fff;
   font-family: "Manrope", sans-serif;
   font-weight: 500;
+}
+
+.tech-container {
+  color: white;
+  width: 100%;
+  padding: 0 200px;
+  height: 100%;
+}
+.team-section {
+  height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.team-section h2 {
+  font-size: 30px;
+}
+
+.team-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+  width: 700px;
+}
+/* This is what we need to change in order to re-allign the textboxes Merrick - Anyone DONT change anything in here as of now*/
+.team-member {
+  position: relative;
+  background: linear-gradient(#fff2, transparent);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 5px;
+  text-align: center;
+  transition: all 0.3s ease;
+  height: 160px;
+  overflow: hidden;
+  width: 220px;
+  animation: slideUp 0.5s ease-in-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.member-name {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+  width: 100%;
+}
+
+.member-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.member-hover p {
+  color: white;
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.team-member:hover .member-name {
+  opacity: 0;
+}
+
+.team-member:hover .member-hover {
+  opacity: 1;
+}
+
+.tech-stack {
+  margin-bottom: 3rem;
+}
+
+.stack-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.stack-item {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.glass-card .card-content {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: white;
+  text-align: center;
+}
+
+.glass-card:hover .card-content {
+  opacity: 1;
+}
+
+.glass-card .card-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.glass-card .card-content li {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
 }
