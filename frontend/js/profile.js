@@ -10,6 +10,7 @@ const avatar = document.querySelector(".user-avatar");
 const postTextInput = document.querySelector(".post-text-input");
 const uploadInput = document.querySelector(".upload-input");
 const uploadSubmitBtn = document.querySelector(".upload-submit");
+const loadingSpinner = document.querySelector(".loading-spinner");
 let currentUserId;
 
 async function findUser() {
@@ -40,6 +41,8 @@ async function fetchPosts() {
   });
   postsListEl.innerHTML = "";
   if (!response.ok) {
+    loadingSpinner.classList.remove("show");
+    postsCountEl.textContent = 0;
     postsListEl.innerHTML = "<p>Error loading posts</p>";
     return;
   }
@@ -47,6 +50,7 @@ async function fetchPosts() {
   const posts = result.data;
   postsCountEl.textContent = posts.length;
   console.table(posts);
+  loadingSpinner.classList.remove("show");
   posts.forEach((post) => {
     const card = document.createElement("div");
     card.className = "post-card";
