@@ -89,7 +89,6 @@
    ======================= */
 .post-container {
   flex: 1;
-  max-width: 900px;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -206,4 +205,26 @@
   font-size: 0.9rem;
   color: #333;
   line-height: 1.4;
+}
+
+.post-stats {
+  display: flex;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  border-top: 1px solid #eee;
+}
+
+.likes-count {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #555;
+}
+
+.likes-count svg {
+  color: #ff4b5c;
+}
+
+.likes-count span {
+  font-weight: 500;
 }
