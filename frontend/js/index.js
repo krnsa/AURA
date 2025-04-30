@@ -18,13 +18,13 @@ async function main() {
   userNameIdEl.textContent = `@${data.user.username}`;
 
   // Simulate loading time
-  await new Promise((resolve) => setTimeout(resolve, 400));
+  await new Promise((resolve) => setTimeout(resolve, 500));
   loadingScreen.style.opacity = "0";
+  menu.classList.add("show");
 
   // Wait for the fade-out transition to finish
-  await new Promise((resolve) => setTimeout(resolve, 200));
+  await new Promise((resolve) => setTimeout(resolve, 1500));
   loadingScreen.style.display = "none";
-  menu.classList.add("show");
 
   // Initialize the text animation and background elements after loading
   animateText();
