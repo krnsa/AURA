@@ -31,8 +31,8 @@ export const routes = {
   "GET /api/getPosts": async (req, res, decodedData) => {
     const fullUrl = new URL(req.url, `http://${req.headers.host}`);
     const user_id = fullUrl.searchParams.get("user_id");
-    const { data, error } = await getPosts(user_id);
-    send(res, error.length > 0 ? 400 : 200, data);
+    const result = await getPosts(user_id);
+    send(res, result.error ? 400 : 200, result);
   },
 
   "GET /api/getPostByID": async (req, res, decodedData) => {
@@ -50,19 +50,15 @@ export const routes = {
   },
 
   "POST /api/newPost": async (req, res, decodedData) => {
-    const { user_id, post_body, post_file, linked_listing } = await parseBody(
-      req
-    );
+    const { user_id, post_body, post_file, linked_listing } = await parseBody(req);
     const result = await newPost(user_id, post_body, post_file);
     send(res, result.error ? 400 : 200, result);
   },
 
   "POST /api/removePost": async (req, res, decodedData) => {
     const { user_id, post_id } = await parseBody(req);
-    const { data, error } = await removePost(user_id, post_id);
-    console.log(data);
-    console.log(error);
-    send(res, error.length > 0 ? 400 : 200, data);
+    const result = await removePost(user_id, post_id);
+    send(res, result.error ? 400 : 200, result);
   },
 
   "GET /api/notifications": async (req, res, decodedData) => {
