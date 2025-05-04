@@ -17,6 +17,8 @@ const uploadSubmitBtn = document.querySelector(".upload-submit");
 const loadingSpinner = document.querySelector(".loading-spinner");
 let currentUserId;
 let currentUsername;
+let followers = [];
+let following = [];
 
 async function findUser() {
   const result1 = await fetch(`${window.CONFIG.API_URL}/`, {
@@ -35,7 +37,100 @@ async function findUser() {
   const user = await result2.json();
   currentUserId = user.id;
   avatar.innerHTML = `<img src="${user.avatar_url}"/>`;
+
+  // Fetch followers data
+  await fetchFollowersData();
+
   console.log(user);
+}
+
+async function fetchFollowersData() {
+  try {
+    // Fetch followers and following data
+    const followersResponse = await fetch(
+      `${window.CONFIG.API_URL}/api/getFollowers?username=${currentUsername}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (followersResponse.ok) {
+      const result = await followersResponse.json();
+
+      if (result.data) {
+        // Fetch followers (people following this user)
+        followers = result.data.followers || [];
+        followersCountEl.textContent = followers.length;
+
+        // Fetch following (people this user is following)
+        following = result.data.following || [];
+        followingCountEl.textContent = following.length;
+      } else {
+        console.error("Invalid followers data format");
+        followersCountEl.textContent = 0;
+        followingCountEl.textContent = 0;
+      }
+    } else {
+      console.error("Failed to fetch followers data");
+      followersCountEl.textContent = 0;
+      followingCountEl.textContent = 0;
+    }
+  } catch (error) {
+    console.error("Error fetching followers data:", error);
+    followersCountEl.textContent = 0;
+    followingCountEl.textContent = 0;
+  }
+}
+
+async function followUserAction(userToFollow) {
+  try {
+    const response = await fetch(`${window.CONFIG.API_URL}/api/followUser`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ user_to_follow: userToFollow }),
+    });
+
+    if (response.ok) {
+      // Update the followers/following data
+      await fetchFollowersData();
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error("Error following user:", error);
+    return false;
+  }
+}
+
+async function unfollowUserAction(userToUnfollow) {
+  try {
+    const response = await fetch(`${window.CONFIG.API_URL}/api/unfollowUser`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ user_to_unfollow: userToUnfollow }),
+    });
+
+    if (response.ok) {
+      // Update the followers/following data
+      await fetchFollowersData();
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error("Error unfollowing user:", error);
+    return false;
+  }
+}
+
+// Check if the current user is following a specific user
+function isFollowing(username) {
+  return following.some((relation) => relation.followed_user === username);
 }
 
 async function fetchPosts() {
@@ -229,9 +324,182 @@ async function createNewPost() {
   }
 }
 
+// Add event delegation for follower-related UI elements
+function setupFollowerEvents() {
+  // Example of adding follow/unfollow buttons to the UI when viewing another user's profile
+  // This would need to be adjusted based on your specific UI design
+  document.addEventListener("click", async (e) => {
+    // If we have a follow button
+    if (e.target.classList.contains("follow-btn")) {
+      const userToFollow = e.target.dataset.username;
+      const success = await followUserAction(userToFollow);
+      if (success) {
+        e.target.classList.remove("follow-btn");
+        e.target.classList.add("unfollow-btn");
+        e.target.textContent = "Unfollow";
+      }
+    }
+    // If we have an unfollow button
+    else if (e.target.classList.contains("unfollow-btn")) {
+      const userToUnfollow = e.target.dataset.username;
+      const success = await unfollowUserAction(userToUnfollow);
+      if (success) {
+        e.target.classList.remove("unfollow-btn");
+        e.target.classList.add("follow-btn");
+        e.target.textContent = "Follow";
+      }
+    }
+  });
+}
+
+// Add this to enhance the profile page with follower lists
+function addFollowerInteractivity() {
+  // Make follower and following counts clickable to show a modal with the lists
+  followersCountEl.parentElement.style.cursor = "pointer";
+  followingCountEl.parentElement.style.cursor = "pointer";
+
+  followersCountEl.parentElement.addEventListener("click", () => {
+    showFollowersList("followers");
+  });
+
+  followingCountEl.parentElement.addEventListener("click", () => {
+    showFollowersList("following");
+  });
+}
+
+// Function to display followers or following in a modal
+async function showFollowersList(type) {
+  // Create modal structure
+  const modal = document.createElement("div");
+  modal.className = "followers-modal";
+
+  // Set modal header based on type
+  const title = type === "followers" ? "Followers" : "Following";
+
+  modal.innerHTML = `
+    <div class="followers-modal-content">
+      <div class="followers-modal-header">
+        <h3>${title}</h3>
+        <span class="followers-modal-close">&times;</span>
+      </div>
+      <div class="followers-modal-body">
+        <div class="followers-list">
+          <!-- List will be populated with followers -->
+          <div class="followers-loading">Loading...</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Add modal to body
+  document.body.appendChild(modal);
+
+  // Add close functionality
+  const closeBtn = modal.querySelector(".followers-modal-close");
+  closeBtn.addEventListener("click", () => {
+    document.body.removeChild(modal);
+  });
+
+  // Close when clicking outside the modal content
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      document.body.removeChild(modal);
+    }
+  });
+
+  // Populate the list based on type
+  const listEl = modal.querySelector(".followers-list");
+
+  try {
+    // Fetch the latest followers data
+    await fetchFollowersData();
+
+    let usersToDisplay = [];
+    if (type === "followers") {
+      // Display the list of users following this user
+      usersToDisplay = followers.map((f) => f.following_user);
+    } else {
+      // Display the list of users followed by this user
+      usersToDisplay = following.map((f) => f.followed_user);
+    }
+
+    if (usersToDisplay.length === 0) {
+      listEl.innerHTML = `<p class="no-followers">No ${type} yet</p>`;
+      return;
+    }
+
+    // Clear loading indicator
+    listEl.innerHTML = "";
+
+    // For each username, fetch their details and add to the list
+    for (const username of usersToDisplay) {
+      // Create a placeholder while we fetch the user details
+      const userItem = document.createElement("div");
+      userItem.className = "follower-item loading";
+      userItem.innerHTML = `
+        <div class="follower-avatar placeholder"></div>
+        <div class="follower-info">
+          <div class="follower-username placeholder">${username}</div>
+        </div>
+      `;
+      listEl.appendChild(userItem);
+
+      // Fetch user details
+      try {
+        const response = await fetch(`${window.CONFIG.API_URL}/api/findUser?username=${username}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (response.ok) {
+          const user = await response.json();
+
+          // Update the user item with real data
+          userItem.className = "follower-item";
+
+          // Determine if the current user is following this user
+          const isCurrentlyFollowing = isFollowing(username);
+
+          userItem.innerHTML = `
+            <div class="follower-avatar">
+              <img src="${user.avatar_url || "/img/default-avatar.png"}" alt="${username}'s avatar">
+            </div>
+            <div class="follower-info">
+              <div class="follower-username">${username}</div>
+            </div>
+            ${
+              username !== currentUsername
+                ? `
+              <button class="${
+                isCurrentlyFollowing ? "unfollow-btn" : "follow-btn"
+              }" data-username="${username}">
+                ${isCurrentlyFollowing ? "Unfollow" : "Follow"}
+              </button>
+            `
+                : ""
+            }
+          `;
+        }
+      } catch (error) {
+        console.error(`Error fetching user ${username}:`, error);
+        userItem.innerHTML = `
+          <div class="follower-info">
+            <div class="follower-username">${username}</div>
+            <div class="follower-error">Error loading user details</div>
+          </div>
+        `;
+      }
+    }
+  } catch (error) {
+    console.error(`Error displaying ${type}:`, error);
+    listEl.innerHTML = `<p class="followers-error">Error loading ${type}</p>`;
+  }
+}
+
 async function init() {
   await findUser();
   await fetchPosts();
+  setupFollowerEvents();
+  addFollowerInteractivity();
 
   uploadSubmitBtn.addEventListener("click", createNewPost);
 }
