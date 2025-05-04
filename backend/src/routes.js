@@ -28,6 +28,20 @@ export const routes = {
     });
   },
 
+  "GET /api/findUser": async (req, res, decodedData) => {
+    const fullUrl = new URL(req.url, `http://${req.headers.host}`);
+    const param_username = fullUrl.searchParams.get("username");
+    const user = await findUser(param_username);
+    send(res, user.error ? 404 : 200, user);
+  },
+
+  "GET /api/searchUsers": async (req, res, decodedData) => {
+    const fullUrl = new URL(req.url, `http://${req.headers.host}`);
+    const searchQuery = fullUrl.searchParams.get("searchQuery") || "";
+    const result = await searchUsers(searchQuery);
+    send(res, result.error ? 400 : 200, result);
+  },
+
   "GET /api/getPosts": async (req, res, decodedData) => {
     const fullUrl = new URL(req.url, `http://${req.headers.host}`);
     const user_id = fullUrl.searchParams.get("user_id");
@@ -42,13 +56,6 @@ export const routes = {
     send(res, result.error ? 404 : 200, result);
   },
 
-  "GET /api/findUser": async (req, res, decodedData) => {
-    const fullUrl = new URL(req.url, `http://${req.headers.host}`);
-    const param_username = fullUrl.searchParams.get("username");
-    const user = await findUser(param_username);
-    send(res, user.error ? 404 : 200, user);
-  },
-
   "POST /api/newPost": async (req, res, decodedData) => {
     const { user_id, post_body, post_file, linked_listing } = await parseBody(req);
     const result = await newPost(user_id, post_body, post_file);
@@ -58,61 +65,6 @@ export const routes = {
   "POST /api/removePost": async (req, res, decodedData) => {
     const { user_id, post_id } = await parseBody(req);
     const result = await removePost(user_id, post_id);
-    send(res, result.error ? 400 : 200, result);
-  },
-
-  "GET /api/notifications": async (req, res, decodedData) => {
-    const username = decodedData.username;
-    const result = await getNotifications(username);
-    send(res, result.error ? 400 : 200, result);
-  },
-
-  "GET /api/messages": async (req, res, decodedData) => {
-    const username = decodedData.username;
-    const result = await getMessages(username);
-    send(res, result.error ? 400 : 200, result);
-  },
-
-  "POST /api/sendMessage": async (req, res, decodedData) => {
-    const { user_id, receiver_id, content } = await parseBody(req);
-    console.log("Received content:", user_id, receiver_id, content);
-    const result = await sendMessage(user_id, receiver_id, content);
-    send(res, result.error ? 400 : 200, result);
-  },
-
-  "GET /api/searchUsers": async (req, res, decodedData) => {
-    const fullUrl = new URL(req.url, `http://${req.headers.host}`);
-    const searchQuery = fullUrl.searchParams.get("searchQuery") || "";
-    const result = await searchUsers(searchQuery);
-    send(res, result.error ? 400 : 200, result);
-  },
-
-  "GET /api/getProducts": async (req, res, decodedData) => {
-    const { searchParams } = new URL(req.url, `http://${req.headers.host}`);
-    const searchQuery = searchParams.get("searchQuery");
-    const result = await getProducts(searchQuery);
-    send(res, result.error ? 400 : 200, result);
-  },
-
-  "POST /api/createProduct": async (req, res, decodedData) => {
-    try {
-      const productData = await parseBody(req);
-      const result = await createProduct(productData);
-      send(res, result.error ? 400 : 200, result);
-    } catch (error) {
-      console.error("Error in upload route:", error);
-      send(res, 400, {
-        error: true,
-        message: "Failed to process upload: " + error.message,
-      });
-    }
-  },
-
-  "GET /api/search": async (req, res, decodedData) => {
-    const { searchParams } = new URL(req.url, `http://${req.headers.host}`);
-    const searchQuery = searchParams.get("searchQuery");
-    const filter = searchParams.get("filter");
-    const result = await getSearches(searchQuery, filter);
     send(res, result.error ? 400 : 200, result);
   },
 
@@ -148,6 +100,54 @@ export const routes = {
     const username = decodedData.username;
     const { user_to_unfollow } = await parseBody(req);
     const result = await unfollowUser(user_to_unfollow, username);
+    send(res, result.error ? 400 : 200, result);
+  },
+
+  "GET /api/messages": async (req, res, decodedData) => {
+    const username = decodedData.username;
+    const result = await getMessages(username);
+    send(res, result.error ? 400 : 200, result);
+  },
+
+  "POST /api/sendMessage": async (req, res, decodedData) => {
+    const { user_id, receiver_id, content } = await parseBody(req);
+    console.log("Received content:", user_id, receiver_id, content);
+    const result = await sendMessage(user_id, receiver_id, content);
+    send(res, result.error ? 400 : 200, result);
+  },
+
+  "GET /api/getProducts": async (req, res, decodedData) => {
+    const { searchParams } = new URL(req.url, `http://${req.headers.host}`);
+    const searchQuery = searchParams.get("searchQuery");
+    const result = await getProducts(searchQuery);
+    send(res, result.error ? 400 : 200, result);
+  },
+
+  "POST /api/createProduct": async (req, res, decodedData) => {
+    try {
+      const productData = await parseBody(req);
+      const result = await createProduct(productData);
+      send(res, result.error ? 400 : 200, result);
+    } catch (error) {
+      console.error("Error in upload route:", error);
+      send(res, 400, {
+        error: true,
+        message: "Failed to process upload: " + error.message,
+      });
+    }
+  },
+
+  "GET /api/search": async (req, res, decodedData) => {
+    const { searchParams } = new URL(req.url, `http://${req.headers.host}`);
+    const searchQuery = searchParams.get("searchQuery");
+    const filter = searchParams.get("filter");
+    const result = await getSearches(searchQuery, filter);
+    send(res, result.error ? 400 : 200, result);
+  },
+
+  "GET /api/notifications": async (req, res, decodedData) => {
+    const username = decodedData.username;
+    const result = await getNotifications(username);
     send(res, result.error ? 400 : 200, result);
   },
 
