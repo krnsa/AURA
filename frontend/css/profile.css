@@ -263,6 +263,7 @@
   padding: 8px 10px;
   font-size: 0.9rem;
   border-top: 1px solid #eee;
+  justify-content: space-between;
 }
 
 .likes-count {
@@ -270,12 +271,37 @@
   align-items: center;
   gap: 5px;
   color: #555;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.likes-count:hover {
+  transform: scale(1.1);
 }
 
 .likes-count svg {
   color: #ff4b5c;
 }
 
+.likes-count svg.liked {
+  fill: #ff4b5c;
+}
+
 .likes-count span {
   font-weight: 500;
+}
+
+.delete-post {
+  cursor: pointer;
+  color: #888;
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.delete-post:hover {
+  color: #e74c3c;
+  background-color: rgba(231, 76, 60, 0.1);
 }
