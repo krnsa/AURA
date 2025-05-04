@@ -25,6 +25,43 @@ const togglePostsBtn = document.createElement("button");
 togglePostsBtn.className = "toggle-posts-btn";
 togglePostsBtn.textContent = "Show All Posts";
 
+// Variables for file upload
+const uploadInputContainer = document.querySelector(".upload-input-container");
+const uploadFilename = document.querySelector(".upload-filename");
+const imagePreview = document.querySelector(".image-preview");
+const imagePreviewImg = imagePreview.querySelector("img");
+const removeImageBtn = document.querySelector(".remove-image");
+const uploadProgress = document.querySelector(".upload-progress");
+const uploadProgressBar = document.querySelector(".upload-progress-bar");
+
+// Handle file selection and preview
+uploadInput.addEventListener("change", function () {
+  const file = this.files[0];
+
+  if (file) {
+    // Display file name
+    uploadFilename.textContent = file.name;
+
+    // Display image preview
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      imagePreviewImg.src = e.target.result;
+      imagePreview.classList.add("active");
+    };
+    reader.readAsDataURL(file);
+  } else {
+    uploadFilename.textContent = "";
+    imagePreview.classList.remove("active");
+  }
+});
+
+// Remove selected image
+removeImageBtn.addEventListener("click", function () {
+  uploadInput.value = "";
+  uploadFilename.textContent = "";
+  imagePreview.classList.remove("active");
+});
+
 async function findUser() {
   const result1 = await fetch(`${window.CONFIG.API_URL}/`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -306,6 +343,21 @@ async function createNewPost() {
       formData.append("post_file", file);
     }
 
+    // Show upload progress bar
+    uploadProgress.classList.add("active");
+    uploadProgressBar.style.width = "0%";
+
+    // Show upload progress bar
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+      progress += 5;
+      uploadProgressBar.style.width = `${Math.min(progress, 90)}%`;
+
+      if (progress >= 90) {
+        clearInterval(progressInterval);
+      }
+    }, 100);
+
     const response = await fetch(`${window.CONFIG.API_URL}/api/newPost`, {
       method: "POST",
       headers: {
@@ -314,31 +366,50 @@ async function createNewPost() {
       body: formData,
     });
 
+    // Complete upload
+    clearInterval(progressInterval);
+    uploadProgressBar.style.width = "100%";
+
     const result = await response.json();
 
-    if (result.error) {
-      alert(`Error: ${result.error}`);
-    } else {
-      postTextInput.value = "";
-      uploadInput.value = "";
+    setTimeout(() => {
+      uploadProgress.classList.remove("active");
 
-      await fetchPosts();
-    }
+      if (result.error) {
+        alert(`Error: ${result.error}`);
+      } else {
+        postTextInput.value = "";
+        uploadInput.value = "";
+        uploadFilename.textContent = "";
+        imagePreview.classList.remove("active");
+
+        fetchPosts();
+      }
+    }, 500);
   } catch (error) {
     console.error("Error creating post:", error);
     alert("Failed to create post. Please try again.");
+    uploadProgress.classList.remove("active");
   } finally {
     uploadSubmitBtn.disabled = false;
-    uploadSubmitBtn.textContent = "Post";
+    uploadSubmitBtn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+      </svg>
+      Post
+    `;
   }
 }
 
 // Add event delegation for follower-related UI elements
 function setupFollowerEvents() {
-  // Example of adding follow/unfollow buttons to the UI when viewing another user's profile
-  // This would need to be adjusted based on your specific UI design
   document.addEventListener("click", async (e) => {
-    // If we have a follow button
+    // Skip if the button is inside a post card
+    if (e.target.closest(".post-card")) {
+      return; // Skip if the button is inside a post card
+    }
+
+    // Handle buttons outside of posts (e.g., in follower list)
     if (e.target.classList.contains("follow-btn")) {
       const userToFollow = e.target.dataset.username;
       const success = await followUserAction(userToFollow);
@@ -347,9 +418,7 @@ function setupFollowerEvents() {
         e.target.classList.add("unfollow-btn");
         e.target.textContent = "Unfollow";
       }
-    }
-    // If we have an unfollow button
-    else if (e.target.classList.contains("unfollow-btn")) {
+    } else if (e.target.classList.contains("unfollow-btn")) {
       const userToUnfollow = e.target.dataset.username;
       const success = await unfollowUserAction(userToUnfollow);
       if (success) {
