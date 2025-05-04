@@ -19,6 +19,11 @@ let currentUserId;
 let currentUsername;
 let followers = [];
 let following = [];
+let isShowingAllPosts = false; // Default to showing only the current user's posts
+const postSectionTitleEl = document.querySelector(".posts-title");
+const togglePostsBtn = document.createElement("button");
+togglePostsBtn.className = "toggle-posts-btn";
+togglePostsBtn.textContent = "Show All Posts";
 
 async function findUser() {
   const result1 = await fetch(`${window.CONFIG.API_URL}/`, {
@@ -134,53 +139,48 @@ function isFollowing(username) {
 }
 
 async function fetchPosts() {
-  const response = await fetch(`${window.CONFIG.API_URL}/api/getPosts?user_id=${currentUserId}`, {
+  // Pass user_id only if showing current user's posts
+  const url = isShowingAllPosts
+    ? `${window.CONFIG.API_URL}/api/getPosts`
+    : `${window.CONFIG.API_URL}/api/getPosts?user_id=${currentUserId}`;
+
+  const response = await fetch(url, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   });
+  console.log("Fetching posts from:", response);
   postsListEl.innerHTML = "";
+  loadingSpinner.classList.add("show");
+
   if (!response.ok) {
     loadingSpinner.classList.remove("show");
     postsCountEl.textContent = 0;
     postsListEl.innerHTML = "<p>Error loading posts</p>";
     return;
   }
+
   const result = await response.json();
   const posts = result.data;
-  postsCountEl.textContent = posts.length;
+
+  // Update the posts count only if showing current user's posts
+  if (!isShowingAllPosts) {
+    postsCountEl.textContent = posts.length;
+  }
+
   console.table(posts);
   loadingSpinner.classList.remove("show");
-  posts.forEach((post) => {
-    const card = document.createElement("div");
-    card.className = "post-card";
-    card.dataset.postId = post.id;
 
-    // Check if user has liked this post
-    const isLiked = post.likes && post.likes.includes(currentUsername);
-    const likeIconToUse = isLiked ? likes_filled_icon : likes_icon;
+  // Handle case when there are no posts
+  if (posts.length === 0) {
+    postsListEl.innerHTML = `<p class="no-posts">No posts ${
+      isShowingAllPosts ? "available" : "yet"
+    }</p>`;
+    return;
+  }
 
-    card.innerHTML = `
-        ${post.url ? `<img src="${post.url}" alt="Post image">` : ""}
-        ${post.body ? `<div class="post-text">${post.body}</div>` : ""}
-        <div class="post-stats">
-          <div class="likes-count" data-post-id="${post.id}" data-liked="${isLiked}">
-            ${likeIconToUse}
-            <span>${post.likes ? post.likes.length : 0}</span>
-          </div>
-          <div class="delete-post" data-post-id="${post.id}">
-            ${delete_icon}
-          </div>
-        </div>
-      `;
-
-    // Add event listeners for like and delete actions
-    card.querySelector(".likes-count").addEventListener("click", handleLikeClick);
-    card.querySelector(".delete-post").addEventListener("click", handleDeleteClick);
-
-    postsListEl.appendChild(card);
-  });
+  renderPosts(posts);
 }
 
 async function handleLikeClick(e) {
@@ -262,9 +262,18 @@ async function handleDeleteClick(e) {
       if (postElement) {
         postElement.remove();
 
-        // Update post count
-        const currentCount = parseInt(postsCountEl.textContent);
-        postsCountEl.textContent = Math.max(0, currentCount - 1);
+        // Update count only when showing own posts
+        if (!isShowingAllPosts) {
+          const currentCount = parseInt(postsCountEl.textContent);
+          postsCountEl.textContent = Math.max(0, currentCount - 1);
+        }
+
+        // Check if no more posts are available
+        if (postsListEl.children.length === 0) {
+          postsListEl.innerHTML = `<p class="no-posts">No posts ${
+            isShowingAllPosts ? "available" : "yet"
+          }</p>`;
+        }
       }
     } else {
       const error = await response.json();
@@ -495,8 +504,135 @@ async function showFollowersList(type) {
   }
 }
 
+async function renderPosts(posts) {
+  posts.forEach((post) => {
+    const card = document.createElement("div");
+    card.className = "post-card";
+    card.dataset.postId = post.id;
+
+    const isCurrentUser = post.user === currentUserId;
+    const isFollowingUser = !isCurrentUser && isFollowing(post.username);
+
+    // Check if the user has liked this post
+    const isLiked = post.likes && post.likes.includes(currentUsername);
+    const likeIconToUse = isLiked ? likes_filled_icon : likes_icon;
+
+    // Create post content HTML
+    let postHTML = `
+      <div class="post-header">
+        <div class="post-user-info">
+          <div class="post-avatar">
+            <img src="${post.avatar_url}" alt="${post.username}'s avatar">
+          </div>
+          <div class="post-username">${post.username}</div>
+        </div>
+    `;
+
+    // Add follow/unfollow button if not current user
+    if (!isCurrentUser) {
+      postHTML += `
+        <button class="${isFollowingUser ? "unfollow-btn" : "follow-btn"} post-follow-btn" 
+                data-username="${post.username}">
+          ${isFollowingUser ? "Unfollow" : "Follow"}
+        </button>
+      `;
+    }
+
+    postHTML += `
+      </div>
+      ${post.url ? `<img src="${post.url}" alt="Post image">` : ""}
+      ${post.body ? `<div class="post-text">${post.body}</div>` : ""}
+      <div class="post-stats">
+        <div class="likes-count" data-post-id="${post.id}" data-liked="${isLiked}">
+          ${likeIconToUse}
+          <span>${post.likes ? post.likes.length : 0}</span>
+        </div>
+        ${
+          isCurrentUser
+            ? `
+          <div class="delete-post" data-post-id="${post.id}">
+            ${delete_icon}
+          </div>
+        `
+            : ""
+        }
+      </div>
+    `;
+
+    card.innerHTML = postHTML;
+
+    // Add event listeners
+    card.querySelector(".likes-count").addEventListener("click", handleLikeClick);
+
+    if (isCurrentUser) {
+      card.querySelector(".delete-post").addEventListener("click", handleDeleteClick);
+    }
+
+    if (!isCurrentUser) {
+      const followBtn = card.querySelector(".post-follow-btn");
+      followBtn.addEventListener("click", function (e) {
+        const isUnfollowBtn = this.classList.contains("unfollow-btn");
+        const username = this.dataset.username;
+
+        if (isUnfollowBtn) {
+          unfollowUserAction(username).then((success) => {
+            if (success) {
+              this.classList.remove("unfollow-btn");
+              this.classList.add("follow-btn");
+              this.textContent = "Follow";
+            }
+          });
+        } else {
+          followUserAction(username).then((success) => {
+            if (success) {
+              this.classList.remove("follow-btn");
+              this.classList.add("unfollow-btn");
+              this.textContent = "Unfollow";
+            }
+          });
+        }
+      });
+    }
+
+    postsListEl.appendChild(card);
+  });
+}
+
+async function togglePostsView() {
+  isShowingAllPosts = !isShowingAllPosts;
+
+  // Update button text based on the current view
+  togglePostsBtn.textContent = isShowingAllPosts ? "Show My Posts" : "Show All Posts";
+
+  // Update the title based on the current view
+  postSectionTitleEl.textContent = isShowingAllPosts ? "All Posts" : "Your Posts";
+
+  // Fetch all posts if showing all posts, otherwise fetch only the current user's posts
+  await fetchPosts();
+}
+
 async function init() {
   await findUser();
+
+  // Initialize the title
+  postSectionTitleEl.textContent = "Your Posts";
+
+  // Add toggle button to the page
+  const postSectionHeader = document.createElement("div");
+  postSectionHeader.className = "posts-header";
+  postSectionHeader.appendChild(postSectionTitleEl); // Move existing title to new container
+  postSectionHeader.appendChild(togglePostsBtn);
+
+  const postSection = document.querySelector(".post-section");
+  if (postSection.firstChild) {
+    postSection.insertBefore(postSectionHeader, postSection.firstChild);
+  } else {
+    postSection.appendChild(postSectionHeader);
+  }
+
+  // Add toggle button event listener
+  togglePostsBtn.addEventListener("click", togglePostsView);
+
   await fetchPosts();
   setupFollowerEvents();
   addFollowerInteractivity();
