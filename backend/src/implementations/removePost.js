@@ -6,13 +6,13 @@ export default async function removePost(user_id, post_id) {
     return { data: null, error: "Null parameter entered." };
   }
 
-  const post = await getPostByID(post_id);
+  const { data: post, error: error_message } = await getPostByID(post_id);
 
-  if (post.length == 0) {
-    return { data: null, error: "Post does not exist." };
+  if (error_message) {
+    return { data: null, error: error_message };
   }
 
-  const post_user_id = post[0]["user"];
+  const post_user_id = post.user;
 
   if (user_id != post_user_id) {
     return { data: null, error: "Attempting to delete post from different user." };

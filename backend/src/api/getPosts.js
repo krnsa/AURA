@@ -2,9 +2,12 @@ import supabase from "../supabase/supabaseClient.js";
 
 async function fetchPosts(user_id) {
   if (user_id) {
-    return supabase.from("posts").select("*").eq("user", user_id);
+    return supabase
+      .from("posts")
+      .select("*, users!posts_user_fkey(username, avatar_url)")
+      .eq("user", user_id);
   }
-  return supabase.from("posts").select("*");
+  return supabase.from("posts").select("*, users!posts_user_fkey(username, avatar_url)");
 }
 
 async function fetchLikesForPost(postId) {
@@ -29,7 +32,19 @@ export default async function getPosts(user_id) {
     const postsWithLikes = await Promise.all(
       posts.map(async (post) => {
         const likes = await fetchLikesForPost(post.id);
-        return { ...post, likes };
+        // Extract username and avatar_url from users object
+        const username = post.users?.username || "Unknown user";
+        const avatar_url = post.users?.avatar_url || "/img/default-avatar.png";
+
+        // Remove the users object to avoid nesting and add username/avatar directly
+        const { users, ...postWithoutUsers } = post;
+
+        return {
+          ...postWithoutUsers,
+          username,
+          avatar_url,
+          likes,
+        };
       })
     );
 
